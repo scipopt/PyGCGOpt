@@ -361,3 +361,16 @@ cdef extern from "gcg/class_varpartition.h" namespace "gcg":
         vector[int] getNVarsOfClasses() except +
         bool isVarClassified(int varindex) except +
         VarPartition * reduceClasses(int maxNumberOfClasses) except +
+
+
+cdef extern from "scip/scip.h":
+    ctypedef struct SCIP_CLOCK:
+        pass
+
+    # Timing Functions
+    SCIP_RETCODE SCIPcreateClock(SCIP* scip, SCIP_CLOCK** clck)
+    SCIP_RETCODE SCIPfreeClock(SCIP* scip, SCIP_CLOCK** clck)
+    SCIP_RETCODE SCIPresetClock(SCIP* scip, SCIP_CLOCK* clck)
+    SCIP_RETCODE SCIPstartClock(SCIP* scip, SCIP_CLOCK* clck)
+    SCIP_RETCODE SCIPstopClock(SCIP* scip, SCIP_CLOCK* clck)
+    SCIP_Real SCIPgetClockTime(SCIP* scip, SCIP_CLOCK* clck)

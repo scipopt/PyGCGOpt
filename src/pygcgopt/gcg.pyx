@@ -1,7 +1,7 @@
 # distutils: language = c++
 
 from pyscipopt.scip import PY_SCIP_CALL
-from pyscipopt.scip cimport Model, Variable, Constraint, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIP_CLOCK, SCIPcreateClock, SCIPfreeClock, SCIPstartClock, SCIPstopClock, SCIPgetClockTime
+from pyscipopt.scip cimport Model, Variable, Constraint, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY
 
 from cpython cimport Py_INCREF, Py_DECREF
 
