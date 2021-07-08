@@ -319,6 +319,7 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         vector[SCIP_VAR *] getOrigVarsFixedZero() except +
         vector[SCIP_CONS *] getRelevantConss() except +
         vector[SCIP_VAR *] getRelevantVars() except +
+        SCIP* getScip()
         void getSortedCandidatesNBlocks(vector[int] candidates) except +
         double getVal(int row, int col) except +
         vector[double] getValsForCons(int consIndex) except +

@@ -2527,12 +2527,12 @@ cdef class DetProbData:
 
 
 
-    def getScip(DetProbData self):
-        """!@brief returns the corresponding scip data structure
-        @return the corresponding scip data structure.
+    def getModel(DetProbData self):
+        """!@brief returns the corresponding Model instance wrapping the scip data structure
+        @return the corresponding Model instance wrapping scip data structure.
         """
-        # TODO implement function
-        raise NotImplementedError()
+        cdef SCIP * scip = self.thisptr.getScip()
+        return Model.create(scip)
 
     def getSortedCandidatesNBlocks(DetProbData self, object candidates):
         """!@brief gets the candidates for number of blocks added by the user followed by the found ones sorted in descending order by how often a candidate was proposed
