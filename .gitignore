@@ -134,5 +134,5 @@ model.lp
 docs/html
 docs/*.tag
 
-# MacOs
+# MacOS
 .DS_Store
