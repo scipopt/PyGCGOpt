@@ -133,3 +133,6 @@ model.lp
 # documentation
 docs/html
 docs/*.tag
+
+# MacOs
+.DS_Store
