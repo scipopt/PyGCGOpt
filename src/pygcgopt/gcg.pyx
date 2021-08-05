@@ -11,7 +11,7 @@ from libcpp cimport bool
 
 from typing import List
 
-from pyscipopt.util import str_conversion
+from pygcgopt.util import str_conversion
 
 from pathlib import Path
 import tempfile
