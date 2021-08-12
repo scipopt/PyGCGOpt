@@ -4,6 +4,7 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.pair cimport pair
+from libcpp.map cimport map
 
 
 cdef extern from "limits.h":
@@ -234,6 +235,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         void showVisualisation() except +
         void generateVisualisation(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
         void writeVisualisationFile(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
+        map[pair[int, int], double] writeNonzerosWithRhsAndObj() except +
         unsigned int shouldCompletedByConsToMaster() except +
         bool sort() except +
         void setPctConssToBlockVector(vector[double] newvector) except +
