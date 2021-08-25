@@ -2058,25 +2058,41 @@ cdef class PartialDecomposition:
         cdef map[pair[int, int], double] mat = self.thisptr.writeNonzerosWithRhsAndObj()
         return mat
 
-    def matrixarrayRhsAndObj(PartialDecomposition self):
+    def matrixarrayRhsAndObj(PartialDecomposition self, obj=False, b=False):
         dictionary = self.matrixRhsAndObj()
         X = list()
         Y = list()
         coeffs = list()
         for key, value in dictionary.items():
-            X.append(key[0])
-            Y.append(key[1])
-            coeffs.append(value)
+            if obj == True and b == True:
+                X.append(key[0])
+                Y.append(key[1])
+                coeffs.append(value)
+            elif b == True and obj == False:
+                if key[0] != 0:
+                    X.append(key[0])
+                    Y.append(key[1])
+                    coeffs.append(value)
+            elif obj == True and b == False:
+                if key[1] != self.getNVars():
+                    X.append(key[0])
+                    Y.append(key[1])
+                    coeffs.append(value)
+            else:
+                if key[0] != 0 and key[1] != self.getNVars():
+                    X.append(key[0])
+                    Y.append(key[1])
+                    coeffs.append(value)
         return X, Y, coeffs
 
-    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, nonzero=True, boxes=True, s=1, alpha=1, linkingcolor='#FFB72D', mastercolor='#1340C7', blockcolor='#718CDB', stairlinkingcolor='#886100', opencolor='#FFD88F', linecolor='#000000'):
+    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, nonzero=True, only_boxes=False, obj=False, b=False, boxes=True, s=1, alpha=1, linkingcolor='#FFB72D', mastercolor='#1340C7', blockcolor='#718CDB', stairlinkingcolor='#886100', opencolor='#FFD88F', linecolor='#000000'):
         try:
             import matplotlib.pyplot as plt
             import matplotlib.patches as patches
 
             plt.ioff()
 
-            X, Y, coeffs = self.matrixarrayRhsAndObj()
+            X, Y, coeffs = self.matrixarrayRhsAndObj(obj=obj, b=b)
             fig, ax = plt.subplots(figsize=figsize)
 
             #create the boxes
@@ -2119,14 +2135,26 @@ cdef class PartialDecomposition:
                 zorderForBoxes = 1
 
             #plot the coefficients
-            if nonzero==True:
-                ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c='black', s=s, alpha=1, zorder=zorderForBoxes)
-            else:
-                ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=coeffs, s=s, alpha=1, zorder=zorderForBoxes)
+            if only_boxes != True:
+                if nonzero==True:
+                    scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c='black', s=s, alpha=1, zorder=zorderForBoxes)
+                else:
+                    if nonzero == False:
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=coeffs, s=s, alpha=1, zorder=zorderForBoxes)
+                    else:
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=coeffs, cmap=nonzero, s=s, alpha=1, zorder=zorderForBoxes)
+                    fig.colorbar(scatter)
 
             #adjust x-axis and y-axis
-            ax.set_xlim([0, self.getNVars()])
-            ax.set_ylim([0, self.getNConss()])
+            if b == True:
+                ax.set_xlim([0, self.getNVars()+1])
+            else:
+                ax.set_xlim([0, self.getNVars()])
+            
+            if obj == True:
+                ax.set_ylim([-1, self.getNConss()])
+            else:
+                ax.set_ylim([0, self.getNConss()])
             ax.xaxis.tick_top()
             ax.invert_yaxis()
 
