@@ -2092,7 +2092,7 @@ cdef class PartialDecomposition:
 
             plt.ioff()
 
-            X, Y, coeffs = self.matrixarrayRhsAndObj(obj=obj, b=b)
+            X, Y, coeffs = self.matrixarray(obj=obj, b=b)
             fig, ax = plt.subplots(figsize=figsize)
 
             #create the boxes

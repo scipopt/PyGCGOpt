@@ -38,8 +38,8 @@
             "/home/lentz/venv/gcg/build/install/include/scip/tree.h"
         ],
         "extra_link_args": [
-            "-Wl,-rpath,/home/lentz/venv/gcg/build/install/lib",
-            "-Wl,-rpath,/home/lentz/venv/gcg/build/install/lib/shared"
+            "-Wl,-rpath,/home/lentz/venv/gcg/build/install/lib/shared",
+            "-Wl,-rpath,/home/lentz/venv/gcg/build/install/lib"
         ],
         "include_dirs": [
             "/home/lentz/venv/gcg/build/install/include"
@@ -50,8 +50,8 @@
             "gcg"
         ],
         "library_dirs": [
-            "/home/lentz/venv/gcg/build/install/lib",
-            "/home/lentz/venv/gcg/build/install/lib/shared"
+            "/home/lentz/venv/gcg/build/install/lib/shared",
+            "/home/lentz/venv/gcg/build/install/lib"
         ],
         "name": "pygcgopt.gcg",
         "sources": [
@@ -2526,6 +2526,7 @@ static const char __pyx_k_consToBlock[] = "consToBlock";
 static const char __pyx_k_constoblock[] = "constoblock";
 static const char __pyx_k_detprobdata[] = "detprobdata";
 static const char __pyx_k_mastercolor[] = "mastercolor";
+static const char __pyx_k_matrixarray[] = "matrixarray";
 static const char __pyx_k_nMasterVars[] = ", nMasterVars=";
 static const char __pyx_k_only_master[] = "only_master";
 static const char __pyx_k_partialdecs[] = "partialdecs";
@@ -2602,7 +2603,6 @@ static const char __pyx_k_PartialDecomposition[] = "PartialDecomposition";
 static const char __pyx_k_addDetectorChainInfo[] = "addDetectorChainInfo";
 static const char __pyx_k_getNStairlinkingvars[] = "getNStairlinkingvars";
 static const char __pyx_k_matplotlib_is_needed[] = "matplotlib is needed";
-static const char __pyx_k_matrixarrayRhsAndObj[] = "matrixarrayRhsAndObj";
 static const char __pyx_k_maxcallroundoriginal[] = "maxcallroundoriginal";
 static const char __pyx_k_mincallroundoriginal[] = "mincallroundoriginal";
 static const char __pyx_k_enabledpostprocessing[] = "enabledpostprocessing";
@@ -2775,7 +2775,7 @@ static PyObject *__pyx_kp_u_matplotlib_is_needed;
 static PyObject *__pyx_n_s_matplotlib_patches;
 static PyObject *__pyx_n_s_matplotlib_pyplot;
 static PyObject *__pyx_n_s_matrix;
-static PyObject *__pyx_n_s_matrixarrayRhsAndObj;
+static PyObject *__pyx_n_s_matrixarray;
 static PyObject *__pyx_kp_u_maxForWhiteScore;
 static PyObject *__pyx_n_s_maxForWhiteScore_2;
 static PyObject *__pyx_n_s_maxcallround;
@@ -28182,7 +28182,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_316visualize(str
  * 
  *             plt.ioff()             # <<<<<<<<<<<<<<
  * 
- *             X, Y, coeffs = self.matrixarrayRhsAndObj(obj=obj, b=b)
+ *             X, Y, coeffs = self.matrixarray(obj=obj, b=b)
  */
       __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_plt, __pyx_n_s_ioff); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 2093, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
@@ -28206,11 +28206,11 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_316visualize(str
       /* "pygcgopt/gcg.pyx":2095
  *             plt.ioff()
  * 
- *             X, Y, coeffs = self.matrixarrayRhsAndObj(obj=obj, b=b)             # <<<<<<<<<<<<<<
+ *             X, Y, coeffs = self.matrixarray(obj=obj, b=b)             # <<<<<<<<<<<<<<
  *             fig, ax = plt.subplots(figsize=figsize)
  * 
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_matrixarrayRhsAndObj); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 2095, __pyx_L3_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_matrixarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 2095, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 2095, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_5);
@@ -28282,7 +28282,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_316visualize(str
 
       /* "pygcgopt/gcg.pyx":2096
  * 
- *             X, Y, coeffs = self.matrixarrayRhsAndObj(obj=obj, b=b)
+ *             X, Y, coeffs = self.matrixarray(obj=obj, b=b)
  *             fig, ax = plt.subplots(figsize=figsize)             # <<<<<<<<<<<<<<
  * 
  *             #create the boxes
@@ -44604,7 +44604,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_matplotlib_patches, __pyx_k_matplotlib_patches, sizeof(__pyx_k_matplotlib_patches), 0, 0, 1, 1},
   {&__pyx_n_s_matplotlib_pyplot, __pyx_k_matplotlib_pyplot, sizeof(__pyx_k_matplotlib_pyplot), 0, 0, 1, 1},
   {&__pyx_n_s_matrix, __pyx_k_matrix, sizeof(__pyx_k_matrix), 0, 0, 1, 1},
-  {&__pyx_n_s_matrixarrayRhsAndObj, __pyx_k_matrixarrayRhsAndObj, sizeof(__pyx_k_matrixarrayRhsAndObj), 0, 0, 1, 1},
+  {&__pyx_n_s_matrixarray, __pyx_k_matrixarray, sizeof(__pyx_k_matrixarray), 0, 0, 1, 1},
   {&__pyx_kp_u_maxForWhiteScore, __pyx_k_maxForWhiteScore, sizeof(__pyx_k_maxForWhiteScore), 0, 1, 0, 0},
   {&__pyx_n_s_maxForWhiteScore_2, __pyx_k_maxForWhiteScore_2, sizeof(__pyx_k_maxForWhiteScore_2), 0, 0, 1, 1},
   {&__pyx_n_s_maxcallround, __pyx_k_maxcallround, sizeof(__pyx_k_maxcallround), 0, 0, 1, 1},
