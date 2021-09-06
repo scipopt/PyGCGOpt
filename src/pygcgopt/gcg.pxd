@@ -235,7 +235,10 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         void showVisualisation() except +
         void generateVisualisation(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
         void writeVisualisationFile(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
-        map[pair[int, int], double] writeNonzeros() except +
+        map[pair[int, int], double] writeNonzeroMatrix() except +
+        map[pair[int, int], int] writeMIPLIBConsTypeMatrix() except +
+        map[pair[int, int], int] writeSCIPVarTypeMatrix() except +
+        string getVisualizationName() except +
         unsigned int shouldCompletedByConsToMaster() except +
         bool sort() except +
         void setPctConssToBlockVector(vector[double] newvector) except +
