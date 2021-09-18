@@ -1,7 +1,7 @@
 # distutils: language = c++
 
 from pyscipopt.scip import PY_SCIP_CALL
-from pyscipopt.scip cimport Model, Variable, Constraint, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY
+from pyscipopt.scip cimport Model, Variable, Constraint, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData
 
 from cpython cimport Py_INCREF, Py_DECREF
 
@@ -46,6 +46,13 @@ cdef class GCGModel(Model):
         Called automatically during initialization of the model.
         """
         PY_SCIP_CALL(SCIPincludeGcgPlugins(self._scip))
+
+    def addVar(self, *args, **kwargs):
+        pyVar = <Variable>super().addVar(*args, **kwargs)
+
+        SCIPvarSetData(pyVar.scip_var, NULL)
+
+        return pyVar
 
     def presolve(self):
         """!@brief Presolve the problem."""
