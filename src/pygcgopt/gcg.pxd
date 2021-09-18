@@ -231,9 +231,9 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         bool fixConsToMasterByName(char * consname) except +
         bool fixVarToMasterByName(char * varname) except +
         bool fixVarToLinkingByName(char * varname) except +
-        void showVisualisation() except +
-        void generateVisualisation(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
-        void writeVisualisationFile(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
+        void showVisualization() except +
+        void generateVisualization(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
+        void writeVisualizationFile(char * filename, char * outname, GP_OUTPUT_FORMAT outputformat) except +
         unsigned int shouldCompletedByConsToMaster() except +
         bool sort() except +
         void setPctConssToBlockVector(vector[double] newvector) except +

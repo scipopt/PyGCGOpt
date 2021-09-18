@@ -1741,14 +1741,14 @@ cdef class PartialDecomposition:
         return result
 
 
-    def showVisualisation(PartialDecomposition self):
+    def showVisualization(PartialDecomposition self):
         """!@brief generates and opens a gp visualization of the partialdec
         @see visual/pdfreader and
         @note linux only.
         """
-        self.thisptr.showVisualisation()
+        self.thisptr.showVisualization()
 
-    # def generateVisualisation(PartialDecomposition self, filename, outname, GP_OUTPUT_FORMAT outputformat):
+    # def generateVisualization(PartialDecomposition self, filename, outname, GP_OUTPUT_FORMAT outputformat):
     #     """@brief generates a visualization of the partialdec using gnuplot
     #     @param filename Path where to store the gp file
     #     @param outname Path at which gnuplot will output its result
@@ -1760,7 +1760,7 @@ cdef class PartialDecomposition:
     #     # TODO implement function
     #     raise NotImplementedError()
 
-    # def writeVisualisationFile(PartialDecomposition self, filename, outname, GP_OUTPUT_FORMAT outputformat):
+    # def writeVisualizationFile(PartialDecomposition self, filename, outname, GP_OUTPUT_FORMAT outputformat):
     #     """@brief writes a gp visualization of the partialdec to a file
     #     @param filename Path where to store the gp file
     #     @param outname Path at which gnuplot will output its result
@@ -2080,7 +2080,7 @@ cdef class PartialDecomposition:
                 elif format == "png":
                     c_output_format = GP_OUTPUT_FORMAT_PNG
 
-                self.thisptr.generateVisualisation(c_gp_filename, c_outfile, c_output_format)
+                self.thisptr.generateVisualization(c_gp_filename, c_outfile, c_output_format)
 
                 if format == "svg":
                     data = outfile.read_text()
