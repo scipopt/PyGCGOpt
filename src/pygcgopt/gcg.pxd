@@ -1,4 +1,4 @@
-from pyscipopt.scip cimport SCIP, SCIP_RETCODE, SCIP_RESULT, SCIP_Bool, SCIP_Real, FILE, SCIP_CONS, SCIP_VAR, SCIP_PARAMSETTING
+from pyscipopt.scip cimport SCIP, SCIP_RETCODE, SCIP_RESULT, SCIP_Bool, SCIP_Real, FILE, SCIP_CONS, SCIP_VAR, SCIP_PARAMSETTING, SCIP_SOL
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
@@ -56,6 +56,55 @@ cdef extern from "gcg/pub_gcgsepa.h":
 
 cdef extern from "gcg/gcgplugins.h":
     SCIP_RETCODE SCIPincludeGcgPlugins(SCIP* scip)
+
+cdef extern from "gcg/pricer_gcg.h":
+    ctypedef struct GCG_SOLVER:
+        pass
+
+    ctypedef struct GCG_SOLVERDATA:
+        pass
+
+    ctypedef enum GCG_PRICINGSTATUS:
+        GCG_PRICINGSTATUS_UNKNOWN        = 0
+        GCG_PRICINGSTATUS_NOTAPPLICABLE  = 1
+        GCG_PRICINGSTATUS_SOLVERLIMIT    = 2
+        GCG_PRICINGSTATUS_OPTIMAL        = 3
+        GCG_PRICINGSTATUS_INFEASIBLE     = 4
+        GCG_PRICINGSTATUS_UNBOUNDED      = 5
+
+    SCIP_RETCODE GCGpricerIncludeSolver(
+        SCIP* scip,
+        const char* name,
+        const char* desc,
+        int priority,
+        SCIP_Bool heurenabled,
+        SCIP_Bool exactenabled,
+        SCIP_RETCODE (*solverupdate) (SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged),
+        SCIP_RETCODE (*solversolve) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status),
+        SCIP_RETCODE (*solveheur) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status),
+        SCIP_RETCODE (*solverfree) (SCIP* scip, GCG_SOLVER* solver),
+        SCIP_RETCODE (*solverinit) (SCIP* scip, GCG_SOLVER* solver),
+        SCIP_RETCODE (*solverexit) (SCIP* scip, GCG_SOLVER* solver),
+        SCIP_RETCODE (*solverinitsol) (SCIP* scip, GCG_SOLVER* solver),
+        SCIP_RETCODE (*solverexitsol) (SCIP* scip, GCG_SOLVER* solver),
+        GCG_SOLVERDATA*       solverdata
+    )
+    GCG_SOLVER** GCGpricerGetSolvers(SCIP* scip)
+    int GCGpricerGetNSolvers(SCIP* scip)
+    SCIP_RETCODE GCGpricerAddCol(SCIP* scip, GCG_COL* col)
+    const char* GCGsolverGetName(GCG_SOLVER* solver)
+
+
+cdef extern from "gcg/pub_solver.h":
+    GCG_SOLVERDATA* GCGsolverGetData(GCG_SOLVER* solver)
+
+
+cdef extern from "gcg/pub_gcgcol.h":
+    SCIP_RETCODE GCGcreateGcgCol(SCIP* scip, GCG_COL** gcgcol, int prob, SCIP_VAR** vars, SCIP_Real* vals, int nvars, SCIP_Bool isray, SCIP_Real redcost)
+    SCIP_RETCODE GCGcreateGcgColFromSol(SCIP* scip, GCG_COL** gcgcol, int prob, SCIP_SOL* sol, SCIP_Bool isray, SCIP_Real redcost)
+
+    ctypedef struct GCG_COL:
+        pass
 
 
 cdef extern from "gcg/cons_decomp.h":
@@ -375,3 +424,10 @@ cdef extern from "scip/scip.h":
     SCIP_RETCODE SCIPstartClock(SCIP* scip, SCIP_CLOCK* clck)
     SCIP_RETCODE SCIPstopClock(SCIP* scip, SCIP_CLOCK* clck)
     SCIP_Real SCIPgetClockTime(SCIP* scip, SCIP_CLOCK* clck)
+
+
+cdef class GCGColumn:
+    cdef GCG_COL* gcg_col
+
+    @staticmethod
+    cdef create(GCG_COL* gcgcol)
