@@ -1,7 +1,7 @@
 # distutils: language = c++
 
 from pyscipopt.scip import PY_SCIP_CALL
-from pyscipopt.scip cimport Model, Variable, Constraint, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData
+from pyscipopt.scip cimport Model, Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData, SCIPgetBestSol
 
 from cpython cimport Py_INCREF, Py_DECREF
 
@@ -21,6 +21,7 @@ from copy import copy
 from collections.abc import Iterable
 
 include "detector.pxi"
+include "pricing_solver.pxi"
 
 
 cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
@@ -35,6 +36,15 @@ cdef double stop_and_free_clock(SCIP* scip, SCIP_CLOCK* clock):
     cdef double detection_time = SCIPgetClockTime(scip, clock)
     PY_SCIP_CALL(SCIPfreeClock(scip, &clock) )
     return detection_time
+
+
+cdef class PY_GCG_PRICINGSTATUS:
+    UNKNOWN = GCG_PRICINGSTATUS_UNKNOWN
+    NOTAPPLICABLE = GCG_PRICINGSTATUS_NOTAPPLICABLE
+    SOLVERLIMIT = GCG_PRICINGSTATUS_SOLVERLIMIT
+    OPTIMAL = GCG_PRICINGSTATUS_OPTIMAL
+    INFEASIBLE = GCG_PRICINGSTATUS_INFEASIBLE
+    UNBOUNDED = GCG_PRICINGSTATUS_UNBOUNDED
 
 
 cdef class GCGModel(Model):
@@ -140,6 +150,61 @@ cdef class GCGModel(Model):
         cdef PARTIALDECOMP *decomp = new PARTIALDECOMP(self._scip, not is_presolved)
         return PartialDecomposition.create(decomp)
 
+    def includePricingSolver(self, PricingSolver pricingSolver, solvername, desc, priority=0, heuristicEnabled=False, exactEnabled=False):
+        c_solvername = str_conversion(solvername)
+        c_desc = str_conversion(desc)
+
+        PY_SCIP_CALL( GCGpricerIncludeSolver(
+            (<Model>self.getMasterProb())._scip, c_solvername, c_desc, priority, heuristicEnabled, exactEnabled, PyPricingSolverUpdate,
+            PyPricingSolverSolve, PyPricingSolverSolveHeur, PyPricingSolverFree, PyPricingSolverInit, PyPricingSolverExit,
+            PyPricingSolverInitSol, PyPricingSolverExitSol, <GCG_SOLVERDATA*>pricingSolver) )
+
+        pricingSolver.model = <Model>weakref.proxy(self)
+        pricingSolver.solvername = solvername
+        Py_INCREF(pricingSolver)
+
+    def listPricingSolvers(self):
+        cdef Model mp = <Model>self.getMasterProb()
+        cdef int n_pricing_solvers = GCGpricerGetNSolvers(mp._scip)
+        cdef GCG_SOLVER** pricing_solvers = GCGpricerGetSolvers(mp._scip)
+
+        return [GCGsolverGetName(pricing_solvers[i]).decode('utf-8') for i in range(n_pricing_solvers)]
+
+    def setPricingSolverEnabled(self, pricing_solver_name, is_enabled=True):
+        """!@brief Enables or disables exact and heuristic solving for the specified pricing solver.
+        @param pricing_solver_name The name of the pricing solver.
+        @param is_enabled Decides weather the pricing solver should be enabled or diabled.
+
+        This is a convenience method to access the boolean parameters "pricingsolver/<name>/exactenabled" and
+        "pricingsolver/<name>/heurenabled".
+
+        Use listPricingSolvers() to obtain a list of all pricing solvers.
+        """
+        self.setPricingSolverExactEnabled(pricing_solver_name, is_enabled)
+        self.setPricingSolverHeuristicEnabled(pricing_solver_name, is_enabled)
+
+    def setPricingSolverExactEnabled(self, pricing_solver_name, is_enabled=True):
+        """!@brief Enables or disables exact solving for the specified pricing solver.
+        @param pricing_solver_name The name of the pricing solver.
+        @param is_enabled Decides weather the pricing solver should be enabled or diabled.
+
+        This is a convenience method to access the boolean parameter "pricingsolver/<name>/exactenabled".
+
+        Use listPricingSolvers() to obtain a list of all pricing solvers.
+        """
+        self.setBoolParam("pricingsolver/{}/exactenabled".format(pricing_solver_name), is_enabled)
+
+    def setPricingSolverHeuristicEnabled(self, pricing_solver_name, is_enabled=True):
+        """!@brief Enables or disables heuristic solving for the specified pricing solver.
+        @param pricing_solver_name The name of the pricing solver.
+        @param is_enabled Decides weather the pricing solver should be enabled or diabled.
+
+        This is a convenience method to access the boolean parameter "pricingsolver/<name>/heurenabled".
+
+        Use listPricingSolvers() to obtain a list of all pricing solvers.
+        """
+        self.setBoolParam("pricingsolver/{}/heurenabled".format(pricing_solver_name), is_enabled)
+
     def includeDetector(self, Detector detector, detectorname, decchar, desc, freqcallround=1, maxcallround=INT_MAX, mincallround=0, freqcallroundoriginal=1, maxcallroundoriginal=INT_MAX, mincallroundoriginal=0, priority=0, enabled=True, enabledfinishing=False, enabledpostprocessing=False, skip=False, usefulrecall=False):
         """!@brief includes a detector
         @param detector An object of a subclass of detector#Detector.
@@ -222,7 +287,7 @@ cdef class GCGModel(Model):
         @return An instance of scip#Model that represents the master problem.
         """
         cdef SCIP * master_prob = GCGgetMasterprob(self._scip)
-        return Model.create(master_prob)
+        return GCGMasterModel.create(master_prob)
 
     def setGCGSeparating(self, setting):
         """!@brief Sets parameter settings of all separators
@@ -242,6 +307,80 @@ cdef class GCGModel(Model):
         c_directory = str_conversion(directory)
         c_extension = str_conversion(extension)
         PY_SCIP_CALL( DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved) )
+
+
+cdef class GCGPricingModel(Model):
+    @staticmethod
+    cdef create(SCIP* scip):
+        """Creates a pricing problem model and appropriately assigns the scip and bestsol parameters
+        """
+        if scip == NULL:
+            raise Warning("cannot create Model with SCIP* == NULL")
+        model = GCGPricingModel(createscip=False)
+        model._scip = scip
+        model._bestSol = Solution.create(scip, SCIPgetBestSol(scip))
+        return model
+
+    def createGcgCol(self, probnr, variables, vals, bool isray, redcost):
+        """!@brief create a gcg column
+        @param prob: number of corresponding pricing problem
+        @param variables: (sorted) array of variables of corresponding pricing problem
+        @param vals: array of solution values (belonging to vars)
+        @param isray: is the column a ray?
+        @param redcost: last known reduced cost
+        """
+        cdef GCG_COL * gcg_col
+        nvars = len(variables)
+        cdef SCIP_VAR ** c_vars = <SCIP_VAR**>malloc(nvars * sizeof(SCIP_VAR*))
+        cdef SCIP_Real * c_vals = <SCIP_Real*>malloc(nvars * sizeof(SCIP_Real))
+
+        for i in range(nvars):
+            c_vars[i] = (<Variable>variables[i]).scip_var
+            c_vals[i] = vals[i]
+
+        GCGcreateGcgCol(self._scip, &gcg_col, probnr, c_vars, c_vals, nvars, isray, redcost)
+
+        pyGCGCol = GCGColumn.create(gcg_col)
+
+        free(c_vars)
+        free(c_vals)
+
+        return pyGCGCol
+
+
+cdef class GCGMasterModel(Model):
+    @staticmethod
+    cdef create(SCIP* scip):
+        """Creates a pricing problem model and appropriately assigns the scip and bestsol parameters
+        """
+        if scip == NULL:
+            raise Warning("cannot create Model with SCIP* == NULL")
+        model = GCGMasterModel(createscip=False)
+        model._scip = scip
+        model._bestSol = Solution.create(scip, SCIPgetBestSol(scip))
+        return model
+
+    def addCol(self, GCGColumn col):
+        PY_SCIP_CALL( GCGpricerAddCol(self._scip, col.gcg_col) )
+
+
+cdef class GCGColumn:
+    """Base class holding a pointer to corresponding GCG_COL"""
+
+    @staticmethod
+    cdef create(GCG_COL* gcgcol):
+        if gcgcol == NULL:
+            raise Warning("cannot create Column with GCG_COL* == NULL")
+        col = GCGColumn()
+        col.gcg_col = gcgcol
+        return col
+
+    def __hash__(self):
+        return hash(<size_t>self.gcg_col)
+
+    def __eq__(self, other):
+        return (self.__class__ == other.__class__
+                and self.gcg_col == (<GCGColumn>other).gcg_col)
 
 
 cdef class PartialDecomposition:
