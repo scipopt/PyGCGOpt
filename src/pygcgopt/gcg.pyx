@@ -123,6 +123,9 @@ cdef class GCGModel(Model):
         return decomps
 
     def addPreexistingPartialDecomposition(self, PartialDecomposition partialdec):
+        self.addDecomposition(partialdec)
+
+    def addDecomposition(self, PartialDecomposition partialdec):
         """!@brief Adds a user specified decomposition to GCG.
 
         The passed PartialDecomposition can be partial or finnished. A partial decomposition will be completed by GCG using
@@ -134,6 +137,9 @@ cdef class GCGModel(Model):
         GCGconshdlrDecompAddPreexisitingPartialDec(self._scip, partialdec.thisptr)
 
     def createPartialDecomposition(self):
+        return self.createDecomposition()
+
+    def createDecomposition(self):
         """!@brief Creates a new empty PartialDecomposition.
 
         The created PartialDecomposition object can be used to fix constraints and variables. Afterwards, it can be
