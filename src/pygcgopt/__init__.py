@@ -1,4 +1,4 @@
-__version__ = '0.1.0.dev0'
+__version__ = '0.1.0'
 
 # required for Python 3.8 on Windows
 import os
