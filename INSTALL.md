@@ -8,7 +8,8 @@ The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and S
 
 |SCIP| PySCIPOpt | GCG | PyGCGOpt
 |----|----|----|----|
-7.0 | 3.x | 3.1.x | 0.1.x |
+8.0 | 3.4 | 3.5.x | 0.1 |
+7.0 | 3.x | - | - |
 6.0 | 2.x | - | - |
 5.0 | 1.4, 1.3 | - | - |
 4.0 | 1.2, 1.1 | - | - |
@@ -42,21 +43,6 @@ contains the corresponding header files:
 If you are not using the installer packages, you need to [install GCG using CMake](https://gcg.or.rwth-aachen.de/dev/doc-3.1.0/install-manually.html).
 The Makefile system is not compatible with PyGCGOpt and PySCIPOpt!
 
-On Windows it is highly recommended to use the [Anaconda Python
-Platform](https://www.anaconda.com/).
-
-Installation from PyPI
-======================
-
-    python -m pip install pygcgopt
-
-On Windows you may need to ensure that the `scip` and `gcg` libraries can be found
-at runtime by adjusting your `PATH` environment variable:
-
--   on Windows: `set PATH=%PATH%;%SCIPOPTDIR%\bin`
-
-On Linux and OS X this is encoded in the generated PyGCGOpt library and
-therefore not necessary.
 
 Building everything from source
 ===============================
@@ -76,13 +62,18 @@ Furthermore, you need to have the Python
 development files installed on your system (error message "Python.h not
 found"):
 
-    sudo apt-get install python-dev   # for Python 2, on Linux
     sudo apt-get install python3-dev  # for Python 3, on Linux
+
+If you want to build GCG from source, from the GCG root folder to the following:
+
+    mkdir build && cd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release -DSHARED=on -DCMAKE_INSTALL_PREFIX=./install -DZIMPL=OFF -DIPOPT=OFF -DPAPILO=OFF
+    make && make install
 
 After setting up `SCIPOPTDIR` as specified above install PyGCGOpt
 
     export SCIPOPTDIR=/path/to/scip/install/dir
-    python -m pip install [-e] .
+    python -m pip install .
 
 For recompiling the source in the current directory `.` use
 
