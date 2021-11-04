@@ -129,6 +129,7 @@ cdef class GCGModel(Model):
         """!@brief Adds a user specified decomposition to GCG based on constraints.
         @param master_conss An iterable of Constraint objects. Can be the empty list.
         @param block_conss Any number of lists. The Constraints from each list will be turned into their own block. (optional)
+        @return The created PartialDecomposition object
 
         Creates a PartialDecomposition object using createDecomposition(). Fixes the master constraints with
         fixMasterConss() and the block constraints with fixBlockConss(). The decomposition is added with addDecomposition().
@@ -138,6 +139,7 @@ cdef class GCGModel(Model):
         for idx, conss in enumerate(block_conss):
             pd.fixConssToBlock(conss, idx)
         self.addDecomposition(pd)
+        return pd
 
     def addPreexistingPartialDecomposition(self, PartialDecomposition partialdec):
         self.addDecomposition(partialdec)
