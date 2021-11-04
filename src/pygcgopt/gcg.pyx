@@ -137,7 +137,10 @@ cdef class GCGModel(Model):
         cdef PartialDecomposition pd = self.createDecomposition()
         pd.fixConssToMaster(master_conss)
         for idx, conss in enumerate(block_conss):
-            pd.fixConssToBlock(conss, idx)
+            if not isinstance(conss, Iterable):
+                pd.fixConsToBlock(conss, idx)
+            else:
+                pd.fixConssToBlock(conss, idx)
         self.addDecomposition(pd)
         return pd
 
