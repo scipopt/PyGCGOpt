@@ -1,5 +1,6 @@
-from math import floor, log10, lcm
+from math import floor, gcd
 import decimal
+from functools import reduce
 from collections import defaultdict
 
 from pygcgopt import GCGModel, quicksum, PricingSolver, GCG_PRICINGSTATUS
@@ -11,6 +12,15 @@ from test_cpmp import build_model
 import pytest
 
 import os
+
+# Source: https://stackoverflow.com/a/147539/11362041
+def lcm_two(a, b):
+    """Return lowest common multiple."""
+    return a * b // gcd(a, b)
+
+def lcm(*args):
+    """Return lcm of args."""
+    return reduce(lcm_two, args)
 
 
 class PyKnapsackSolver(PricingSolver):
