@@ -11,6 +11,7 @@ Welcome to PyGCGOpt's documentation!
    :caption: Contents:
 
    installation.rst
+   examples/index.rst
 
 
 
