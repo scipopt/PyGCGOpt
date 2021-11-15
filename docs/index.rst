@@ -10,6 +10,8 @@ Welcome to PyGCGOpt's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   installation.rst
+
 
 
 Indices and tables
