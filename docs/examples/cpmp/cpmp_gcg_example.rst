@@ -1,5 +1,5 @@
 Decomposing the Capacitated p-Median Problem
-============================================
+********************************************
 The capacitated p-median problem (CPMP) is a well studied problem. Here is a compact formulation of problem:
 
 .. math::
@@ -14,7 +14,7 @@ To follow along with this tutorial interactively, please download the Jupyter no
 using the following link: :download:`cpmp_complete.zip<cpmp_gcg_example_files/cpmp_complete.zip>`
 
 Reading in the Instance
-_______________________
+=======================
 
 One of the goals of this tutorial is to demonstrate how a problem modeled in Python can be handed to GCG. Please note that it is also possible to read in a problem in a standard format just like in PySCIPOpt using ``Model.readProb()``.
 
@@ -29,7 +29,7 @@ Execute the following block in order to read in the example instance.
   n_locations, n_clusters, distances, demands, capacities = reader_cpmp.read_instance("instances/p550-01.cpmp")
 
 Setting up the Model
-____________________
+====================
 
 Now, we want to build the model based on the above formulation. Please note that this part is *not* specific to GCG but is *almost* identical to how one would build the same model with PySCIPOpt. In fact, the only difference is that we import and instanciate ``GCGModel`` instead of ``Model``. In technical terms, ``GCGModel`` is a subclass of ``Model`` and, therefore, you can use all methods of ``Model`` to build your problem.
 
@@ -78,7 +78,7 @@ In order to recreate the model multiple times during this example, we create a m
       return m, conss_assignment, conss_capacity, cons_pmedian
 
 Use-Case 1: The Automatic Mode
-______________________________
+==============================
 
 With the model built, we can now simply call the ``optimize()`` function and let GCG do its magic.
 
@@ -155,7 +155,7 @@ With the model built, we can now simply call the ``optimize()`` function and let
       Gap                : 0.00 %
 
 Use-Case 2: Exploring different Decompositions
-______________________________________________
+==============================================
 
 Above, we have seen GCG in its fully automatic mode. If we want to dig deeper, we can inspect the different decompositions that GCG detects. For that, we recreate the model and manually execute ``presolve()`` and ``detect()`` for the model. At this stage it is possible to list and visualize the found decompositions.
 
@@ -210,7 +210,7 @@ Above, we have seen GCG in its fully automatic mode. If we want to dig deeper, w
       GCG found 11 finnished decompositions.
 
 Inspecting Decompositions
-^^^^^^^^^^^^^^^^^^^^^^^^^
+_________________________
 
 The call to ``listDecompositions()`` returns a list of ``PartialDecomposition`` objects. We can print a decomposition using the Python ``print()`` function to get a summary or access different fields directly.
 
@@ -232,7 +232,7 @@ For a full overview of available methods, take a look at the online documentatio
   Decomp scores: d.classicScore=-1.0000, d.borderAreaScore=-1.0000, d.maxWhiteScore=0.4851, d.maxForWhiteScore=0.4851
 
 Visualizing Decompositions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+__________________________
 
 In addition, GCG can create graphical visualizations of decompositions. They can easily be displayed in a Jupyter nodebook like so:
 
@@ -243,7 +243,7 @@ In addition, GCG can create graphical visualizations of decompositions. They can
 ![svg](cpmp_gcg_example_files/cpmp_gcg_example_12_0.svg)
 
 Selecting Decompositions
-^^^^^^^^^^^^^^^^^^^^^^^^
+________________________
 
 After this investigation, we decide that we like this particular decomposition. The following code orders GCG to select our decomposition instead of an automatic one. Then, the optimization process is started.
 
@@ -285,7 +285,7 @@ After this investigation, we decide that we like this particular decomposition. 
     Gap                : 0.00 %
 
 Use-Case 3: Building a custom Decomposition
-___________________________________________
+===========================================
 
 In the previous use-cases we run GCG with automatically detected decompositions. This is useful if we do not know the exact structure of a model but still want to exploit GCG's decomposition approach.
 
@@ -355,6 +355,6 @@ In the following code, we recreate our model and use the different constraint ty
     Gap                : 0.00 %
 
 Summary
-_______
+=======
 
 With that, we have seen the most important features to use GCG as a solver through the Python interface. In a different example, we will take a look at how GCG can be extended using Python code.

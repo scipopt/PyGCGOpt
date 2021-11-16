@@ -12,6 +12,7 @@ Welcome to PyGCGOpt's documentation!
 
    installation.rst
    examples/index.rst
+   api/index.rst
 
 
 
