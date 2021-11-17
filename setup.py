@@ -77,6 +77,9 @@ if not os.path.exists(os.path.join(packagedir, 'gcg.pyx')):
 
 ext = '.pyx' if use_cython else '.cpp'
 
+if platform.system() == 'Darwin':
+    extra_compile_args.append("-std=c++11")
+
 extensions = [Extension('pygcgopt.gcg', [os.path.join(packagedir, 'gcg'+ext)],
                           include_dirs=includedirs,
                           library_dirs=list(set([sciplibdir, gcglibdir])),
