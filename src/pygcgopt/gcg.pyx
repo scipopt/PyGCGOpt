@@ -97,6 +97,7 @@ cdef class GCGModel(Model):
         This will transform, presolve and detect the problem if neccessary.
         Otherwise, GCG will solve the problem directly."""
         PY_SCIP_CALL( GCGsolve(self._scip) )
+        self._bestSol = Solution.create(self._scip, SCIPgetBestSol(self._scip))
 
     def getDualbound(self):
         """!@brief Retrieve the best dual bound.

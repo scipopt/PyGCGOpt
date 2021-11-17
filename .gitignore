@@ -6,8 +6,8 @@ build/
 dist/
 include
 lib
-src/pyscipopt/*.c
-src/pyscipopt/*.cpp
+src/pygcgopt/*.c
+src/pygcgopt/*.cpp
 __pycache__
 .cache
 scripts/
