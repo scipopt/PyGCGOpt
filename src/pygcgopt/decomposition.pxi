@@ -67,7 +67,7 @@ cdef class PartialDecomposition:
         :param conss: An iterable of scip#Constraint objects
         :type conss: An iterable of scip#Constraint objects
         :raises TypeError: occurs if conss is not an Iterable
-        :see: :meth:`fixConsToMaster`
+        :see: * :meth:`fixConsToMaster`
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
@@ -85,7 +85,7 @@ cdef class PartialDecomposition:
         calling this method, one has to ensure that the specified block exists. A more convenient alternative is
         fixConsToBlock().
 
-        :see: :meth:`addBlock`
+        :see: * :meth:`addBlock`
         """
         self.thisptr.fixConsToBlock(cons.scip_cons, block_id)
 
@@ -94,8 +94,8 @@ cdef class PartialDecomposition:
 
         :param conss: An iterable of scip#Constraint objects
         :param block_id: id of block to add.
-        :see: :meth:`fixConsToBlockId`
-        :see: :meth:`fixConssToBlock`
+        :see: * :meth:`fixConsToBlockId`
+              * :meth:`fixConssToBlock`
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
@@ -114,7 +114,7 @@ cdef class PartialDecomposition:
 
         To address the internal blocks directly, use :meth:`fixConsToBlockId`.
 
-        :see: :meth:`fixConssToBlock`
+        :see: * :meth:`fixConssToBlock`
         """
         if block not in self.py_block_id_map:
             self.py_block_id_map.append(block)
@@ -136,7 +136,7 @@ cdef class PartialDecomposition:
         :param block: identifier of block to add. Can be any hashable Python object.
         :return: the internal block_id assigned to the block.
 
-        :see: :meth:`fixConsToBlock`
+        :see: * :meth:`fixConsToBlock`
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
@@ -1545,7 +1545,7 @@ cdef class PartialDecomposition:
     def fixConsToBlockByName(PartialDecomposition self, consname, int blockid):
         """assigns a constraint by name to a block
 
-        :see: :meth:`fixConsToBlock`
+        :see: * :meth:`fixConsToBlock`
         :return: True iff successful.
         """
         c_consname = str_conversion(consname)
@@ -1557,7 +1557,7 @@ cdef class PartialDecomposition:
     def fixVarToBlockByName(PartialDecomposition self, varname, int blockid):
         """assigns a variable by name to a block
 
-        :see: :meth:`fixVarToBlock`
+        :see: * :meth:`fixVarToBlock`
         :return: True iff successful.
         """
         c_varname = str_conversion(varname)
@@ -1569,7 +1569,7 @@ cdef class PartialDecomposition:
     def fixConsToMasterByName(PartialDecomposition self, consname):
         """assgins a constraint by name as master
 
-        :see: :meth:`fixConsToMaster`
+        :see: * :meth:`fixConsToMaster`
         :return: True iff successful.
         """
         c_consname = str_conversion(consname)
@@ -1580,7 +1580,7 @@ cdef class PartialDecomposition:
     def fixVarToMasterByName(PartialDecomposition self, varname):
         """assigns a variable with given name as master
 
-        :see: :meth:`fixVarToMaster`
+        :see: * :meth:`fixVarToMaster`
         :return: True iff successful.
         """
         c_varname = str_conversion(varname)
@@ -1591,7 +1591,7 @@ cdef class PartialDecomposition:
     def fixVarToLinkingByName(PartialDecomposition self, varname):
         """assigns a variable by name to the linking variables
 
-        :see: :meth:`fixVarToLinking`
+        :see: * :meth:`fixVarToLinking`
         :return: True iff successful.
         """
         c_varname = str_conversion(varname)
