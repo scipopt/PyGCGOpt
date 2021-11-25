@@ -1,5 +1,8 @@
-Requirements
+Installation
 ============
+
+Requirements
+------------
 
 PyGCGOpt requires a working installation of the [GCG Solver](https://gcg.or.rwth-aachen.de/). Please, make sure that your GCG installation works!
 
@@ -45,7 +48,7 @@ The Makefile system is not compatible with PyGCGOpt and PySCIPOpt!
 
 
 Building everything from source
-===============================
+-------------------------------
 
 Recommended is to install in a virtual environment (e.g. `python3 -m venv <DIR_PATH>`).
 Please note that a globally installed version of PyGCGOpt on your machine might lead to problems.
@@ -80,7 +83,7 @@ For recompiling the source in the current directory `.` use
     python -m pip install --compile .
 
 Building with debug information
-===============================
+-------------------------------
 
 To use debug information in PyGCGOpt you need to build it like this:
 
@@ -91,7 +94,7 @@ Optimization Suite for this to work
 (`cmake .. -DCMAKE_BUILD_TYPE=Debug`).
 
 Testing new installation
-========================
+------------------------
 
 To test your brand-new installation of PyGCGOpt you need
 [pytest](https://pytest.org/) on your system.
