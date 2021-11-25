@@ -14,6 +14,14 @@ Welcome to PyGCGOpt's documentation!
    examples/index.rst
    api/index.rst
 
+.. toctree::
+   :hidden:
+   :caption: About the project
+
+   CHANGELOG.md
+   GCG Documentation <https://gcg.or.rwth-aachen.de/doc-preview/doc-3.1.0/index.html>
+   GitHub repo <https://github.com/scipopt/PyGCGOpt>
+
 
 
 Indices and tables
