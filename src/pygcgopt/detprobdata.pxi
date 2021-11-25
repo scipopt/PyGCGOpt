@@ -27,7 +27,7 @@ cdef class DetProbData:
     # def __init__(DetProbData self, SCIP * scip, unsigned int _originalProblem):
     #     """@brief constructor
     #     @param scip SCIP data structure
-    #     @param _originalProblem true iff the detprobdata is created for the presolved problem.
+    #     @param _originalProblem True iff the detprobdata is created for the presolved problem.
     #     """
     #     # TODO implement function
     #     raise NotImplementedError()
@@ -161,7 +161,7 @@ cdef class DetProbData:
         """adds a partialdec to current partialdecs (data structure for partialdecs that are goin to processed in the propagation rounds)
 
         :param partialdec: pointer of partialdec to be added
-        :return: TRUE if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
+        :return: True if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
         """
         cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
         cdef bool result = self.thisptr.addPartialdecToOpen(cpp_partialdec)
@@ -172,7 +172,7 @@ cdef class DetProbData:
         """adds a partialdec to finished partialdecs
 
         :param partialdec: pointer of partialdec that is going to be added to the finished partialdecs (data structure to carry finished decompositions)
-        :return: TRUE if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
+        :return: True if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
 
         see addPartialdecToFinishedUnchecked()
         """
@@ -201,21 +201,21 @@ cdef class DetProbData:
 
     def clearAncestorPartialdecs(DetProbData self):
         """clears ancestor partialdec data structure,
-        note does not free the partialdecs themselves.
+        :note: does not free the partialdecs themselves.
         """
         self.thisptr.clearAncestorPartialdecs()
 
     def clearCurrentPartialdecs(DetProbData self):
         """clears current partialdec data structure
 
-        note does not free the partialdecs themselves.
+        :note: does not free the partialdecs themselves.
         """
         self.thisptr.clearCurrentPartialdecs()
 
     def clearFinishedPartialdecs(DetProbData self):
         """clears finished partialdec data structure
 
-        note does not free the partialdecs themselves.
+        :note: does not free the partialdecs themselves.
         """
         self.thisptr.clearFinishedPartialdecs()
 
@@ -259,7 +259,7 @@ cdef class DetProbData:
 
         :return: return vector of constraint indices that have a common variable with the given constraint
 
-        note constraint adjacency data structure has to initilized.
+        :note: constraint adjacency data structure has to initilized.
         """
         cdef int cpp_consIndex = consIndex
         cdef vector[int] result = self.thisptr.getConssForCons(cpp_consIndex)
@@ -488,7 +488,7 @@ cdef class DetProbData:
 
         :return: vector of coefficients of in matrix for constraints
 
-        note same order as in @see getVarsForCons().
+        :note: same order as in :meth:`getVarsForCons`.
         """
         cdef int cpp_consIndex = consIndex
         cdef vector[double] result = self.thisptr.getValsForCons(cpp_consIndex)
@@ -545,7 +545,7 @@ cdef class DetProbData:
     def isConssAdjInitialized(DetProbData self):
         """determines whether or not the constraint-constraint adjacency data structure is initilized
 
-        :return: true iff the constraint-constraint adjacency data structure is initilized.
+        :return: True iff the constraint-constraint adjacency data structure is initilized.
         """
         cdef unsigned int result = self.thisptr.isConssAdjInitialized()
         return result
@@ -587,7 +587,7 @@ cdef class DetProbData:
         """check if partialdec is a duplicate of an existing finished partialdec
 
         :param partialdec: partialdec to be checked
-        :return: TRUE iff partialdec is a duplicate of an existing finished partialdec.
+        :return: True iff partialdec is a duplicate of an existing finished partialdec.
         """
         cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
         cdef unsigned int result = self.thisptr.isPartialdecDuplicateofFinished(cpp_partialdec)
@@ -595,9 +595,9 @@ cdef class DetProbData:
 
 
     def isAssignedToOrigProb(DetProbData self):
-        """returns true if the matrix structure corresponds to the presolved problem
+        """returns True if the matrix structure corresponds to the presolved problem
 
-        :return: TRUE if the matrix structure corresponds to the presolved problem.
+        :return: True if the matrix structure corresponds to the presolved problem.
         """
         cdef unsigned int result = self.thisptr.isAssignedToOrigProb()
         return result
@@ -618,7 +618,7 @@ cdef class DetProbData:
         :param comppartialdec: partialdec to be checked
         :param partialdecs: partialdecs to compare with
         :param sort: sort the vars and conss data structures in the partialdecs by their indices
-        :return: TRUE iff partialdec is no duplicate of any given partialdecs.
+        :return: True iff partialdec is no duplicate of any given partialdecs.
         """
         cdef PARTIALDECOMP * cpp_comppartialdec = comppartialdec.thisptr
         # this seems to be possible only when we use C++11 (-std=c++11)

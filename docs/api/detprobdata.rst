@@ -1,4 +1,4 @@
-Detprobdata
+DetProbData
 ***********
 
 .. autoclass:: pygcgopt.gcg.DetProbData
