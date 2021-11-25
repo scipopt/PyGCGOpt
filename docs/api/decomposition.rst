@@ -1,5 +1,5 @@
 Decomposition
 *************
 
-.. automodule:: pygcgopt.gcg.PartialDecomposition
+.. autoclass:: pygcgopt.gcg.PartialDecomposition
     :members:
