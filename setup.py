@@ -89,7 +89,8 @@ extensions = [Extension('pygcgopt.gcg', [os.path.join(packagedir, 'gcg'+ext)],
                           )]
 
 if use_cython:
-    extensions = cythonize(extensions, compiler_directives={'language_level': 3})
+    # Compiler directives needed for documentation, see https://stackoverflow.com/a/10060115/11362041
+    extensions = cythonize(extensions, compiler_directives={'language_level': 3, 'embedsignature': True})
 
 with open('README.md') as f:
     long_description = f.read()
