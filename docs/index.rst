@@ -10,7 +10,7 @@ Welcome to PyGCGOpt's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   installation.rst
+   INSTALL.md
    examples/index.rst
    api/index.rst
 
