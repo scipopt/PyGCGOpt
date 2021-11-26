@@ -64,3 +64,7 @@ html_favicon = '_static/favicon.ico'
 
 # set logo path
 #html_logo = '_static/rwth_operations_research_rgb.png'
+
+myst_enable_extensions = [
+    "amsmath" #latex extensions
+]
