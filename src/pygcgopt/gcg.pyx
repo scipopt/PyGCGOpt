@@ -51,10 +51,10 @@ cdef class PY_GCG_PRICINGSTATUS:
 
 
 cdef class GCGModel(Model):
-    """!Main class for interaction with the GCG solver."""
+    """Main class for interaction with the GCG solver."""
 
     def includeDefaultPlugins(self):
-        """!@brief Includes all default plug-ins of GCG into SCIP
+        """Includes all default plug-ins of GCG into SCIP
         
         Called automatically during initialization of the model.
         """
@@ -68,21 +68,21 @@ cdef class GCGModel(Model):
         return pyVar
 
     def presolve(self):
-        """!@brief Presolve the problem."""
+        """Presolve the problem."""
         PY_SCIP_CALL( GCGpresolve(self._scip) )
 
     def detect(self):
-        """!@brief Detect the problem.
+        """Detect the problem.
         
         Can be executed before or after presolving. If executed before presolving, the structure is detected on the original problem and presolving is skiped when solving the problem later.
 
-        @see presolve()
-        @see optimize()
+        :see: * :meth:`presolve`
+              * :meth:`optimize`
         """
         PY_SCIP_CALL( GCGdetect(self._scip) )
 
     def printStatistics(self):
-        """!@brief Print solving statistics of GCG to stdout."""
+        """Print solving statistics of GCG to stdout."""
         PY_SCIP_CALL( GCGprintStatistics(self._scip, NULL) )
 
     def printVersion(self):
@@ -92,28 +92,26 @@ cdef class GCGModel(Model):
         super().printVersion()
 
     def optimize(self):
-        """!@brief Optimize the problem.
+        """Optimize the problem.
         
         This will transform, presolve and detect the problem if neccessary.
         Otherwise, GCG will solve the problem directly."""
         PY_SCIP_CALL( GCGsolve(self._scip) )
 
     def getDualbound(self):
-        """!@brief Retrieve the best dual bound.
+        """Retrieve the best dual bound.
         
         This retrieves the same dual bound that GCG reports in the console log. The dual bound is based on the
         objective value of the optimized linear programming relaxation at the current node.
 
-        @note The dual bound at the root node is *not* always equal to the solution of the restricted master problem LP
-        relaxation. This can be due to master cuts or abortion of the pricing loop *before* the restricted master
-        problem is optimal.
+        :note: The dual bound at the root node is *not* always equal to the solution of the restricted master problem LP relaxation. This can be due to master cuts or abortion of the pricing loop *before* the restricted master problem is optimal.
 
-        @return The best dual bound of the current node.
+        :return: The best dual bound of the current node.
         """
         return GCGgetDualbound(self._scip)
 
     def listDecompositions(self) -> List[PartialDecomposition]:
-        """!@brief Lists all finnished decompositions found during the detection loop or provided by the user."""
+        """Lists all finnished decompositions found during the detection loop or provided by the user."""
         cdef int npartialdecs = GCGconshdlrDecompGetNPartialdecs(self._scip)
         cdef int* decids = <int*>malloc(npartialdecs * sizeof(int))
 
@@ -126,10 +124,11 @@ cdef class GCGModel(Model):
         return decomps
 
     def addDecompositionFromConss(self, master_conss, *block_conss):
-        """!@brief Adds a user specified decomposition to GCG based on constraints.
-        @param master_conss An iterable of Constraint objects. Can be the empty list.
-        @param block_conss Any number of lists. The Constraints from each list will be turned into their own block. (optional)
-        @return The created PartialDecomposition object
+        """Adds a user specified decomposition to GCG based on constraints.
+
+        :param master_conss: An iterable of Constraint objects. Can be the empty list.
+        :param block_conss: Any number of lists. The Constraints from each list will be turned into their own block. (optional)
+        :return: The created PartialDecomposition object
 
         Creates a PartialDecomposition object using createDecomposition(). Fixes the master constraints with
         fixMasterConss() and the block constraints with fixBlockConss(). The decomposition is added with addDecomposition().
@@ -148,7 +147,7 @@ cdef class GCGModel(Model):
         self.addDecomposition(partialdec)
 
     def addDecomposition(self, PartialDecomposition partialdec):
-        """!@brief Adds a user specified decomposition to GCG.
+        """Adds a user specified decomposition to GCG.
 
         The passed PartialDecomposition can be partial or finnished. A partial decomposition will be completed by GCG using
         its detector loop. If a finnished decomposition is passed, GCG will skip the detection loop and use the
@@ -162,17 +161,17 @@ cdef class GCGModel(Model):
         return self.createDecomposition()
 
     def createDecomposition(self):
-        """!@brief Creates a new empty PartialDecomposition.
+        """Creates a new empty PartialDecomposition.
 
         The created PartialDecomposition object can be used to fix constraints and variables. Afterwards, it can be
         passed to the model through addPreexistingPartialDecomposition().
 
-        @see PartialDecomposition#fixConsToMaster()
-        @see PartialDecomposition#fixConssToMaster()
-        @see PartialDecomposition#fixConsToBlock()
-        @see PartialDecomposition#fixConssToBlock()
-        @see PartialDecomposition#fixConsToBlockId()
-        @see PartialDecomposition#fixConssToBlockId()
+        :see: * :meth:`PartialDecomposition.fixConsToMaster`
+              * :meth:`PartialDecomposition.fixConssToMaster`
+              * :meth:`PartialDecomposition.fixConsToBlock`
+              * :meth:`PartialDecomposition.fixConssToBlock`
+              * :meth:`PartialDecomposition.fixConsToBlockId`
+              * :meth:`PartialDecomposition.fixConssToBlockId`
         """
         cdef bool is_presolved = self.getStage() >= SCIP_STAGE_PRESOLVED
         cdef PARTIALDECOMP *decomp = new PARTIALDECOMP(self._scip, not is_presolved)
@@ -199,9 +198,10 @@ cdef class GCGModel(Model):
         return [GCGsolverGetName(pricing_solvers[i]).decode('utf-8') for i in range(n_pricing_solvers)]
 
     def setPricingSolverEnabled(self, pricing_solver_name, is_enabled=True):
-        """!@brief Enables or disables exact and heuristic solving for the specified pricing solver.
-        @param pricing_solver_name The name of the pricing solver.
-        @param is_enabled Decides weather the pricing solver should be enabled or diabled.
+        """Enables or disables exact and heuristic solving for the specified pricing solver.
+
+        :param pricing_solver_name: The name of the pricing solver.
+        :param is_enabled: Decides weather the pricing solver should be enabled or diabled.
 
         This is a convenience method to access the boolean parameters "pricingsolver/<name>/exactenabled" and
         "pricingsolver/<name>/heurenabled".
@@ -212,9 +212,10 @@ cdef class GCGModel(Model):
         self.setPricingSolverHeuristicEnabled(pricing_solver_name, is_enabled)
 
     def setPricingSolverExactEnabled(self, pricing_solver_name, is_enabled=True):
-        """!@brief Enables or disables exact solving for the specified pricing solver.
-        @param pricing_solver_name The name of the pricing solver.
-        @param is_enabled Decides weather the pricing solver should be enabled or diabled.
+        """Enables or disables exact solving for the specified pricing solver.
+
+        :param pricing_solver_name: The name of the pricing solver.
+        :param is_enabled: Decides weather the pricing solver should be enabled or diabled.
 
         This is a convenience method to access the boolean parameter "pricingsolver/<name>/exactenabled".
 
@@ -223,9 +224,10 @@ cdef class GCGModel(Model):
         self.setBoolParam("pricingsolver/{}/exactenabled".format(pricing_solver_name), is_enabled)
 
     def setPricingSolverHeuristicEnabled(self, pricing_solver_name, is_enabled=True):
-        """!@brief Enables or disables heuristic solving for the specified pricing solver.
-        @param pricing_solver_name The name of the pricing solver.
-        @param is_enabled Decides weather the pricing solver should be enabled or diabled.
+        """Enables or disables heuristic solving for the specified pricing solver.
+
+        :param pricing_solver_name: The name of the pricing solver.
+        :param is_enabled: Decides weather the pricing solver should be enabled or diabled.
 
         This is a convenience method to access the boolean parameter "pricingsolver/<name>/heurenabled".
 
@@ -234,11 +236,12 @@ cdef class GCGModel(Model):
         self.setBoolParam("pricingsolver/{}/heurenabled".format(pricing_solver_name), is_enabled)
 
     def includeDetector(self, Detector detector, detectorname, decchar, desc, freqcallround=1, maxcallround=INT_MAX, mincallround=0, freqcallroundoriginal=1, maxcallroundoriginal=INT_MAX, mincallroundoriginal=0, priority=0, enabled=True, enabledfinishing=False, enabledpostprocessing=False, skip=False, usefulrecall=False):
-        """!@brief includes a detector
-        @param detector An object of a subclass of detector#Detector.
-        @param detectorname name of the detector
+        """includes a detector
 
-        For an explanation for all arguments, see @ref DECincludeDetector().
+        :param detector: An object of a subclass of detector#Detector.
+        :param detectorname: name of the detector
+
+        For an explanation for all arguments, see DECincludeDetector().
         """
         if len(decchar) != 1:
             raise ValueError("Length of value for 'decchar' must be 1")
@@ -258,14 +261,15 @@ cdef class GCGModel(Model):
         Py_INCREF(detector)
 
     def listDetectors(self):
-        """!@brief Lists all detectors that are currently included
-        @return A list of strings of the detector names
+        """Lists all detectors that are currently included
 
-        The detectors can be enabled or disabled using the appropriate methods by passing the name.
+        :return: A list of strings of the detector names
 
-        @see setDetectorEnabled()
-        @see setDetectorFinishingEnabled()
-        @see setDetectorPostprocessingEnabled()
+        :note: The detectors can be enabled or disabled using the appropriate methods by passing the name.
+
+        :see: * :meth:`setDetectorEnabled`
+              * :meth:`setDetectorFinishingEnabled`
+              * :meth:`setDetectorPostprocessingEnabled`
         """
         cdef int n_detectors = GCGconshdlrDecompGetNDetectors(self._scip)
         cdef DEC_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
@@ -273,13 +277,14 @@ cdef class GCGModel(Model):
         return [DECdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
 
     def setDetectorEnabled(self, detector_name, is_enabled=True):
-        """!@brief Enables or disables a detector for detecting partial decompositions.
-        @param detector_name The name of the detector.
-        @param is_enabled Decides weather the detector should be enabled or diabled.
+        """Enables or disables a detector for detecting partial decompositions.
+
+        :param detector_name: The name of the detector.
+        :param is_enabled: Decides weather the detector should be enabled or diabled.
 
         This is a convenience method to access the boolean parameter "detection/detectors/<name>/enabled".
 
-        @note Disabling a detector using this method is not enough to ensure that it will not run. In addition setDetectorFinishingEnabled() and setDetectorPostProcessingEnabled() have to be used.
+        :note: Disabling a detector using this method is not enough to ensure that it will not run. In addition setDetectorFinishingEnabled() and setDetectorPostProcessingEnabled() have to be used.
 
         Use listDetectors() to obtain a list of all detectors.
         """
@@ -287,48 +292,53 @@ cdef class GCGModel(Model):
         self.setBoolParam("detection/detectors/{}/enabled".format(detector_name), is_enabled)
 
     def setDetectorFinishingEnabled(self, detector_name, is_enabled=True):
-        """!@brief Enables or disables a detector for finishing partial decompositions.
-        @param detector_name The name of the detector.
-        @param is_enabled Decides weather the detector should be enabled or diabled.
+        """Enables or disables a detector for finishing partial decompositions.
+
+        :param detector_name: The name of the detector.
+        :param is_enabled: Decides weather the detector should be enabled or diabled.
 
         This is a convenience method to access the boolean parameter "detection/detectors/<name>/finishingenabled".
 
-        @see setDetectorEnabled()
+        :see: * :meth:`setDetectorEnabled`
         """
         # TODO test if detector_name exists
         self.setBoolParam("detection/detectors/{}/finishingenabled".format(detector_name), is_enabled)
 
     def setDetectorPostprocessingEnabled(self, detector_name, is_enabled=True):
-        """!@brief Enables or disables a detector for postprocessing partial decompositions.
-        @param detector_name The name of the detector.
-        @param is_enabled Decides weather the detector should be enabled or diabled.
+        """Enables or disables a detector for postprocessing partial decompositions.
+
+        :param detector_name: The name of the detector.
+        :param is_enabled: Decides weather the detector should be enabled or diabled.
 
         This is a convenience method to access the boolean parameter "detection/detectors/<name>/postprocessingenabled".
 
-        @see setDetectorEnabled()
+        :see: * :meth:`setDetectorEnabled`
         """
         # TODO test if detector_name exists
         self.setBoolParam("detection/detectors/{}/postprocessingenabled".format(detector_name), is_enabled)
 
     def getMasterProb(self):
-        """!@brief Provides access to the GCG master problem.
-        @return An instance of scip#Model that represents the master problem.
+        """Provides access to the GCG master problem.
+
+        :return: An instance of scip#Model that represents the master problem.
         """
         cdef SCIP * master_prob = GCGgetMasterprob(self._scip)
         return GCGMasterModel.create(master_prob)
 
     def setGCGSeparating(self, setting):
-        """!@brief Sets parameter settings of all separators
-        @param setting: the parameter settings (SCIP_PARAMSETTING)
+        """Sets parameter settings of all separators
+
+        :param setting: the parameter settings (SCIP_PARAMSETTING)
         """
         # GCG API is inconsistant with SCIP, SCIPsetSeparating
         PY_SCIP_CALL(GCGsetSeparators(self._scip, setting))
 
     def writeAllDecomps(self, directory="alldecompositions/", extension="dec", bool original=True, bool presolved=True, createDirectory=True):
-        """!@brief Writes all decompositions to disk
-        @param directory: A path to a folder where to store the decomposition files
-        @param extension: Extension without a dot. Decides the output format. Use "dec" to output decomposition files
-        @param createDirectory: Automatically create the directory specified in @p directory if it does not exist
+        """Writes all decompositions to disk
+
+        :param directory: A path to a folder where to store the decomposition files
+        :param extension: Extension without a dot. Decides the output format. Use "dec" to output decomposition files
+        :param createDirectory: Automatically create the directory specified in ``directory`` if it does not exist
         """
         if createDirectory:
             Path(directory).mkdir(exist_ok=True, parents=True)
@@ -350,12 +360,13 @@ cdef class GCGPricingModel(Model):
         return model
 
     def createGcgCol(self, probnr, variables, vals, bool isray, redcost):
-        """!@brief create a gcg column
-        @param prob: number of corresponding pricing problem
-        @param variables: (sorted) array of variables of corresponding pricing problem
-        @param vals: array of solution values (belonging to vars)
-        @param isray: is the column a ray?
-        @param redcost: last known reduced cost
+        """create a gcg column
+
+        :param prob: number of corresponding pricing problem
+        :param variables: (sorted) array of variables of corresponding pricing problem
+        :param vals: array of solution values (belonging to vars)
+        :param isray: is the column a ray?
+        :param redcost: last known reduced cost
         """
         cdef GCG_COL * gcg_col
         nvars = len(variables)
