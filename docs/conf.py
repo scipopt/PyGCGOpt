@@ -28,10 +28,11 @@ author = 'Steffan Schlein'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx_copybutton',
+    'sphinx_copybutton', # for copybuttons
     'sphinx.ext.mathjax',
     'sphinx.ext.autodoc',
-    'myst_parser'
+    'myst_parser', # for markdown in docs
+    'nbsphinx' # for jupyter notebooks
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -62,4 +63,4 @@ html_title = 'PyGCGOpt'
 html_favicon = '_static/favicon.ico'
 
 # set logo path
-html_logo = '_static/rwth_operations_research_rgb.png'
+#html_logo = '_static/rwth_operations_research_rgb.png'
