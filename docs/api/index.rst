@@ -6,3 +6,5 @@ API Reference
     gcgmodel.rst
     decomposition.rst
     detprobdata.rst
+    detector.rst
+    pricingsolver.rst
