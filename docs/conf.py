@@ -14,6 +14,9 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
+# import version of PyGCGOpt
+from pygcgopt import __version__
+
 
 # -- Project information -----------------------------------------------------
 
@@ -32,8 +35,12 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.autodoc',
     'myst_parser', # for markdown in docs
-    'nbsphinx' # for jupyter notebooks
+    'nbsphinx', # for jupyter notebooks
+    'sphinx.ext.githubpages', # for githubpages
 ]
+
+# allow also markdown files and jupyter notebooks
+source_suffix = ['.rst', '.md']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -57,7 +64,7 @@ html_theme = 'furo'
 html_static_path = ['_static']
 
 # Changing sidebar title
-html_title = 'PyGCGOpt'
+html_title = 'PyGCGOpt' + ' ' + __version__
 
 # set favicon path
 html_favicon = '_static/favicon.ico'

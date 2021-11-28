@@ -3,13 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to PyGCGOpt's documentation!
-====================================
+.. include:: README.md
+   :parser: markdown
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
    :caption: Contents:
 
+   PyGCGOpt <README.md>
    INSTALL.md
    examples/index.rst
    api/index.rst
@@ -21,12 +23,5 @@ Welcome to PyGCGOpt's documentation!
    CHANGELOG.md
    GCG Documentation <https://gcg.or.rwth-aachen.de/doc-preview/doc-3.1.0/index.html>
    GitHub repo <https://github.com/scipopt/PyGCGOpt>
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   SCIP Documentation <https://www.scipopt.org/doc-8.0.0/html/>
+   PySCIPOpt repo <https://github.com/scipopt/PySCIPOpt>
