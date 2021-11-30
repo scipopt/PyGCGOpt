@@ -20,4 +20,7 @@ help:
 	@for filename in ../*.md; do\
 		ln -s -f $${filename} $(SOURCEDIR); \
 	done
+	@for dirname in ../examples/*; do\
+		ln -s -f ../$${dirname} $(SOURCEDIR)/examples; \
+	done
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

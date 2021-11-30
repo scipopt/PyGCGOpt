@@ -12,6 +12,8 @@ __pycache__
 .cache
 scripts/
 docs/*.md
+docs/examples/*
+!docs/examples/index.rst
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
