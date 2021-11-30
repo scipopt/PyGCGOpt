@@ -11,7 +11,7 @@ The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and S
 
 |SCIP| PySCIPOpt | GCG | PyGCGOpt
 |----|----|----|----|
-8.0 | 3.4 | 3.5.x | 0.1 |
+8.0 | 3.4 | 3.5.x | 0.1.0 |
 7.0 | 3.x | - | - |
 6.0 | 2.x | - | - |
 5.0 | 1.4, 1.3 | - | - |
@@ -35,7 +35,7 @@ contains the corresponding header files:
     SCIPOPTDIR
       > lib
         > libscip.so ...
-        > libscip.so ...
+        > libgcg.so ...
       > include
         > scip
         > gcg
@@ -43,7 +43,7 @@ contains the corresponding header files:
         > nlpi
         > ...
 
-If you are not using the installer packages, you need to [install GCG using CMake](https://gcg.or.rwth-aachen.de/dev/doc-3.1.0/install-manually.html).
+If you are not using the installer packages, you need to [install GCG using CMake](https://gcg.or.rwth-aachen.de/doc-preview/doc-3.5.0/install-manually.html).
 The Makefile system is not compatible with PyGCGOpt and PySCIPOpt!
 
 
