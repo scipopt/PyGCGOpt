@@ -11,6 +11,7 @@ src/pyscipopt/*.cpp
 __pycache__
 .cache
 scripts/
+docs/*.md
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
