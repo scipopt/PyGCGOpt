@@ -1,5 +1,8 @@
-Requirements
+Installation
 ============
+
+Requirements
+------------
 
 PyGCGOpt requires a working installation of the [GCG Solver](https://gcg.or.rwth-aachen.de/). Please, make sure that your GCG installation works!
 
@@ -8,7 +11,7 @@ The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and S
 
 |SCIP| PySCIPOpt | GCG | PyGCGOpt
 |----|----|----|----|
-8.0 | 3.4 | 3.5.x | 0.1 |
+8.0 | 3.4 | 3.5.x | 0.1.0 |
 7.0 | 3.x | - | - |
 6.0 | 2.x | - | - |
 5.0 | 1.4, 1.3 | - | - |
@@ -32,7 +35,7 @@ contains the corresponding header files:
     SCIPOPTDIR
       > lib
         > libscip.so ...
-        > libscip.so ...
+        > libgcg.so ...
       > include
         > scip
         > gcg
@@ -40,12 +43,12 @@ contains the corresponding header files:
         > nlpi
         > ...
 
-If you are not using the installer packages, you need to [install GCG using CMake](https://gcg.or.rwth-aachen.de/dev/doc-3.1.0/install-manually.html).
+If you are not using the installer packages, you need to [install GCG using CMake](https://gcg.or.rwth-aachen.de/doc-preview/doc-3.5.0/install-manually.html).
 The Makefile system is not compatible with PyGCGOpt and PySCIPOpt!
 
 
 Building everything from source
-===============================
+-------------------------------
 
 Recommended is to install in a virtual environment (e.g. `python3 -m venv <DIR_PATH>`).
 Please note that a globally installed version of PyGCGOpt on your machine might lead to problems.
@@ -80,7 +83,7 @@ For recompiling the source in the current directory `.` use
     python -m pip install --compile .
 
 Building with debug information
-===============================
+-------------------------------
 
 To use debug information in PyGCGOpt you need to build it like this:
 
@@ -91,7 +94,7 @@ Optimization Suite for this to work
 (`cmake .. -DCMAKE_BUILD_TYPE=Debug`).
 
 Testing new installation
-========================
+------------------------
 
 To test your brand-new installation of PyGCGOpt you need
 [pytest](https://pytest.org/) on your system.
