@@ -11,7 +11,9 @@ src/pyscipopt/*.cpp
 __pycache__
 .cache
 scripts/
-docs/*.md
+docs/README.md
+docs/INSTALL.md
+docs/CHANGELOG.md
 docs/examples/*
 !docs/examples/index.rst
 
