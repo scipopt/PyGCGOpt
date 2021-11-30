@@ -21,8 +21,8 @@ from pygcgopt import __version__
 # -- Project information -----------------------------------------------------
 
 project = 'PyGCGOpt'
-copyright = '2021, Steffan Schlein'
-author = 'Steffan Schlein'
+copyright = '2021, Operations Research, RWTH Aachen University'
+author = 'Operations Research, RWTH Aachen University'
 
 
 # -- General configuration ---------------------------------------------------
