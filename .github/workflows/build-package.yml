@@ -1,0 +1,57 @@
+name: Build Package
+
+env:
+  version: 8.0.0
+
+on: [push]
+
+jobs:
+  Build-Package-Linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Cache SCIPOptSuite Package
+        uses: actions/cache@v2
+        with:
+          path: ./SCIPOptSuite-${{ env.version }}-Linux-ubuntu.deb
+          key: ${{ runner.os }}-SCIPOptSuite-${{ env.version }}
+
+      - name: Install dependencies (SCIPOptSuite)
+        run: |
+          wget --timestamping --quiet https://scipopt.org/download/release/SCIPOptSuite-${{ env.version }}-Linux-ubuntu.deb
+          sudo apt-get install -y ./SCIPOptSuite-${{ env.version }}-Linux-ubuntu.deb
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            docs/requirements.txt
+
+      - name: Prepare Python Environment
+        run: |
+          pip install -r requirements.txt
+          pip install -r docs/requirements.txt
+          pip install git+https://github.com/scipopt/PySCIPOpt.git@scip-8
+      
+      - name: Build PyGCGOpt
+        run: |
+          python -m build --sdist --no-isolation --outdir dist/
+
+      - name: Install PyGCGOpt
+        run: |
+          pip install dist/*.tar.gz
+      
+      - name: Build Documentation
+        run: make html
+        working-directory: ./docs
+      
+      - name: Archive Documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: sphinx-documentation
+          path: docs/_build/html
