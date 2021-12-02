@@ -3,14 +3,14 @@ import os, platform, sys, re
 
 # look for environment variable that specifies path to SCIP and GCG
 scipoptdir = os.environ.get('SCIPOPTDIR', '').strip('"')
-gcgoptdir = os.environ.get('GCGOPTDIR', '').strip('"')
+gcgoptdir = os.environ.get('GCGOPTDIR', scipoptdir).strip('"')
 
 extra_compile_args = []
 extra_link_args = []
 
 includedirs = []
 
-for optdir in [scipoptdir, gcgoptdir]:
+for optdir in set([scipoptdir, gcgoptdir]):
     # determine include directory
     if os.path.exists(os.path.join(optdir, 'src')):
         # SCIP seems to be installed in place
@@ -18,16 +18,20 @@ for optdir in [scipoptdir, gcgoptdir]:
     else:
         # assume that SCIP is installed on the system
         includedirs.append(os.path.abspath(os.path.join(optdir, 'include')))
-    # Current release of GCG has broken folder structure when installed. All GCG sources *should* be in a `gcg` subfolder in the sources. Until this is fixed, we need to include the `gcg` folder so that imports work.
-    if os.path.exists(os.path.join(optdir, 'include')) and not os.path.exists(os.path.join(optdir, 'include', 'graph')):
-        includedirs.append(os.path.abspath(os.path.join(optdir, 'include', 'gcg')))
+
+# Current release of GCG has broken folder structure when installed. All GCG sources *should* be in a `gcg` subfolder in the sources. Until this is fixed, we need to include the `gcg` folder so that imports work.
+if os.path.exists(os.path.join(gcgoptdir, 'include')) and not os.path.exists(os.path.join(gcgoptdir, 'include', 'graph')):
+    includedirs.append(os.path.abspath(os.path.join(gcgoptdir, 'include', 'gcg')))
+if not gcgoptdir:
+    if platform.system() == 'Linux':
+        includedirs.append("/usr/include/gcg")
 
 includedirs = list(set(includedirs))
 
 print('Using include path <%s>.' % ", ".join(includedirs))
 
 
-# determine library
+# determine scip library
 if os.path.exists(os.path.join(scipoptdir, 'lib/shared/libscipsolver.so')):
     # SCIP seems to be created with make
     sciplibdir = os.path.abspath(os.path.join(scipoptdir, 'lib/shared'))
@@ -40,7 +44,8 @@ else:
     if platform.system() in ['Windows']:
         sciplibname = 'libscip'
 
-gcglibdir = os.path.abspath(os.path.join(gcgoptdir, "lib/shared"))
+# setup gcg library
+gcglibdir = os.path.abspath(os.path.join(gcgoptdir, "lib"))
 gcglibname = "gcg"
 
 print('Using SCIP library <%s> at <%s>.' % (sciplibname, sciplibdir))
