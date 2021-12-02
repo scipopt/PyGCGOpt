@@ -37,7 +37,25 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r docs/requirements.txt
-          pip install git+https://github.com/scipopt/PySCIPOpt.git@scip-8
+
+      - name: Checkout PySCIPOpt
+        uses: actions/checkout@v2
+        with:
+          repository: scipopt/PySCIPOpt.git
+          ref: scip-8
+          path: PySCIPOpt
+      - run: echo "PySCIPOPT_HASH=$(cd PySCIPOpt && git rev-parse HEAD)" >> $GITHUB_ENV
+      
+      - name: Cache PySCIPOpt Build
+        uses: actions/cache@v2
+        with:
+          path: ~/PySCIPOpt_dist
+          key: ${{ runner.os }}-PySCIPOpt-${{ env.PySCIPOpt_HASH }}
+      
+      - name: Build & Install PySCIPOpt
+        run: |
+          [ ! -f ~/PySCIPOpt_dist/*.whl ] && python -m build --no-isolation --wheel --outdir dist/ PySCIPOpt/
+          pip install ~/PySCIPOpt_dist/*.whl
       
       - name: Build PyGCGOpt
         run: |
