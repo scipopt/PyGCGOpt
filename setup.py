@@ -18,9 +18,13 @@ for optdir in set([scipoptdir, gcgoptdir]):
     else:
         # assume that SCIP is installed on the system
         includedirs.append(os.path.abspath(os.path.join(optdir, 'include')))
-    # Current release of GCG has broken folder structure when installed. All GCG sources *should* be in a `gcg` subfolder in the sources. Until this is fixed, we need to include the `gcg` folder so that imports work.
-    if os.path.exists(os.path.join(optdir, 'include')) and not os.path.exists(os.path.join(optdir, 'include', 'graph')):
-        includedirs.append(os.path.abspath(os.path.join(optdir, 'include', 'gcg')))
+
+# Current release of GCG has broken folder structure when installed. All GCG sources *should* be in a `gcg` subfolder in the sources. Until this is fixed, we need to include the `gcg` folder so that imports work.
+if os.path.exists(os.path.join(gcgoptdir, 'include')) and not os.path.exists(os.path.join(gcgoptdir, 'include', 'graph')):
+    includedirs.append(os.path.abspath(os.path.join(gcgoptdir, 'include', 'gcg')))
+if not gcgoptdir:
+    if platform.system() == 'Linux':
+        includedirs.append("/usr/include/gcg")
 
 includedirs = list(set(includedirs))
 
