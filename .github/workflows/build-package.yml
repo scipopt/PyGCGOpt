@@ -68,7 +68,7 @@ jobs:
       - name: Build Documentation
         run: make html
         working-directory: ./docs
-      
+
       - name: Archive Documentation
         uses: actions/upload-artifact@v2
         with:
