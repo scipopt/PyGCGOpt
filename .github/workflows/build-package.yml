@@ -80,7 +80,7 @@ jobs:
           cp -r docs/_build/html/* gh-pages/
           cd gh-pages
           git config user.name "GCG CI Bot"
-          git config user.emaul "noreply@or.rwth-aachen.de"
+          git config user.email "noreply@or.rwth-aachen.de"
           git add .
           git commit -m "Deploy docs to GitHub Pages, GitHub Actions build: ${GITHUB_RUN_ID}" -m "Commit: ${GITHUB_SHA}"
           git push
