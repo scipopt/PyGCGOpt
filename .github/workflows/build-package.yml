@@ -54,7 +54,7 @@ jobs:
       
       - name: Build & Install PySCIPOpt
         run: |
-          [ ! -f ~/PySCIPOpt_dist/*.whl ] && pip install wheel && python -m build --no-isolation --wheel --outdir dist/ PySCIPOpt/
+          [ ! -f ~/PySCIPOpt_dist/*.whl ] && pip install wheel && python -m build --no-isolation --wheel --outdir ~/PySCIPOpt_dist/ PySCIPOpt/
           pip install ~/PySCIPOpt_dist/*.whl
       
       - name: Build PyGCGOpt
