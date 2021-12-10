@@ -13,10 +13,12 @@ fi
 echo "Updating remotes"
 git remote update
 
-if git status --porcelain; then
+if [[ `git status --porcelain` ]]; then
     echo "Your git working tree is not clean. Please commit all changes and push them before crafting the release."
     exit 1
 fi
+
+git push
 
 echo "Creating release tag"
 gh release create "v${PARSED_VERSION}" --title "v${PARSED_VERSION}" --notes "Release ${PARSED_VERSION}"
