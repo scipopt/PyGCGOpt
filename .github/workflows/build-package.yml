@@ -19,49 +19,16 @@ jobs:
           cache: 'pip'
           cache-dependency-path: |
             requirements.txt
-            docs/requirements.txt
 
       - name: Prepare Python Environment
         run: |
           pip install -r requirements.txt
-          pip install -r docs/requirements.txt
 
       - name: Setup PySCIPOpt
         uses: ./.github/actions/setup-pyscipopt-action
         with:
           ref: scip-8
       
-      - name: Build PyGCGOpt
+      - name: Build & Install PyGCGOpt
         run: |
-          python -m build --sdist --no-isolation --outdir dist/
-
-      - name: Install PyGCGOpt
-        run: |
-          pip install dist/*.tar.gz
-      
-      - name: Build Documentation
-        run: make html
-        working-directory: ./docs
-      
-      - name: Checkout Documentation Branch
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: gh-pages
-        
-      - name: Deploy Documentation
-        run: |
-          rm -rf gh-pages/*
-          cp -r docs/_build/html/* gh-pages/
-          cd gh-pages
-          git config user.name "GCG CI Bot"
-          git config user.email "noreply@or.rwth-aachen.de"
-          git add .
-          git commit --allow-empty -m "Deploy docs to GitHub Pages, GitHub Actions build: ${GITHUB_RUN_ID}" -m "Commit: ${GITHUB_SHA}"
-          git push
-
-      - name: Archive Documentation
-        uses: actions/upload-artifact@v2
-        with:
-          name: sphinx-documentation
-          path: docs/_build/html
+          python install .
