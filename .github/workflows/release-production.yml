@@ -5,7 +5,7 @@ on:
 
 jobs:
   release-test:
-    uses: scipopt/PyGCGOpt/.github/workflows/release.yml@b726a0019e1fb2c27765266adb4d700130e35679
+    uses: scipopt/PyGCGOpt/.github/workflows/release.yml@master
     with:
       production: true
     secrets:
