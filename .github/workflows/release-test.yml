@@ -1,0 +1,12 @@
+name: Release Package to Test Environment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release-test:
+    uses: scipopt/PyGCGOpt/.github/workflows/release.yml@f2599b88caf1731cd0585a92e89b8e0d6e4670f2
+    with:
+      production: false
+    secrets:
+      PYPI_API_TOKEN: ${{ secrets.TESTPYPI_API_TOKEN }}
