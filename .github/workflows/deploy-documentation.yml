@@ -9,6 +9,10 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      
+      - name: Setup pandoc
+        run: |
+          sudo apt-get install -y pandoc
         
       - name: Setup SCIPOptSuite
         uses: ./.github/actions/setup-scipoptsuite-action
