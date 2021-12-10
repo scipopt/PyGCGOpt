@@ -1,4 +1,4 @@
-name: Release Package to Test Environment
+name: Release Package TestPyPI
 
 on:
   workflow_dispatch:
