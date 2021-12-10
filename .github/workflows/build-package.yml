@@ -6,12 +6,12 @@ jobs:
   Build-Package-Linux:
     runs-on: ubuntu-20.04
     steps:
-      - name: Setup SCIPOptSuite
-        uses: ./.github/actions/setup-scipoptsuite-action
-
       - name: Check out repository code
         uses: actions/checkout@v2
         
+      - name: Setup SCIPOptSuite
+        uses: ./.github/actions/setup-scipoptsuite-action
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
