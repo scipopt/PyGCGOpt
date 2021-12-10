@@ -17,6 +17,6 @@ runs:
 
     - name: Install dependencies (SCIPOptSuite)
       run: |
-        wget --timestamping --directory-prefix=$HOME https://scipopt.org/download/release/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
+        wget --quiet --timestamping --directory-prefix=$HOME https://scipopt.org/download/release/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
         sudo apt-get install -y pandoc ~/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
       shell: bash
