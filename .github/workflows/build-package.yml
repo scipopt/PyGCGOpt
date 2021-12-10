@@ -31,4 +31,4 @@ jobs:
       
       - name: Build & Install PyGCGOpt
         run: |
-          python install .
+          pip install .
