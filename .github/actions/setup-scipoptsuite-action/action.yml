@@ -12,10 +12,10 @@ runs:
     - name: Cache SCIPOptSuite Package
       uses: actions/cache@v2
       with:
-        path: ~/SCIPOptSuite-${{ input.version }}-Linux-ubuntu.deb
+        path: ~/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
         key: ${{ runner.os }}-SCIPOptSuite-${{ env.version }}-home
 
     - name: Install dependencies (SCIPOptSuite)
       run: |
         wget --timestamping --directory-prefix=$HOME https://scipopt.org/download/release/SCIPOptSuite-${{ input.version }}-Linux-ubuntu.deb
-        sudo apt-get install -y pandoc ~/SCIPOptSuite-${{ input.version }}-Linux-ubuntu.deb
+        sudo apt-get install -y pandoc ~/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
