@@ -2,6 +2,11 @@ name: Release Package
 
 on: 
   workflow_call:
+    inputs:
+      production:
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   Build-Package-Linux:
@@ -37,3 +42,35 @@ jobs:
       - name: Install PyGCGOpt
         run: |
           pip install dist/*.tar.gz
+      
+      - name: Upload PyGCGOpt dist artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist/
+
+  Release-PyPI:
+    needs: [Build-Package-Linux]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Download PyGCGOpt dist artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dist
+
+      - name: "Publish to pypi.org"
+        if: ${{ inputs.production }} 
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true
+          packages_dir: dist/
+
+      - name: "Publish to test.pypi.org"
+        if: ${{ !inputs.production }} 
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository_url: https://test.pypi.org/legacy/
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true
+          packages_dir: dist/
