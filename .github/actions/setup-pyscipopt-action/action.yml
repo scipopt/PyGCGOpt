@@ -1,0 +1,31 @@
+name: "Setup PySCIPOpt"
+
+inputs:
+  ref:
+    description: "PySCIPOpt ref that will be checked out"
+    required: true
+    default: "master"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout PySCIPOpt
+      uses: actions/checkout@v2
+      with:
+        repository: scipopt/PySCIPOpt.git
+        ref: ${{ inputs.ref }}
+        path: PySCIPOpt
+    - run: echo "PySCIPOpt_HASH=$(cd PySCIPOpt && git rev-parse HEAD)" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Cache PySCIPOpt Build
+      uses: actions/cache@v2
+      with:
+        path: ~/PySCIPOpt_dist
+        key: ${{ runner.os }}-PySCIPOpt-${{ env.PySCIPOpt_HASH }}
+
+    - name: Build & Install PySCIPOpt
+      run: |
+        [ ! -f ~/PySCIPOpt_dist/*.whl ] && pip install wheel && python -m build --no-isolation --wheel --outdir ~/PySCIPOpt_dist/ PySCIPOpt/
+        pip install ~/PySCIPOpt_dist/*.whl
+      shell: bash
