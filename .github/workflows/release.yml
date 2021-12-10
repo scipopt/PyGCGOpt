@@ -7,6 +7,9 @@ on:
         type: boolean
         required: true
         default: false
+    secrets:
+      PYPI_API_TOKEN:
+        required: true
 
 jobs:
   Build-Package-Linux:
