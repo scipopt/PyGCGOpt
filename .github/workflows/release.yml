@@ -49,7 +49,7 @@ jobs:
       - name: Upload PyGCGOpt dist artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: dist
+          name: PyGCGOpt-source-distribution
           path: dist/
 
   Release-PyPI:
@@ -59,7 +59,8 @@ jobs:
       - name: Download PyGCGOpt dist artifacts
         uses: actions/download-artifact@v2
         with:
-          name: dist
+          name: PyGCGOpt-source-distribution
+          path: dist/
 
       - name: "Publish to pypi.org"
         if: ${{ inputs.production }} 
