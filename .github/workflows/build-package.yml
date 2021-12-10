@@ -1,24 +1,13 @@
 name: Build Package
 
-env:
-  version: 8.0.0
-
 on: [push]
 
 jobs:
   Build-Package-Linux:
     runs-on: ubuntu-20.04
     steps:
-      - name: Cache SCIPOptSuite Package
-        uses: actions/cache@v2
-        with:
-          path: ~/SCIPOptSuite-${{ env.version }}-Linux-ubuntu.deb
-          key: ${{ runner.os }}-SCIPOptSuite-${{ env.version }}-home
-
-      - name: Install dependencies (SCIPOptSuite)
-        run: |
-          wget --timestamping --directory-prefix=$HOME https://scipopt.org/download/release/SCIPOptSuite-${{ env.version }}-Linux-ubuntu.deb
-          sudo apt-get install -y pandoc ~/SCIPOptSuite-${{ env.version }}-Linux-ubuntu.deb
+      - name: Setup SCIPOptSuite
+        uses: ./.github/actions/setup-scipoptsuite-action
 
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -37,24 +26,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r docs/requirements.txt
 
-      - name: Checkout PySCIPOpt
-        uses: actions/checkout@v2
-        with:
-          repository: scipopt/PySCIPOpt.git
-          ref: scip-8
-          path: PySCIPOpt
-      - run: echo "PySCIPOpt_HASH=$(cd PySCIPOpt && git rev-parse HEAD)" >> $GITHUB_ENV
-      
-      - name: Cache PySCIPOpt Build
-        uses: actions/cache@v2
-        with:
-          path: ~/PySCIPOpt_dist
-          key: ${{ runner.os }}-PySCIPOpt-${{ env.PySCIPOpt_HASH }}
-      
-      - name: Build & Install PySCIPOpt
-        run: |
-          [ ! -f ~/PySCIPOpt_dist/*.whl ] && pip install wheel && python -m build --no-isolation --wheel --outdir ~/PySCIPOpt_dist/ PySCIPOpt/
-          pip install ~/PySCIPOpt_dist/*.whl
+      - name: Setup PySCIPOpt
+        uses: ./.github/actions/setup-pyscipopt-action
       
       - name: Build PyGCGOpt
         run: |
