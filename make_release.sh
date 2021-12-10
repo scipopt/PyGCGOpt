@@ -10,6 +10,9 @@ if ! grep -q "v${PARSED_VERSION}" CHANGELOG.md; then
     exit 1
 fi
 
+echo "Updating remotes"
+git remote update
+
 if git status --porcelain; then
     echo "Your git working tree is not clean. Please commit all changes and push them before crafting the release."
     exit 1
