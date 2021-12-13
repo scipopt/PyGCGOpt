@@ -1,13 +1,10 @@
-Installation
-============
+# Installation
 
-Requirements
-------------
+## Requirements
 
-PyGCGOpt requires a working installation of the [GCG Solver](https://gcg.or.rwth-aachen.de/). Please, make sure that your GCG installation works!
+PyGCGOpt requires a working installation of the [SCIPOptSuite](https://scipopt.org) and the [GCG Solver](https://gcg.or.rwth-aachen.de/) which is usually included in the release. In addition, the Python interface for SCIP, [PySCIPOpt](https://github.com/scipopt/PySCIPOpt), has to be installed. Currently, GCG only runs on Linux and macOS, therefore you can use PyGCGOpt only on these operating systems.
 
-Note that the latest PyGCGOpt version is usually only compatible with the latest major release of the SCIP Optimization Suite.
-The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and SCIP are compatible:
+Note that the latest PyGCGOpt version is usually only compatible with the latest major release of the SCIP Optimization Suite. PyGCGOpt requires at least SCIP 8.0 and GCG 3.5. The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and SCIP are compatible:
 
 |SCIP| PySCIPOpt | GCG | PyGCGOpt
 |----|----|----|----|
@@ -18,15 +15,34 @@ The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and S
 4.0 | 1.2, 1.1 | - | - |
 3.2 | 1.0 | - | - |
 
-If SCIP and GCG are not installed in the global path,
-you need to specify the install location using the environment variable
-`SCIPOPTDIR`:
+We recommend installing PyGCGOpt and its Python dependencies in a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html). In short, you can create a virtual environment and activate it with the following commands on Linux and macOS:
+```
+python3.9 -m venv venv
+source venv/bin/activate
+```
 
--   on Linux and OS X:\
-    `export SCIPOPTDIR=<path_to_install_dir>`
--   on Windows:\
-    `set SCIPOPTDIR=<path_to_install_dir>` (**cmd**, **Cmder**, **WSL**)\
-    `$Env:SCIPOPTDIR = "<path_to_install_dir>"` (**powershell**)
+## Installing SCIPOptSuite from the binary distribution
+
+The SCIPOptSuite can either be installed from the binary distribution or it can be build and installed manually from source. If you want to compile the SCIPOptSuite from source, please skip to the next section.
+
+To install a binary distribution of the SCIPOptSuite, navigate to the (download page)[https://scipopt.org/index.php#download] and select at least version 8.0.0 and your operating system. After the installation, please check that you can run `scip` and `gcg` from the command line.
+
+Next, skip to the instructions to install PySCIPOpt.
+
+## Compiling SCIPOptSuite from source
+
+To install the SCIPOptSuite from source, you need to [install SCIP and GCG using CMake](https://scipopt.org/doc/html/md_INSTALL.php#CMAKE). The Makefile system is not compatible with PyGCGOpt and PySCIPOpt!
+
+As an example, from the root directory of the source distribution of the SCIPOptSuite, you can run the following commands to build and install locally:
+```
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DSHARED=on -DCMAKE_INSTALL_PREFIX=./install -DGCG_DEV_BUILD=on -DZIMPL=OFF -DIPOPT=OFF -DPAPILO=OFF
+make -j4 && make install
+```
+
+If SCIP and GCG are not installed in the global path, you need to specify the install location using the environment variable `SCIPOPTDIR` before you can install PySCIPOpt and PyGCGOpt:
+
+`export SCIPOPTDIR=<path_to_install_dir>`
 
 `SCIPOPTDIR` needs to have a subdirectory `lib` that contains the
 library, e.g. `libscip.so` and `libgcg.so` (for Linux) and a subdirectory `include` that
@@ -43,58 +59,75 @@ contains the corresponding header files:
         > nlpi
         > ...
 
-If you are not using the installer packages, you need to [install GCG using CMake](https://gcg.or.rwth-aachen.de/doc-preview/doc-3.5.0/install-manually.html).
-The Makefile system is not compatible with PyGCGOpt and PySCIPOpt!
+If GCG is installed in a different location than SCIP (this is *not* the default), you can specify the GCG install directory with the `GCGOPTDIR` environment variable.
+
+To make the shared libraries available at runtime for PySCIPOpt and PyGCGOpt, you need to add them to the corresponding environment variables:
+ - On Linux:
+   `export LD_LIBRARY_PATH=<path_to_install_dir>/lib`
+ - On macOS:
+   `export DYLD_FALLBACK_LIBRARY_PATH=<path_to_install_dir>/lib`
 
 
-Building everything from source
+## Installing PySCIPOpt from PyPI
+
+To install PySCIPOpt using pip, run the following:
+```
+pip install PySCIPOpt>=4.0.0
+```
+
+*Please note that version 4.0.0 is not yet released as of this writing. As a workaround, you can install it from GitHub using pip:*
+```
+pip install git+https://github.com/scipopt/PySCIPOpt.git@scip-8
+```
+
+## Installing PySCIPOpt from source
+
+For detailed instructions, please read the [installation instructions of PySCIPOpt](https://github.com/scipopt/PySCIPOpt/blob/master/INSTALL.md#building-everything-from-source).
+
+In short, you can install PySCIPOpt from source with `pip`. For that, run the following command:
+```
+pip install <path/to/PySCIPOpt>
+```
+
+*Please note that as of this writing, the master branch of PySCIPOpt is not yet compatible with SCIP 8.0 and PyGCGOpt. Instead, please use the `scip-8` branch of PySCIPOpt.*
+
+## Installing PyGCGOpt from PyPI
+
+Simply run the folloing to install PyGCGOpt with `pip`:
+```
+pip install PyGCGOpt
+```
+
+## Install PyGCGOpt from source
 -------------------------------
 
-Recommended is to install in a virtual environment (e.g. `python3 -m venv <DIR_PATH>`).
-Please note that a globally installed version of PyGCGOpt on your machine might lead to problems.
+First, install the requirements for building PyGCGOpt:
+```
+pip install -r requirements.txt
+```
 
-After setting up and activating your virtual environment (`source <DIR_PATH>/bin/activate`) make sure you have [Cython](http://cython.org/) installed, at least version 0.21
+Furthermore, you need to have the Python development files installed on your system (error message "Python.h not found"):
+```
+sudo apt-get install python3-dev  # for Python 3, on Linux
+```
 
-    pip install cython
+Then, compile and install PyGCGOpt:
+```
+pip install .
+```
 
-Note you will also need the `wheel` package, which usually is already installed:
+In case the compiler cannot find SCIP or GCG header files, please make sure that you installed the SCIPOptSuite globally or that you set the `SCIPOPTDIR` environment variable (see above).
 
-    pip install wheel
-
-Furthermore, you need to have the Python
-development files installed on your system (error message "Python.h not
-found"):
-
-    sudo apt-get install python3-dev  # for Python 3, on Linux
-
-If you want to build GCG from source, from the GCG root folder to the following:
-
-    mkdir build && cd build
-    cmake .. -DCMAKE_BUILD_TYPE=Release -DSHARED=on -DCMAKE_INSTALL_PREFIX=./install -DZIMPL=OFF -DIPOPT=OFF -DPAPILO=OFF
-    make && make install
-
-After setting up `SCIPOPTDIR` as specified above install PyGCGOpt
-
-    export SCIPOPTDIR=/path/to/scip/install/dir
-    python -m pip install .
-
-For recompiling the source in the current directory `.` use
-
-    python -m pip install --compile .
-
-Building with debug information
--------------------------------
+### Building with debug information
 
 To use debug information in PyGCGOpt you need to build it like this:
 
     python -m pip install --install-option="--debug" .
 
-Be aware that you will need the **debug library** of the SCIP
-Optimization Suite for this to work
+Be aware that you will need the **debug library** of the SCIPOptSuite for this to work
 (`cmake .. -DCMAKE_BUILD_TYPE=Debug`).
 
-Testing new installation
-------------------------
+## Testing new installation
 
 To test your brand-new installation of PyGCGOpt you need
 [pytest](https://pytest.org/) on your system.
