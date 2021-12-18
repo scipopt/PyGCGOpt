@@ -25,7 +25,7 @@ source venv/bin/activate
 
 The SCIPOptSuite can either be installed from the binary distribution or it can be build and installed manually from source. If you want to compile the SCIPOptSuite from source, please skip to the next section.
 
-To install a binary distribution of the SCIPOptSuite, navigate to the (download page)[https://scipopt.org/index.php#download] and select at least version 8.0.0 and your operating system. After the installation, please check that you can run `scip` and `gcg` from the command line.
+To install a binary distribution of the SCIPOptSuite, navigate to the [download page](https://scipopt.org/index.php#download) and select at least version 8.0.0 and your operating system. After the installation, please check that you can run `scip` and `gcg` from the command line.
 
 Next, skip to the instructions to install PySCIPOpt.
 
@@ -75,10 +75,6 @@ To install PySCIPOpt using pip, run the following:
 pip install PySCIPOpt>=4.0.0
 ```
 
-*Please note that version 4.0.0 is not yet released as of this writing. As a workaround, you can install it from GitHub using pip:*
-```
-pip install git+https://github.com/scipopt/PySCIPOpt.git@scip-8
-```
 
 ## Installing PySCIPOpt from source
 
@@ -88,8 +84,6 @@ In short, you can install PySCIPOpt from source with `pip`. For that, run the fo
 ```
 pip install <path/to/PySCIPOpt>
 ```
-
-*Please note that as of this writing, the master branch of PySCIPOpt is not yet compatible with SCIP 8.0 and PyGCGOpt. Instead, please use the `scip-8` branch of PySCIPOpt.*
 
 ## Installing PyGCGOpt from PyPI
 
