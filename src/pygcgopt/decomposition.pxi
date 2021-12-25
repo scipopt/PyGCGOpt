@@ -67,7 +67,7 @@ cdef class PartialDecomposition:
         :param conss: An iterable of scip#Constraint objects
         :type conss: An iterable of scip#Constraint objects
         :raises TypeError: occurs if conss is not an Iterable
-        :see: * :meth:`fixConsToMaster`
+        .. seealso:: * :meth:`fixConsToMaster`
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
@@ -85,7 +85,7 @@ cdef class PartialDecomposition:
         calling this method, one has to ensure that the specified block exists. A more convenient alternative is
         fixConsToBlock().
 
-        :see: * :meth:`addBlock`
+        .. seealso:: * :meth:`addBlock`
         """
         self.thisptr.fixConsToBlock(cons.scip_cons, block_id)
 
@@ -94,8 +94,8 @@ cdef class PartialDecomposition:
 
         :param conss: An iterable of scip#Constraint objects
         :param block_id: id of block to add.
-        :see: * :meth:`fixConsToBlockId`
-              * :meth:`fixConssToBlock`
+        .. seealso:: * :meth:`fixConsToBlockId`
+                     * :meth:`fixConssToBlock`
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
@@ -114,7 +114,7 @@ cdef class PartialDecomposition:
 
         To address the internal blocks directly, use :meth:`fixConsToBlockId`.
 
-        :see: * :meth:`fixConssToBlock`
+        .. seealso:: * :meth:`fixConssToBlock`
         """
         if block not in self.py_block_id_map:
             self.py_block_id_map.append(block)
@@ -136,7 +136,7 @@ cdef class PartialDecomposition:
         :param block: identifier of block to add. Can be any hashable Python object.
         :return: the internal block_id assigned to the block.
 
-        :see: * :meth:`fixConsToBlock`
+        .. seealso:: * :meth:`fixConsToBlock`
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
@@ -203,7 +203,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.addBlock()
         return result
-
 
     def addClockTime(PartialDecomposition self, double clocktime):
         """Adds detection time of one detector
@@ -294,7 +293,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.alreadyAssignedConssToBlocks()
         return result
 
-
     # def assignBorderFromConstoblock(PartialDecomposition self, SCIP_HASHMAP * constoblock, int givenNBlocks):
     #     """assigns open conss to master
 
@@ -316,7 +314,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.assignCurrentStairlinking()
         return result
-
 
     def assignOpenConssToMaster(PartialDecomposition self):
         """Assigns open conss to master.
@@ -343,8 +340,8 @@ cdef class PartialDecomposition:
         according to the cons assignment information given in constoblock vector
 
         :return: scip return code
-        \see  assignPartialdecFromConstoblock()
-        :note: master is indicated by assigning cons to index additionalNBlocks.
+        .. seealso::  * :meth:`assignPartialdecFromConstoblock()`
+        .. note:: master is indicated by assigning cons to index additionalNBlocks.
         """
         cdef vector[int] cpp_constoblock = constoblock
         cdef int cpp_additionalNBlocks = additionalNBlocks
@@ -360,7 +357,7 @@ cdef class PartialDecomposition:
         strategy: assigns all conss same block if they are connected
         two constraints are adjacent if there is a common variable
 
-        :note: this relies on the consadjacency structure of the detprobdata
+        .. note:: this relies on the consadjacency structure of the detprobdata
         hence it cannot be applied in presence of linking variables.
         """
         self.thisptr.assignSmallestComponentsButOneConssAdjacency()
@@ -371,7 +368,7 @@ cdef class PartialDecomposition:
         potentially reorders blocks for making a maximum number of linking vars stairlinking
         if all vars that connect exactly two blocks have a staircase structure, all of them become stairlinkingvars
         otherwise, the stairlinking assignment is done greedily
-        :note: precondition: partialdec does not have any stairlinking vars.
+        .. note:: precondition: partialdec does not have any stairlinking vars.
         """
         self.thisptr.calcStairlinkingVars()
 
@@ -384,7 +381,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.checkAllConssAssigned()
         return result
-
 
     def checkConsistency(PartialDecomposition self):
         """Checks whether the assignments in the partialdec are consistent
@@ -405,7 +401,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.checkConsistency()
         return result
-
 
     def complete(PartialDecomposition self):
         """Assigns all open constraints and open variables trivially
@@ -429,7 +424,7 @@ cdef class PartialDecomposition:
 
         strategy: assigns all conss and vars to the same block if they are connected
         a cons and a var are adjacent if the var appears in the cons
-        \note this relies on the consadjacency structure of the detprobdata
+        .. note:: this relies on the consadjacency structure of the detprobdata
         hence it cannot be applied in presence of linking variables.
         """
         self.thisptr.completeByConnectedConssAdjacency()
@@ -554,7 +549,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getAncestorID(cpp_ancestorindex)
         return result
 
-
     def getAncestorList(PartialDecomposition self):
         """get ancestor ids as vector
 
@@ -562,7 +556,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[int] result = self.thisptr.getAncestorList()
         return result
-
 
     def setAncestorList(PartialDecomposition self, object newlist):
         """set ancestor list directly
@@ -573,7 +566,7 @@ cdef class PartialDecomposition:
         self.thisptr.setAncestorList(cpp_newlist)
 
     def removeAncestorID(PartialDecomposition self, int ancestorid):
-        """!removes ancestor id from list.
+        """removes ancestor id from list.
         """
         cdef int cpp_ancestorid = ancestorid
         self.thisptr.removeAncestorID(cpp_ancestorid)
@@ -596,7 +589,6 @@ cdef class PartialDecomposition:
         cdef vector[int] result = self.thisptr.getBlocksForRep(cpp_repid)
         return result
 
-
     def getDetectorClockTime(PartialDecomposition self, int detectorchainindex):
         """returns the time that the detector related to the given detectorchainindex needed for detecting
 
@@ -606,7 +598,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getDetectorClockTime(cpp_detectorchainindex)
         return result
 
-
     def getDetectorClockTimes(PartialDecomposition self):
         """returns a vector of the clock times that each detector needed that was involved in this partialdec
 
@@ -615,18 +606,16 @@ cdef class PartialDecomposition:
         cdef vector[double] result = self.thisptr.getDetectorClockTimes()
         return result
 
-
     def getBlockConss(PartialDecomposition self, int block):
         """returns array containing constraints assigned to a block
 
         :param block: id of the block the constraint indices are returned
         :return: array containing constraints assigned to a block.
-        :note: This calls the corresponding `getConssForBlock()` method. For consistancy, the method was renamed in the Python API.
+        .. note:: This calls the corresponding `getConssForBlock()` method. For consistancy, the method was renamed in the Python API.
         """
         cdef int cpp_block = block
         cdef vector[int] result = self.thisptr.getConssForBlock(cpp_block)
         return [self.getDetprobdata().getCons(c) for c in result]
-
 
     # def getDetectorchain(PartialDecomposition self):
     #     """returns detector chain as vector of detector pointers
@@ -636,7 +625,6 @@ cdef class PartialDecomposition:
     #     cdef vector[DEC_DETECTOR *] result = self.thisptr.getDetectorchain()
     #     return result
 
-
     def getFinishedByFinisher(PartialDecomposition self):
         """returns True iff this partialdec was finished by finishPartialdec() method of a detector
 
@@ -644,7 +632,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.getFinishedByFinisher()
         return result
-
 
     def getHashValue(PartialDecomposition self):
         """returns the calculated hash value of this partialdec
@@ -654,7 +641,6 @@ cdef class PartialDecomposition:
         cdef unsigned long result = self.thisptr.getHashValue()
         return result
 
-
     def getID(PartialDecomposition self):
         """returns the unique id of the partialdec
 
@@ -663,26 +649,23 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getID()
         return result
 
-
     def getLinkingvars(PartialDecomposition self):
         """returns array containing all linking vars indices
 
         :return: vector containing all linking vars indices
-        :note: when accessed it is supposed to be sorted.
+        .. note:: when accessed it is supposed to be sorted.
         """
         cdef vector[int] result = self.thisptr.getLinkingvars()
         return result
-
 
     def getMasterconss(PartialDecomposition self):
         """Gets array containing all master conss indices
 
         :return: array containing all master conss indices
-        :note: when accessed it is supposed to be sorted.
+        .. note:: when accessed it is supposed to be sorted.
         """
         cdef vector[int] result = self.thisptr.getMasterconss()
         return [self.getDetprobdata().getCons(c) for c in result]
-
 
     def getMastervars(PartialDecomposition self):
         """Gets array containing all master vars indices
@@ -692,7 +675,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[int] result = self.thisptr.getMastervars()
         return result
-
 
     def getNCoeffsForBlock(PartialDecomposition self, int blockid):
         """Gets the number of nonzero coeffs in a certain block
@@ -704,14 +686,12 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNCoeffsForBlock(cpp_blockid)
         return result
 
-
     def getNCoeffsForMaster(PartialDecomposition self):
         """!Gets the number of nonzero coeffs in master
         :return: the number of nonzero coeffs in master.
         """
         cdef int result = self.thisptr.getNCoeffsForMaster()
         return result
-
 
     # def getScore(PartialDecomposition self, SCORETYPE type):
     #     """returns the score of the partialdec (depending on used scoretype)
@@ -733,7 +713,6 @@ cdef class PartialDecomposition:
         cdef unsigned int result = self.thisptr.hasSetppccardMaster()
         return result
 
-
     def hasSetppcMaster(PartialDecomposition self):
         """checks iff all master constraints set partitioning, set packing, or set cover constraints
 
@@ -742,7 +721,6 @@ cdef class PartialDecomposition:
         cdef unsigned int result = self.thisptr.hasSetppcMaster()
         return result
 
-
     def hasSetppMaster(PartialDecomposition self):
         """checks iff all master constraints set partitioning, or set packing constraints
 
@@ -750,7 +728,6 @@ cdef class PartialDecomposition:
         """
         cdef unsigned int result = self.thisptr.hasSetppMaster()
         return result
-
 
     def getUsergiven(PartialDecomposition self):
         """Gets the USERGIVEN status of this partialdecs
@@ -768,7 +745,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNAncestors()
         return result
 
-
     def getNBlocks(PartialDecomposition self):
         """Gets the number of blocks
 
@@ -777,7 +753,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNBlocks()
         return result
 
-
     def getNConss(PartialDecomposition self):
         """Gets the number of constraints
 
@@ -785,7 +760,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.getNConss()
         return result
-
 
     def getNConssForBlock(PartialDecomposition self, int block):
         """Gets size of the vector containing conss assigned to a block
@@ -797,7 +771,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNConssForBlock(cpp_block)
         return result
 
-
     def getDetectorchainInfo(PartialDecomposition self):
         """Gets the detectorchain info vector
 
@@ -805,7 +778,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[string] result = self.thisptr.getDetectorchainInfo()
         return result
-
 
     def getNDetectors(PartialDecomposition self):
         """Gets the number of detectors the partialdec is propagated by
@@ -815,7 +787,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNDetectors()
         return result
 
-
     def getNLinkingvars(PartialDecomposition self):
         """Gets size of the vector containing linking vars
 
@@ -824,7 +795,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNLinkingvars()
         return result
 
-
     def getNMasterconss(PartialDecomposition self):
         """Gets size of the vector containing master conss
 
@@ -832,7 +802,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.getNMasterconss()
         return result
-
 
     def getNMastervars(PartialDecomposition self):
         """Gets size of the vector containing master vars
@@ -843,7 +812,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNMastervars()
         return result
 
-
     def getNNewBlocks(PartialDecomposition self, int detectorchainindex):
         """Gets number of blocks a detector added
 
@@ -853,7 +821,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNNewBlocks(cpp_detectorchainindex)
         return result
 
-
     def getNNewBlocksVector(PartialDecomposition self):
         """gets number of blocks the detectors in the detectorchain added
 
@@ -861,7 +828,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[int] result = self.thisptr.getNNewBlocksVector()
         return result
-
 
     def getNTotalStairlinkingvars(PartialDecomposition self):
         """Gets total number of stairlinking vars
@@ -871,7 +837,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNTotalStairlinkingvars()
         return result
 
-
     def getNOpenconss(PartialDecomposition self):
         """Gets size of vector containing constraints not assigned yet
 
@@ -879,7 +844,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.getNOpenconss()
         return result
-
 
     def getNOpenvars(PartialDecomposition self):
         """Gets size of vector containing variables not assigned yet
@@ -889,7 +853,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNOpenvars()
         return result
 
-
     def getNReps(PartialDecomposition self):
         """Gets the number of blockrepresentatives
 
@@ -897,7 +860,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.getNReps()
         return result
-
 
     def getNStairlinkingvars(PartialDecomposition self, int block):
         """Gets size of the vector containing stairlinking vars
@@ -909,7 +871,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNStairlinkingvars(cpp_block)
         return result
 
-
     def getNVars(PartialDecomposition self):
         """Gets number of vars
 
@@ -917,7 +878,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.getNVars()
         return result
-
 
     def getNVarsForBlock(PartialDecomposition self, int block):
         """Gets size of the vector containing vars assigned to a block
@@ -929,7 +889,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNVarsForBlock(cpp_block)
         return result
 
-
     def getNVarsForBlocks(PartialDecomposition self):
         """Gets overall number of vars assigned to a block
 
@@ -937,7 +896,6 @@ cdef class PartialDecomposition:
         """
         cdef int result = self.thisptr.getNVarsForBlocks()
         return result
-
 
     # def getOpenconss(PartialDecomposition self):
     #     """Gets array containing constraints not assigned yet
@@ -955,7 +913,6 @@ cdef class PartialDecomposition:
         cdef vector[int] result = self.thisptr.getOpenconssVec()
         return result
 
-
     def getOpenvars(PartialDecomposition self):
         """Gets array containing variables not assigned yet
 
@@ -966,11 +923,11 @@ cdef class PartialDecomposition:
 
     def getOpenvarsVec(PartialDecomposition self):
         """!Gets array containing variables not assigned yet as vector
+
         :return: array containing variables not assigned yet as vector.
         """
         cdef vector[int] result = self.thisptr.getOpenvarsVec()
         return result
-
 
     def getPctVarsToBorder(PartialDecomposition self, int detectorchainindex):
         """Gets fraction of variables assigned to the border for a detector
@@ -981,7 +938,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getPctVarsToBorder(cpp_detectorchainindex)
         return result
 
-
     def getPctVarsToBorderVector(PartialDecomposition self):
         """Gets fraction of variables assigned to the border for detectors in detectorchain
 
@@ -989,7 +945,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[double] result = self.thisptr.getPctVarsToBorderVector()
         return result
-
 
     def getPctVarsToBlock(PartialDecomposition self, int detectorchainindex):
         """Gets fraction of variables assigned to a block for a detector
@@ -1000,7 +955,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getPctVarsToBlock(cpp_detectorchainindex)
         return result
 
-
     def getPctVarsToBlockVector(PartialDecomposition self):
         """returns fraction of variables assigned to a block for detectors in detectorchain
 
@@ -1008,7 +962,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[double] result = self.thisptr.getPctVarsToBlockVector()
         return result
-
 
     def getPctVarsFromFree(PartialDecomposition self, int detectorchainindex):
         """Gets fraction of variables that are not longer open for a detector
@@ -1019,7 +972,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getPctVarsFromFree(cpp_detectorchainindex)
         return result
 
-
     def getPctVarsFromFreeVector(PartialDecomposition self):
         """Gets fraction of variables that are not longer open for detectors in detectorchain
 
@@ -1027,7 +979,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[double] result = self.thisptr.getPctVarsFromFreeVector()
         return result
-
 
     def getPctConssToBorder(PartialDecomposition self, int detectorchainindex):
         """Gets fraction of constraints assigned to the border for a detector
@@ -1040,7 +991,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getPctConssToBorder(cpp_detectorchainindex)
         return result
 
-
     def getPctConssToBorderVector(PartialDecomposition self):
         """Gets fraction of constraints assigned to the border for detectors in detectorchain
 
@@ -1048,7 +998,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[double] result = self.thisptr.getPctConssToBorderVector()
         return result
-
 
     def getPctConssToBlock(PartialDecomposition self, int detectorchainindex):
         """Gets fraction of constraints assigned to a block for a detector
@@ -1059,7 +1008,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getPctConssToBlock(cpp_detectorchainindex)
         return result
 
-
     def getPctConssToBlockVector(PartialDecomposition self):
         """Gets fraction of constraints assigned to a block for detectors in detectorchain
 
@@ -1067,7 +1015,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[double] result = self.thisptr.getPctConssToBlockVector()
         return result
-
 
     def getPctConssFromFree(PartialDecomposition self, int detectorchainindex):
         """Gets fraction of constraints that are not longer open for a detector
@@ -1078,7 +1025,6 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getPctConssFromFree(cpp_detectorchainindex)
         return result
 
-
     def getPctConssFromFreeVector(PartialDecomposition self):
         """Gets fraction of constraints that are not longer open for detectors in detectorchain
 
@@ -1086,7 +1032,6 @@ cdef class PartialDecomposition:
         """
         cdef vector[double] result = self.thisptr.getPctConssFromFreeVector()
         return result
-
 
     def getRepForBlock(PartialDecomposition self, int blockid):
         """Gets index of the representative block for a block, this might be blockid itself
@@ -1097,7 +1042,6 @@ cdef class PartialDecomposition:
         cdef int cpp_blockid = blockid
         cdef int result = self.thisptr.getRepForBlock(cpp_blockid)
         return result
-
 
     def getRepVarmap(PartialDecomposition self, int repid, int blockrepid):
         """Gets the represenation varmap
@@ -1113,7 +1057,6 @@ cdef class PartialDecomposition:
         cdef vector[int] result = self.thisptr.getRepVarmap(cpp_repid, cpp_blockrepid)
         return result
 
-
     def getDetprobdata(PartialDecomposition self):
         """Gets the corresponding detprobdata
 
@@ -1125,7 +1068,7 @@ cdef class PartialDecomposition:
     def getStairlinkingvars(PartialDecomposition self, int block):
         """Gets array containing stairlinking vars,
 
-        :note: if a stairlinking variable links block i and i+1 it is only stored in vector of block i
+        .. note:: if a stairlinking variable links block i and i+1 it is only stored in vector of block i
         :param block: id of the block the stairlinking variable varctor is asked for
         :return: array containing stairlinking vars,.
         """
@@ -1143,7 +1086,6 @@ cdef class PartialDecomposition:
         cdef vector[int] result = self.thisptr.getVarsForBlock(cpp_block)
         return result
 
-
     def getVarProbindexForBlock(PartialDecomposition self, int varid, int block):
         """ Gets index in variables array of a block for a variable
 
@@ -1156,7 +1098,6 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getVarProbindexForBlock(cpp_varid, cpp_block)
         return result
 
-
     def isComplete(PartialDecomposition self):
         """Gets whether this partialdec is complete, i.e. it has no more open constraints and variables
 
@@ -1164,7 +1105,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.isComplete()
         return result
-
 
     def isConsMastercons(PartialDecomposition self, int cons):
         """Gets whether the cons is a master cons
@@ -1176,7 +1116,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isConsMastercons(cpp_cons)
         return result
 
-
     def isConsOpencons(PartialDecomposition self, int cons):
         """Gets whether the cons is an open cons
 
@@ -1187,7 +1126,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isConsOpencons(cpp_cons)
         return result
 
-
     def isAssignedToOrigProb(PartialDecomposition self):
         """Gets whether the partialdec is from the presolved problem
 
@@ -1196,10 +1134,10 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isAssignedToOrigProb()
         return result
 
-
     @property
     def isSelected(PartialDecomposition self):
         """!Gets whether the partialdec is currently selected in explore menue
+
         :return: True iff the partialdec is currently selected in explore menue.
         """
         cdef bool result = self.thisptr.isSelected()
@@ -1241,7 +1179,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isTrivial()
         return result
 
-
     def isVarBlockvarOfBlock(PartialDecomposition self, int var, int block):
         """Checks whether the var is assigned to the block
 
@@ -1254,7 +1191,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isVarBlockvarOfBlock(cpp_var, cpp_block)
         return result
 
-
     def isVarLinkingvar(PartialDecomposition self, int var):
         """Checks whether the var is a linking var
 
@@ -1265,7 +1201,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isVarLinkingvar(cpp_var)
         return result
 
-
     def isVarMastervar(PartialDecomposition self, int var):
         """Checks whether the var is a master var
 
@@ -1275,7 +1210,6 @@ cdef class PartialDecomposition:
         cdef int cpp_var = var
         cdef bool result = self.thisptr.isVarMastervar(cpp_var)
         return result
-
 
     def isVarOpenvar(PartialDecomposition self, int var):
         """Checks whether the var is an open var
@@ -1289,7 +1223,6 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.isVarOpenvar(cpp_var)
         return result
 
-
     def isVarStairlinkingvar(PartialDecomposition self, int var):
         """Checks whether the var is a stairlinking var
 
@@ -1299,7 +1232,6 @@ cdef class PartialDecomposition:
         cdef int cpp_var = var
         cdef bool result = self.thisptr.isVarStairlinkingvar(cpp_var)
         return result
-
 
     def isVarStairlinkingvarOfBlock(PartialDecomposition self, int var, int block):
         """Checks whether the var is a stairlinkingvar of a specified block
@@ -1312,7 +1244,6 @@ cdef class PartialDecomposition:
         cdef int cpp_block = block
         cdef bool result = self.thisptr.isVarStairlinkingvarOfBlock(cpp_var, cpp_block)
         return result
-
 
     # def printPartitionInformation(PartialDecomposition self, SCIP * givenscip, FILE * file):
     #     """prints partition information as described in \see cls reader
@@ -1328,7 +1259,7 @@ cdef class PartialDecomposition:
 
         strategy: assigns open conss and vars if they can be found in blocks
         (without respect to open vars and conss  see assignHittingOpenconss(), see assignHittingOpenvars())
-        :note: partialdec might be not complete.
+        .. note:: partialdec might be not complete.
         """
         self.thisptr.refineToBlocks()
 
@@ -1524,7 +1455,7 @@ cdef class PartialDecomposition:
         :param varToStairLinking: id of variable to be added
         :param block1: id of block one
         :param block2: id of block two
-        :note: stairlinking variables are only registered in block with smaller index.
+        .. note:: stairlinking variables are only registered in block with smaller index.
         """
         cdef int cpp_varToStairLinking = varToStairLinking
         cdef int cpp_block1 = block1
@@ -1536,7 +1467,7 @@ cdef class PartialDecomposition:
 
         :param var: id of variable to be added
         :param firstblock: stairlinking variables hit exactly two consecutive blocks, this is the index of the first of these blocks
-        :note: stairlinking variables are only registered in block with smaller index.
+        .. note:: stairlinking variables are only registered in block with smaller index.
         """
         cdef int cpp_var = var
         cdef int cpp_firstblock = firstblock
@@ -1545,7 +1476,7 @@ cdef class PartialDecomposition:
     def fixConsToBlockByName(PartialDecomposition self, consname, int blockid):
         """assigns a constraint by name to a block
 
-        :see: * :meth:`fixConsToBlock`
+        .. seealso:: * :meth:`fixConsToBlock`
         :return: True iff successful.
         """
         c_consname = str_conversion(consname)
@@ -1553,11 +1484,10 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.fixConsToBlockByName(c_consname, cpp_blockid)
         return result
 
-
     def fixVarToBlockByName(PartialDecomposition self, varname, int blockid):
         """assigns a variable by name to a block
 
-        :see: * :meth:`fixVarToBlock`
+        .. seealso:: * :meth:`fixVarToBlock`
         :return: True iff successful.
         """
         c_varname = str_conversion(varname)
@@ -1565,44 +1495,40 @@ cdef class PartialDecomposition:
         cdef bool result = self.thisptr.fixVarToBlockByName(c_varname, cpp_blockid)
         return result
 
-
     def fixConsToMasterByName(PartialDecomposition self, consname):
         """assgins a constraint by name as master
 
-        :see: * :meth:`fixConsToMaster`
+        .. seealso:: * :meth:`fixConsToMaster`
         :return: True iff successful.
         """
         c_consname = str_conversion(consname)
         cdef bool result = self.thisptr.fixConsToMasterByName(c_consname)
         return result
 
-
     def fixVarToMasterByName(PartialDecomposition self, varname):
         """assigns a variable with given name as master
 
-        :see: * :meth:`fixVarToMaster`
+        .. seealso:: * :meth:`fixVarToMaster`
         :return: True iff successful.
         """
         c_varname = str_conversion(varname)
         cdef bool result = self.thisptr.fixVarToMasterByName(c_varname)
         return result
 
-
     def fixVarToLinkingByName(PartialDecomposition self, varname):
         """assigns a variable by name to the linking variables
 
-        :see: * :meth:`fixVarToLinking`
+        .. seealso:: * :meth:`fixVarToLinking`
         :return: True iff successful.
         """
         c_varname = str_conversion(varname)
         cdef bool result = self.thisptr.fixVarToLinkingByName(c_varname)
         return result
 
-
     def showVisualization(PartialDecomposition self):
         """generates and opens a gp visualization of the partialdec
 
-        :note: linux only.
+        .. note:: linux only.
         """
         self.thisptr.showVisualization()
 
@@ -1640,7 +1566,6 @@ cdef class PartialDecomposition:
         cdef unsigned int result = self.thisptr.shouldCompletedByConsToMaster()
         return result
 
-
     def sort(PartialDecomposition self):
         """sorts the vars and conss data structures by their indices
 
@@ -1648,7 +1573,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.sort()
         return result
-
 
     def setPctConssToBlockVector(PartialDecomposition self, object newvector):
         """set statistical vector of fractions of constraints set to blocks per involved detector
@@ -1710,12 +1634,11 @@ cdef class PartialDecomposition:
     def classicScore(PartialDecomposition self):
         """gets the classic score
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcClassicScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcClassicScore
         :return: border area score.
         """
         cdef double result = self.thisptr.getClassicScore()
         return result
-
 
     @classicScore.setter
     def classicScore(PartialDecomposition self, double score):
@@ -1728,12 +1651,11 @@ cdef class PartialDecomposition:
     def borderAreaScore(PartialDecomposition self):
         """gets the border area score
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcBorderAreaScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcBorderAreaScore
         :return: border area score.
         """
         cdef double result = self.thisptr.getBorderAreaScore()
         return result
-
 
     @borderAreaScore.setter
     def borderAreaScore(PartialDecomposition self, double score):
@@ -1747,12 +1669,11 @@ cdef class PartialDecomposition:
         """gets the maximum white area score
 
         "maximum white score" is fraction of the area of the decomposed matrix that is neither block or border
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcMaxWhiteScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcMaxWhiteScore
         :return: maximum  white area score
         """
         cdef double result = self.thisptr.getMaxWhiteScore()
         return result
-
 
     @maxWhiteScore.setter
     def maxWhiteScore(PartialDecomposition self, double score):
@@ -1765,12 +1686,11 @@ cdef class PartialDecomposition:
     def maxForWhiteScore(PartialDecomposition self):
         """gets the maximum foreseeing white area score
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcMaxForseeingWhiteScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcMaxForseeingWhiteScore
         :return: maximum foreseeing white area score
         """
         cdef double result = self.thisptr.getMaxForWhiteScore()
         return result
-
 
     @maxForWhiteScore.setter
     def maxForWhiteScore(PartialDecomposition self, double score):
@@ -1783,12 +1703,11 @@ cdef class PartialDecomposition:
     def partForWhiteScore(PartialDecomposition self):
         """gets the setpartitioning maximum foreseeing white area score
 
-        :note: -1 iff not calculated yet, \see GGCGconshdlrDecompCalcSetPartForseeingWhiteScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GGCGconshdlrDecompCalcSetPartForseeingWhiteScore
         :return: setpartitioning maximum foreseeing white area score
         """
         cdef double result = self.thisptr.getSetPartForWhiteScore()
         return result
-
 
     @partForWhiteScore.setter
     def partForWhiteScore(PartialDecomposition self, double score):
@@ -1801,12 +1720,11 @@ cdef class PartialDecomposition:
     def maxForWhiteAggScore(PartialDecomposition self):
         """gets the maximum foreseeing white area score with respect to aggregatable blocks
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcMaxForeseeingWhiteAggScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcMaxForeseeingWhiteAggScore
         :return: maximum foreseeing white area score with respect to aggregatable blocks
         """
         cdef double result = self.thisptr.getMaxForWhiteAggScore()
         return result
-
 
     @maxForWhiteAggScore.setter
     def maxForWhiteAggScore(PartialDecomposition self, double score):
@@ -1819,12 +1737,11 @@ cdef class PartialDecomposition:
     def partForWhiteAggScore(PartialDecomposition self):
         """gets the setpartitioning maximum foreseeing white area score with respect to aggregateable
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcSetPartForWhiteAggScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcSetPartForWhiteAggScore
         :return: setpartitioning maximum foreseeing white area score with respect to aggregateable.
         """
         cdef double result = self.thisptr.getSetPartForWhiteAggScore()
         return result
-
 
     @partForWhiteAggScore.setter
     def partForWhiteAggScore(PartialDecomposition self, double score):
@@ -1837,12 +1754,11 @@ cdef class PartialDecomposition:
     def bendersScore(PartialDecomposition self):
         """gets the benders score
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcBendersScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcBendersScore
         :return: benders score.
         """
         cdef double result = self.thisptr.getBendersScore()
         return result
-
 
     @bendersScore.setter
     def bendersScore(PartialDecomposition self, double score):
@@ -1855,12 +1771,11 @@ cdef class PartialDecomposition:
     def strongDecompScore(PartialDecomposition self):
         """gets the strong decomposition score
 
-        :note: -1 iff not calculated yet, \see GCGconshdlrDecompCalcStrongDecompositionScore
+        .. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcStrongDecompositionScore
         :return: strong decomposition score.
         """
         cdef double result = self.thisptr.getStrongDecompScore()
         return result
-
 
     @strongDecompScore.setter
     def strongDecompScore(PartialDecomposition self, double score):
@@ -1870,7 +1785,7 @@ cdef class PartialDecomposition:
         self.thisptr.setStrongDecompScore(cpp_score)
 
     def prepare(PartialDecomposition self):
-        """!sorts the partialdec and calculates a its implicit assignments, hashvalue and evaluation
+        """sorts the partialdec and calculates a its implicit assignments, hashvalue and evaluation
 
         :return: SCIP_OKAY if the result is consistent, SCIP_ERROR if there was an inconsistency.
         """
@@ -1883,7 +1798,6 @@ cdef class PartialDecomposition:
         """
         cdef bool result = self.thisptr.aggInfoCalculated()
         return result
-
 
     def calcAggregationInformation(PartialDecomposition self, bool ignoreDetectionLimits):
         """computes if aggregation of sub problems is possible
@@ -1898,14 +1812,12 @@ cdef class PartialDecomposition:
         self.thisptr.calcAggregationInformation(cpp_ignoreDetectionLimits)
 
     def getConssForBlocks(PartialDecomposition self):
-        cdef vector[vector[int] ] result = self.thisptr.getConssForBlocks()
+        cdef vector[vector[int]] result = self.thisptr.getConssForBlocks()
         return result
-
 
     def getTranslatedpartialdecid(PartialDecomposition self):
         cdef int result = self.thisptr.getTranslatedpartialdecid()
         return result
-
 
     def setTranslatedpartialdecid(PartialDecomposition self, int decid):
         cdef int cpp_decid = decid
@@ -1954,7 +1866,6 @@ cdef class PartialDecomposition:
                 self._visualizations[format] = data
 
         return self._visualizations[format]
-
 
     def __repr__(PartialDecomposition self):
         return f"<PartialDecomposition: nBlocks={self.getNBlocks()}, nMasterConss={self.getNMasterconss()}, nMasterVars={self.getNMastervars()}, nLinkingVars={self.getNLinkingvars()}, maxForWhiteScore={self.maxForWhiteScore}>"

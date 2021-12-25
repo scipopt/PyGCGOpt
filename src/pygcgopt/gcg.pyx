@@ -29,15 +29,15 @@ include "detprobdata.pxi"
 
 cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
     cdef SCIP_CLOCK* clock
-    PY_SCIP_CALL( SCIPcreateClock(scip, &clock) )
-    PY_SCIP_CALL( SCIPstartClock(scip, clock) )
+    PY_SCIP_CALL(SCIPcreateClock(scip, &clock))
+    PY_SCIP_CALL(SCIPstartClock(scip, clock))
     return clock
 
 
 cdef double stop_and_free_clock(SCIP* scip, SCIP_CLOCK* clock):
-    PY_SCIP_CALL( SCIPstopClock(scip, clock) )
+    PY_SCIP_CALL(SCIPstopClock(scip, clock))
     cdef double detection_time = SCIPgetClockTime(scip, clock)
-    PY_SCIP_CALL(SCIPfreeClock(scip, &clock) )
+    PY_SCIP_CALL(SCIPfreeClock(scip, &clock))
     return detection_time
 
 
@@ -55,7 +55,7 @@ cdef class GCGModel(Model):
 
     def includeDefaultPlugins(self):
         """Includes all default plug-ins of GCG into SCIP
-        
+
         Called automatically during initialization of the model.
         """
         PY_SCIP_CALL(SCIPincludeGcgPlugins(self._scip))
@@ -69,21 +69,21 @@ cdef class GCGModel(Model):
 
     def presolve(self):
         """Presolve the problem."""
-        PY_SCIP_CALL( GCGpresolve(self._scip) )
+        PY_SCIP_CALL(GCGpresolve(self._scip))
 
     def detect(self):
         """Detect the problem.
-        
+
         Can be executed before or after presolving. If executed before presolving, the structure is detected on the original problem and presolving is skiped when solving the problem later.
 
-        :see: * :meth:`presolve`
-              * :meth:`optimize`
+        .. seealso:: * :meth:`presolve`
+                     * :meth:`optimize`
         """
-        PY_SCIP_CALL( GCGdetect(self._scip) )
+        PY_SCIP_CALL(GCGdetect(self._scip))
 
     def printStatistics(self):
         """Print solving statistics of GCG to stdout."""
-        PY_SCIP_CALL( GCGprintStatistics(self._scip, NULL) )
+        PY_SCIP_CALL(GCGprintStatistics(self._scip, NULL))
 
     def printVersion(self):
         """Print version, copyright information and compile mode of GCG and SCIP"""
@@ -93,19 +93,19 @@ cdef class GCGModel(Model):
 
     def optimize(self):
         """Optimize the problem.
-        
+
         This will transform, presolve and detect the problem if neccessary.
         Otherwise, GCG will solve the problem directly."""
-        PY_SCIP_CALL( GCGsolve(self._scip) )
+        PY_SCIP_CALL(GCGsolve(self._scip))
         self._bestSol = Solution.create(self._scip, SCIPgetBestSol(self._scip))
 
     def getDualbound(self):
         """Retrieve the best dual bound.
-        
+
         This retrieves the same dual bound that GCG reports in the console log. The dual bound is based on the
         objective value of the optimized linear programming relaxation at the current node.
 
-        :note: The dual bound at the root node is *not* always equal to the solution of the restricted master problem LP relaxation. This can be due to master cuts or abortion of the pricing loop *before* the restricted master problem is optimal.
+        .. note:: The dual bound at the root node is *not* always equal to the solution of the restricted master problem LP relaxation. This can be due to master cuts or abortion of the pricing loop *before* the restricted master problem is optimal.
 
         :return: The best dual bound of the current node.
         """
@@ -167,12 +167,12 @@ cdef class GCGModel(Model):
         The created PartialDecomposition object can be used to fix constraints and variables. Afterwards, it can be
         passed to the model through addPreexistingPartialDecomposition().
 
-        :see: * :meth:`PartialDecomposition.fixConsToMaster`
-              * :meth:`PartialDecomposition.fixConssToMaster`
-              * :meth:`PartialDecomposition.fixConsToBlock`
-              * :meth:`PartialDecomposition.fixConssToBlock`
-              * :meth:`PartialDecomposition.fixConsToBlockId`
-              * :meth:`PartialDecomposition.fixConssToBlockId`
+        .. seealso:: * :meth:`PartialDecomposition.fixConsToMaster`
+                     * :meth:`PartialDecomposition.fixConssToMaster`
+                     * :meth:`PartialDecomposition.fixConsToBlock`
+                     * :meth:`PartialDecomposition.fixConssToBlock`
+                     * :meth:`PartialDecomposition.fixConsToBlockId`
+                     * :meth:`PartialDecomposition.fixConssToBlockId`
         """
         cdef bool is_presolved = self.getStage() >= SCIP_STAGE_PRESOLVED
         cdef PARTIALDECOMP *decomp = new PARTIALDECOMP(self._scip, not is_presolved)
@@ -182,10 +182,10 @@ cdef class GCGModel(Model):
         c_solvername = str_conversion(solvername)
         c_desc = str_conversion(desc)
 
-        PY_SCIP_CALL( GCGpricerIncludeSolver(
+        PY_SCIP_CALL(GCGpricerIncludeSolver(
             (<Model>self.getMasterProb())._scip, c_solvername, c_desc, priority, heuristicEnabled, exactEnabled, PyPricingSolverUpdate,
             PyPricingSolverSolve, PyPricingSolverSolveHeur, PyPricingSolverFree, PyPricingSolverInit, PyPricingSolverExit,
-            PyPricingSolverInitSol, PyPricingSolverExitSol, <GCG_SOLVERDATA*>pricingSolver) )
+            PyPricingSolverInitSol, PyPricingSolverExitSol, <GCG_SOLVERDATA*>pricingSolver))
 
         pricingSolver.model = <Model>weakref.proxy(self)
         pricingSolver.solvername = solvername
@@ -207,7 +207,7 @@ cdef class GCGModel(Model):
         This is a convenience method to access the boolean parameters "pricingsolver/<name>/exactenabled" and
         "pricingsolver/<name>/heurenabled".
 
-        Use listPricingSolvers() to obtain a list of all pricing solvers.
+        Use :meth:`listPricingSolvers()` to obtain a list of all pricing solvers.
         """
         self.setPricingSolverExactEnabled(pricing_solver_name, is_enabled)
         self.setPricingSolverHeuristicEnabled(pricing_solver_name, is_enabled)
@@ -220,7 +220,7 @@ cdef class GCGModel(Model):
 
         This is a convenience method to access the boolean parameter "pricingsolver/<name>/exactenabled".
 
-        Use listPricingSolvers() to obtain a list of all pricing solvers.
+        Use :meth:`listPricingSolvers()` to obtain a list of all pricing solvers.
         """
         self.setBoolParam("pricingsolver/{}/exactenabled".format(pricing_solver_name), is_enabled)
 
@@ -232,7 +232,7 @@ cdef class GCGModel(Model):
 
         This is a convenience method to access the boolean parameter "pricingsolver/<name>/heurenabled".
 
-        Use listPricingSolvers() to obtain a list of all pricing solvers.
+        Use :meth:`listPricingSolvers()` to obtain a list of all pricing solvers.
         """
         self.setBoolParam("pricingsolver/{}/heurenabled".format(pricing_solver_name), is_enabled)
 
@@ -242,7 +242,7 @@ cdef class GCGModel(Model):
         :param detector: An object of a subclass of detector#Detector.
         :param detectorname: name of the detector
 
-        For an explanation for all arguments, see DECincludeDetector().
+        For an explanation for all arguments, see :meth:`DECincludeDetector()`.
         """
         if len(decchar) != 1:
             raise ValueError("Length of value for 'decchar' must be 1")
@@ -250,12 +250,12 @@ cdef class GCGModel(Model):
         c_detectorname = str_conversion(detectorname)
         c_decchar = ord(str_conversion(decchar))
         c_desc = str_conversion(desc)
-        PY_SCIP_CALL( DECincludeDetector(
+        PY_SCIP_CALL(DECincludeDetector(
             self._scip, c_detectorname, c_decchar, c_desc, freqcallround, maxcallround, mincallround,
             freqcallroundoriginal, maxcallroundoriginal, mincallroundoriginal, priority, enabled, enabledfinishing,
             enabledpostprocessing, skip, usefulrecall, <DEC_DETECTORDATA*>detector, PyDetectorFree, PyDetectorInit,
             PyDetectorExit, PyDetectorPropagatePartialdec, PyDetectorFinishPartialdec, PyDetectorPostprocessPartialdec,
-            PyDetectorSetParamAggressive, PyDetectorSetParamDefault, PyDetectorSetParamFast) )
+            PyDetectorSetParamAggressive, PyDetectorSetParamDefault, PyDetectorSetParamFast))
 
         detector.model = <Model>weakref.proxy(self)
         detector.detectorname = detectorname
@@ -266,11 +266,11 @@ cdef class GCGModel(Model):
 
         :return: A list of strings of the detector names
 
-        :note: The detectors can be enabled or disabled using the appropriate methods by passing the name.
+        .. note:: The detectors can be enabled or disabled using the appropriate methods by passing the name.
 
-        :see: * :meth:`setDetectorEnabled`
-              * :meth:`setDetectorFinishingEnabled`
-              * :meth:`setDetectorPostprocessingEnabled`
+        .. seealso:: * :meth:`setDetectorEnabled`
+                     * :meth:`setDetectorFinishingEnabled`
+                     * :meth:`setDetectorPostprocessingEnabled`
         """
         cdef int n_detectors = GCGconshdlrDecompGetNDetectors(self._scip)
         cdef DEC_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
@@ -285,7 +285,7 @@ cdef class GCGModel(Model):
 
         This is a convenience method to access the boolean parameter "detection/detectors/<name>/enabled".
 
-        :note: Disabling a detector using this method is not enough to ensure that it will not run. In addition setDetectorFinishingEnabled() and setDetectorPostProcessingEnabled() have to be used.
+        .. note:: Disabling a detector using this method is not enough to ensure that it will not run. In addition setDetectorFinishingEnabled() and setDetectorPostProcessingEnabled() have to be used.
 
         Use listDetectors() to obtain a list of all detectors.
         """
@@ -300,7 +300,7 @@ cdef class GCGModel(Model):
 
         This is a convenience method to access the boolean parameter "detection/detectors/<name>/finishingenabled".
 
-        :see: * :meth:`setDetectorEnabled`
+        .. seealso:: * :meth:`setDetectorEnabled`
         """
         # TODO test if detector_name exists
         self.setBoolParam("detection/detectors/{}/finishingenabled".format(detector_name), is_enabled)
@@ -313,7 +313,7 @@ cdef class GCGModel(Model):
 
         This is a convenience method to access the boolean parameter "detection/detectors/<name>/postprocessingenabled".
 
-        :see: * :meth:`setDetectorEnabled`
+        .. seealso:: * :meth:`setDetectorEnabled`
         """
         # TODO test if detector_name exists
         self.setBoolParam("detection/detectors/{}/postprocessingenabled".format(detector_name), is_enabled)
@@ -345,7 +345,7 @@ cdef class GCGModel(Model):
             Path(directory).mkdir(exist_ok=True, parents=True)
         c_directory = str_conversion(directory)
         c_extension = str_conversion(extension)
-        PY_SCIP_CALL( DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved) )
+        PY_SCIP_CALL(DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
 
 
 cdef class GCGPricingModel(Model):
@@ -401,7 +401,7 @@ cdef class GCGMasterModel(Model):
         return model
 
     def addCol(self, GCGColumn col):
-        PY_SCIP_CALL( GCGpricerAddCol(self._scip, col.gcg_col) )
+        PY_SCIP_CALL(GCGpricerAddCol(self._scip, col.gcg_col))
 
 
 cdef class GCGColumn:
@@ -419,5 +419,4 @@ cdef class GCGColumn:
         return hash(<size_t>self.gcg_col)
 
     def __eq__(self, other):
-        return (self.__class__ == other.__class__
-                and self.gcg_col == (<GCGColumn>other).gcg_col)
+        return (self.__class__ == other.__class__ and self.gcg_col == (<GCGColumn>other).gcg_col)
