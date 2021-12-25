@@ -6,25 +6,25 @@ cdef class PricingSolver:
 
     def freeSolver(self):
         pass
-    
+
     def initSolver(self):
         pass
-    
+
     def exitSolver(self):
         pass
-    
+
     def initSolution(self):
         pass
-    
+
     def exitSolution(self):
         pass
-    
+
     def updateSolver(self, pricingprob, probnr, varobjschanged, varbndschanged, consschanged):
         pass
-    
+
     def solve(self, pricingprob, probnr, dualsolconv):
         return {}
-    
+
     def solveHeuristic(self, pricingprob, probnr, dualsolconv):
         return {}
 

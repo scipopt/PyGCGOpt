@@ -34,7 +34,7 @@ cdef extern from "gcg/gcg.h":
         int nnewpartialdecs
         double detectiontime
 
-    SCIP_RETCODE DECincludeDetector( SCIP* scip, const char* name, const char decchar, const char* description, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, int priority, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, DEC_DETECTORDATA *detectordata, SCIP_RETCODE (*freeDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*initDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*exitDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result))
+    SCIP_RETCODE DECincludeDetector(SCIP* scip, const char* name, const char decchar, const char* description, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, int priority, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, DEC_DETECTORDATA *detectordata, SCIP_RETCODE (*freeDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*initDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*exitDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result))
 
     DEC_DETECTORDATA* DECdetectorGetData(DEC_DETECTOR* detector)
 
@@ -313,7 +313,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         void prepare() except +
         bool aggInfoCalculated() except +
         void calcAggregationInformation(bool ignoreDetectionLimits) except +
-        vector[vector[int] ] getConssForBlocks() except +
+        vector[vector[int]] getConssForBlocks() except +
         int getTranslatedpartialdecid() except +
         void setTranslatedpartialdecid(int decid) except +
         void buildDecChainString(char * buffer) except +
@@ -324,7 +324,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
 
 cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
     cdef cppclass DETPROBDATA:
-        vector[pair[int, int] ] candidatesNBlocks
+        vector[pair[int, int]] candidatesNBlocks
         vector[ConsPartition *] conspartitioncollection
         vector[VarPartition *] varpartitioncollection
         double classificationtime
@@ -390,7 +390,7 @@ cdef extern from "gcg/class_conspartition.h" namespace "gcg":
     cdef cppclass ConsPartition:
         ConsPartition(ConsPartition * toCopy)
         void assignConsToClass(int consindex, int classindex) except +
-        vector[vector[int] ] getAllSubsets(bool both, bool only_master, bool only_pricing) except +
+        vector[vector[int]] getAllSubsets(bool both, bool only_master, bool only_pricing) except +
         char * getClassNameOfCons(int consindex)
         int getClassOfCons(int consindex) except +
         int getNConss() except +
@@ -404,7 +404,7 @@ cdef extern from "gcg/class_varpartition.h" namespace "gcg":
     cdef cppclass VarPartition:
         VarPartition(VarPartition * toCopy)
         void assignVarToClass(int varindex, int classindex) except +
-        vector[vector[int] ] getAllSubsets(bool all, bool linking, bool master, bool block) except +
+        vector[vector[int]] getAllSubsets(bool all, bool linking, bool master, bool block) except +
         char * getClassNameOfVar(int varindex)
         int getClassOfVar(int varindex) except +
         int getNVars() except +
