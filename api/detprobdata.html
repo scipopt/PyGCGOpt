@@ -244,7 +244,12 @@
 <dd class="field-even"><p>True if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)</p>
 </dd>
 </dl>
-<p>see addPartialdecToFinishedUnchecked()</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pygcgopt.gcg.DetProbData.addPartialdecToFinishedUnchecked" title="pygcgopt.gcg.DetProbData.addPartialdecToFinishedUnchecked"><code class="xref py py-meth docutils literal notranslate"><span class="pre">addPartialdecToFinishedUnchecked()</span></code></a></p></li>
+</ul>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.addPartialdecToFinishedUnchecked">
@@ -255,7 +260,12 @@
 <dd class="field-odd"><p><strong>partialdec</strong> – pointer of partialdec that is going to be added unchecked to the finished partialdecs (data structure to carry finished decompositions)</p>
 </dd>
 </dl>
-<p>see addPartialdecToFinished().</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#pygcgopt.gcg.DetProbData.addPartialdecToFinished" title="pygcgopt.gcg.DetProbData.addPartialdecToFinished"><code class="xref py py-meth docutils literal notranslate"><span class="pre">addPartialdecToFinished()</span></code></a></p></li>
+</ul>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.addPartialdecToOpen">
@@ -294,27 +304,25 @@
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.clearAncestorPartialdecs">
 <span class="sig-name descname"><span class="pre">clearAncestorPartialdecs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.DetProbData.clearAncestorPartialdecs" title="Permalink to this definition">¶</a></dt>
 <dd><p>clears ancestor partialdec data structure,
-:note: does not free the partialdecs themselves.</p>
+.. note:: does not free the partialdecs themselves.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.clearCurrentPartialdecs">
 <span class="sig-name descname"><span class="pre">clearCurrentPartialdecs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.DetProbData.clearCurrentPartialdecs" title="Permalink to this definition">¶</a></dt>
 <dd><p>clears current partialdec data structure</p>
-<dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>does not free the partialdecs themselves.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>does not free the partialdecs themselves.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.clearFinishedPartialdecs">
 <span class="sig-name descname"><span class="pre">clearFinishedPartialdecs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.DetProbData.clearFinishedPartialdecs" title="Permalink to this definition">¶</a></dt>
 <dd><p>clears finished partialdec data structure</p>
-<dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>does not free the partialdecs themselves.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>does not free the partialdecs themselves.</p>
+</div>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.conspartitioncollection">
@@ -369,10 +377,11 @@
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>return vector of constraint indices that have a common variable with the given constraint</p>
 </dd>
-<dt class="field-even">Note</dt>
-<dd class="field-even"><p>constraint adjacency data structure has to initilized.</p>
-</dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>constraint adjacency data structure has to initilized.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.getConssForVar">
@@ -673,7 +682,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.DetProbData.isConsCardinalityCons">
 <span class="sig-name descname"><span class="pre">isConsCardinalityCons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">consindexd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.DetProbData.isConsCardinalityCons" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns whether a constraint is a cardinality constraint, i.e. of the .. math::sum_{i} x_i = b</p>
+<dd><p>returns whether a constraint is a cardinality constraint, i.e. of the .. math::<cite>sum_{i} x_i = b</cite></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>consindexd</strong> – index of constraint that is be checked</p>

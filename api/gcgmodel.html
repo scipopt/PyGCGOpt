@@ -252,9 +252,9 @@ fixMasterConss() and the block constraints with fixBlockConss(). The decompositi
 <dd><p>Creates a new empty PartialDecomposition.</p>
 <p>The created PartialDecomposition object can be used to fix constraints and variables. Afterwards, it can be
 passed to the model through addPreexistingPartialDecomposition().</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition.fixConsToMaster" title="pygcgopt.gcg.PartialDecomposition.fixConsToMaster"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PartialDecomposition.fixConsToMaster()</span></code></a></p></li>
 <li><p><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition.fixConssToMaster" title="pygcgopt.gcg.PartialDecomposition.fixConssToMaster"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PartialDecomposition.fixConssToMaster()</span></code></a></p></li>
 <li><p><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition.fixConsToBlock" title="pygcgopt.gcg.PartialDecomposition.fixConsToBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PartialDecomposition.fixConsToBlock()</span></code></a></p></li>
@@ -262,8 +262,7 @@ passed to the model through addPreexistingPartialDecomposition().</p>
 <li><p><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition.fixConsToBlockId" title="pygcgopt.gcg.PartialDecomposition.fixConsToBlockId"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PartialDecomposition.fixConsToBlockId()</span></code></a></p></li>
 <li><p><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition.fixConssToBlockId" title="pygcgopt.gcg.PartialDecomposition.fixConssToBlockId"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PartialDecomposition.fixConssToBlockId()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.createPartialDecomposition">
@@ -274,14 +273,13 @@ passed to the model through addPreexistingPartialDecomposition().</p>
 <span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.detect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect the problem.</p>
 <p>Can be executed before or after presolving. If executed before presolving, the structure is detected on the original problem and presolving is skiped when solving the problem later.</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.presolve" title="pygcgopt.gcg.GCGModel.presolve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">presolve()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.optimize" title="pygcgopt.gcg.GCGModel.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.getDualbound">
@@ -289,12 +287,13 @@ passed to the model through addPreexistingPartialDecomposition().</p>
 <dd><p>Retrieve the best dual bound.</p>
 <p>This retrieves the same dual bound that GCG reports in the console log. The dual bound is based on the
 objective value of the optimized linear programming relaxation at the current node.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The dual bound at the root node is <em>not</em> always equal to the solution of the restricted master problem LP relaxation. This can be due to master cuts or abortion of the pricing loop <em>before</em> the restricted master problem is optimal.</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>The dual bound at the root node is <em>not</em> always equal to the solution of the restricted master problem LP relaxation. This can be due to master cuts or abortion of the pricing loop <em>before</em> the restricted master problem is optimal.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The best dual bound of the current node.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The best dual bound of the current node.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -326,7 +325,7 @@ objective value of the optimized linear programming relaxation at the current no
 </ul>
 </dd>
 </dl>
-<p>For an explanation for all arguments, see DECincludeDetector().</p>
+<p>For an explanation for all arguments, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">DECincludeDetector()</span></code>.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.includePricingSolver">
@@ -345,17 +344,19 @@ objective value of the optimized linear programming relaxation at the current no
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A list of strings of the detector names</p>
 </dd>
-<dt class="field-even">Note</dt>
-<dd class="field-even"><p>The detectors can be enabled or disabled using the appropriate methods by passing the name.</p>
-</dd>
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The detectors can be enabled or disabled using the appropriate methods by passing the name.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="pygcgopt.gcg.GCGModel.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorFinishingEnabled" title="pygcgopt.gcg.GCGModel.setDetectorFinishingEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorFinishingEnabled()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled" title="pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorPostprocessingEnabled()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.listPricingSolvers">
@@ -396,11 +397,10 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “detection/detectors/&lt;name&gt;/enabled”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>Disabling a detector using this method is not enough to ensure that it will not run. In addition setDetectorFinishingEnabled() and setDetectorPostProcessingEnabled() have to be used.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Disabling a detector using this method is not enough to ensure that it will not run. In addition setDetectorFinishingEnabled() and setDetectorPostProcessingEnabled() have to be used.</p>
+</div>
 <p>Use listDetectors() to obtain a list of all detectors.</p>
 </dd></dl>
 <dl class="py method">
@@ -416,13 +416,12 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “detection/detectors/&lt;name&gt;/finishingenabled”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="pygcgopt.gcg.GCGModel.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled">
@@ -437,13 +436,12 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “detection/detectors/&lt;name&gt;/postprocessingenabled”.</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="pygcgopt.gcg.GCGModel.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setGCGSeparating">
@@ -469,7 +467,7 @@ Otherwise, GCG will solve the problem directly.</p>
 </dl>
 <p>This is a convenience method to access the boolean parameters “pricingsolver/&lt;name&gt;/exactenabled” and
 “pricingsolver/&lt;name&gt;/heurenabled”.</p>
-<p>Use listPricingSolvers() to obtain a list of all pricing solvers.</p>
+<p>Use <a class="reference internal" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="pygcgopt.gcg.GCGModel.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setPricingSolverExactEnabled">
@@ -484,7 +482,7 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “pricingsolver/&lt;name&gt;/exactenabled”.</p>
-<p>Use listPricingSolvers() to obtain a list of all pricing solvers.</p>
+<p>Use <a class="reference internal" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="pygcgopt.gcg.GCGModel.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setPricingSolverHeuristicEnabled">
@@ -499,7 +497,7 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “pricingsolver/&lt;name&gt;/heurenabled”.</p>
-<p>Use listPricingSolvers() to obtain a list of all pricing solvers.</p>
+<p>Use <a class="reference internal" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="pygcgopt.gcg.GCGModel.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.writeAllDecomps">

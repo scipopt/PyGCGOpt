@@ -342,8 +342,16 @@ according to the cons assignment information given in constoblock vector</p>
 <dd class="field-odd"><p>scip return code</p>
 </dd>
 </dl>
-<p>see  assignPartialdecFromConstoblock()
-:note: master is indicated by assigning cons to index additionalNBlocks.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">assignPartialdecFromConstoblock()</span></code></p></li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>master is indicated by assigning cons to index additionalNBlocks.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.assignSmallestComponentsButOneConssAdjacency">
@@ -353,23 +361,23 @@ according to the cons assignment information given in constoblock vector</p>
 and assigns them accordingly (all but one of largest components)</p>
 <p>strategy: assigns all conss same block if they are connected
 two constraints are adjacent if there is a common variable</p>
-<dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>this relies on the consadjacency structure of the detprobdata</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>this relies on the consadjacency structure of the detprobdata</p>
+</div>
 <p>hence it cannot be applied in presence of linking variables.</p>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.bendersScore">
 <span class="sig-name descname"><span class="pre">bendersScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.bendersScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the benders score</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcBendersScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcBendersScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>benders score.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>benders score.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -377,12 +385,13 @@ two constraints are adjacent if there is a common variable</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.borderAreaScore">
 <span class="sig-name descname"><span class="pre">borderAreaScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.borderAreaScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the border area score</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcBorderAreaScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcBorderAreaScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>border area score.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>border area score.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,7 +419,7 @@ two constraints are adjacent if there is a common variable</p>
 <p>potentially reorders blocks for making a maximum number of linking vars stairlinking
 if all vars that connect exactly two blocks have a staircase structure, all of them become stairlinkingvars
 otherwise, the stairlinking assignment is done greedily
-:note: precondition: partialdec does not have any stairlinking vars.</p>
+.. note:: precondition: partialdec does not have any stairlinking vars.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.checkAllConssAssigned">
@@ -448,12 +457,13 @@ otherwise, the stairlinking assignment is done greedily
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.classicScore">
 <span class="sig-name descname"><span class="pre">classicScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.classicScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the classic score</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcClassicScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcClassicScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>border area score.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>border area score.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -479,14 +489,10 @@ a cons and a var are adjacent if the var appears in the cons.</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.completeByConnectedConssAdjacency">
 <span class="sig-name descname"><span class="pre">completeByConnectedConssAdjacency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.completeByConnectedConssAdjacency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns all open constraints and open variables</p>
-<blockquote>
-<div><p>strategy: assigns all conss and vars to the same block if they are connected
-a cons and a var are adjacent if the var appears in the cons</p>
-</div></blockquote>
-<dl class="simple">
-<dt>ote this relies on the consadjacency structure of the detprobdata</dt><dd><p>hence it cannot be applied in presence of linking variables.</p>
-</dd>
-</dl>
+<p>strategy: assigns all conss and vars to the same block if they are connected
+a cons and a var are adjacent if the var appears in the cons
+.. note:: this relies on the consadjacency structure of the detprobdata
+hence it cannot be applied in presence of linking variables.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.completeGreedily">
@@ -597,26 +603,26 @@ blocks.</p>
 <p>This method will automatically manage the blocks of the decomposition and create blocks if neccessary.
 The passed <code class="docutils literal notranslate"><span class="pre">block</span></code> identifiers will be mapped to internal block ids.</p>
 <p>To address the internal blocks directly, use <a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConsToBlockId" title="pygcgopt.gcg.PartialDecomposition.fixConsToBlockId"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConsToBlockId()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConssToBlock" title="pygcgopt.gcg.PartialDecomposition.fixConssToBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConssToBlock()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixConsToBlockByName">
 <span class="sig-name descname"><span class="pre">fixConsToBlockByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">blockid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.fixConsToBlockByName" title="Permalink to this definition">¶</a></dt>
 <dd><p>assigns a constraint by name to a block</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConsToBlock" title="pygcgopt.gcg.PartialDecomposition.fixConsToBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConsToBlock()</span></code></a></p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True iff successful.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True iff successful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -637,13 +643,12 @@ The passed <code class="docutils literal notranslate"><span class="pre">block</s
 </dl>
 <p>calling this method, one has to ensure that the specified block exists. A more convenient alternative is
 fixConsToBlock().</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.addBlock" title="pygcgopt.gcg.PartialDecomposition.addBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">addBlock()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixConsToMaster">
@@ -659,14 +664,15 @@ fixConsToBlock().</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixConsToMasterByName">
 <span class="sig-name descname"><span class="pre">fixConsToMasterByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.fixConsToMasterByName" title="Permalink to this definition">¶</a></dt>
 <dd><p>assgins a constraint by name as master</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConsToMaster" title="pygcgopt.gcg.PartialDecomposition.fixConsToMaster"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConsToMaster()</span></code></a></p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True iff successful.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True iff successful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -684,12 +690,13 @@ fixConsToBlock().</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the internal block_id assigned to the block.</p>
 </dd>
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConsToBlock" title="pygcgopt.gcg.PartialDecomposition.fixConsToBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConsToBlock()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixConssToBlockId">
@@ -702,13 +709,14 @@ fixConsToBlock().</p>
 <li><p><strong>block_id</strong> – id of block to add.</p></li>
 </ul>
 </dd>
-<dt class="field-even">See</dt>
-<dd class="field-even"><ul class="simple">
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConsToBlockId" title="pygcgopt.gcg.PartialDecomposition.fixConsToBlockId"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConsToBlockId()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConssToBlock" title="pygcgopt.gcg.PartialDecomposition.fixConssToBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConssToBlock()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixConssToMaster">
@@ -721,12 +729,13 @@ fixConsToBlock().</p>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><p><strong>TypeError</strong> – occurs if conss is not an Iterable</p>
 </dd>
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixConsToMaster" title="pygcgopt.gcg.PartialDecomposition.fixConsToMaster"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixConsToMaster()</span></code></a></p></li>
 </ul>
-</dd>
-</dl>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixVarToBlock">
@@ -745,14 +754,15 @@ fixConsToBlock().</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixVarToBlockByName">
 <span class="sig-name descname"><span class="pre">fixVarToBlockByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">blockid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.fixVarToBlockByName" title="Permalink to this definition">¶</a></dt>
 <dd><p>assigns a variable by name to a block</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixVarToBlock" title="pygcgopt.gcg.PartialDecomposition.fixVarToBlock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixVarToBlock()</span></code></a></p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True iff successful.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True iff successful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -770,14 +780,15 @@ fixConsToBlock().</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixVarToLinkingByName">
 <span class="sig-name descname"><span class="pre">fixVarToLinkingByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.fixVarToLinkingByName" title="Permalink to this definition">¶</a></dt>
 <dd><p>assigns a variable by name to the linking variables</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixVarToLinking" title="pygcgopt.gcg.PartialDecomposition.fixVarToLinking"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixVarToLinking()</span></code></a></p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True iff successful.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True iff successful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -791,14 +802,15 @@ fixConsToBlock().</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.fixVarToMasterByName">
 <span class="sig-name descname"><span class="pre">fixVarToMasterByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.fixVarToMasterByName" title="Permalink to this definition">¶</a></dt>
 <dd><p>assigns a variable with given name as master</p>
-<dl class="field-list simple">
-<dt class="field-odd">See</dt>
-<dd class="field-odd"><ul class="simple">
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixVarToMaster" title="pygcgopt.gcg.PartialDecomposition.fixVarToMaster"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fixVarToMaster()</span></code></a></p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>True iff successful.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True iff successful.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -813,10 +825,11 @@ fixConsToBlock().</p>
 <li><p><strong>firstblock</strong> – stairlinking variables hit exactly two consecutive blocks, this is the index of the first of these blocks</p></li>
 </ul>
 </dd>
-<dt class="field-even">Note</dt>
-<dd class="field-even"><p>stairlinking variables are only registered in block with smaller index.</p>
-</dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>stairlinking variables are only registered in block with smaller index.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getAncestorID">
@@ -849,10 +862,11 @@ fixConsToBlock().</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>array containing constraints assigned to a block.</p>
 </dd>
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>This calls the corresponding <cite>getConssForBlock()</cite> method. For consistancy, the method was renamed in the Python API.</p>
-</dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This calls the corresponding <cite>getConssForBlock()</cite> method. For consistancy, the method was renamed in the Python API.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getBlocksForRep">
@@ -949,10 +963,11 @@ fixConsToBlock().</p>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>vector containing all linking vars indices</p>
 </dd>
-<dt class="field-even">Note</dt>
-<dd class="field-even"><p>when accessed it is supposed to be sorted.</p>
-</dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>when accessed it is supposed to be sorted.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getMasterconss">
@@ -962,10 +977,11 @@ fixConsToBlock().</p>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>array containing all master conss indices</p>
 </dd>
-<dt class="field-even">Note</dt>
-<dd class="field-even"><p>when accessed it is supposed to be sorted.</p>
-</dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>when accessed it is supposed to be sorted.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getMastervars">
@@ -1212,8 +1228,12 @@ fixConsToBlock().</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getOpenvarsVec">
 <span class="sig-name descname"><span class="pre">getOpenvarsVec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getOpenvarsVec" title="Permalink to this definition">¶</a></dt>
-<dd><p>!Gets array containing variables not assigned yet as vector
-:return: array containing variables not assigned yet as vector.</p>
+<dd><p>!Gets array containing variables not assigned yet as vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>array containing variables not assigned yet as vector.</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getPctConssFromFree">
@@ -1371,15 +1391,16 @@ fixConsToBlock().</p>
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getStairlinkingvars">
 <span class="sig-name descname"><span class="pre">getStairlinkingvars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">block</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getStairlinkingvars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets array containing stairlinking vars,</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if a stairlinking variable links block i and i+1 it is only stored in vector of block i</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>if a stairlinking variable links block i and i+1 it is only stored in vector of block i</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>block</strong> – id of the block the stairlinking variable varctor is asked for</p>
 </dd>
-<dt class="field-even">Parameters</dt>
-<dd class="field-even"><p><strong>block</strong> – id of the block the stairlinking variable varctor is asked for</p>
-</dd>
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>array containing stairlinking vars,.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>array containing stairlinking vars,.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1505,8 +1526,12 @@ fixConsToBlock().</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.isSelected">
 <span class="sig-name descname"><span class="pre">isSelected</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.isSelected" title="Permalink to this definition">¶</a></dt>
-<dd><p>!Gets whether the partialdec is currently selected in explore menue
-:return: True iff the partialdec is currently selected in explore menue.</p>
+<dd><p>!Gets whether the partialdec is currently selected in explore menue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True iff the partialdec is currently selected in explore menue.</p>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.isTrivial">
@@ -1606,12 +1631,13 @@ all variables linking or mastervars, or all constraints and variables are open
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.maxForWhiteAggScore">
 <span class="sig-name descname"><span class="pre">maxForWhiteAggScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.maxForWhiteAggScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the maximum foreseeing white area score with respect to aggregatable blocks</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcMaxForeseeingWhiteAggScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcMaxForeseeingWhiteAggScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>maximum foreseeing white area score with respect to aggregatable blocks</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>maximum foreseeing white area score with respect to aggregatable blocks</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1619,12 +1645,13 @@ all variables linking or mastervars, or all constraints and variables are open
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.maxForWhiteScore">
 <span class="sig-name descname"><span class="pre">maxForWhiteScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.maxForWhiteScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the maximum foreseeing white area score</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcMaxForseeingWhiteScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcMaxForseeingWhiteScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>maximum foreseeing white area score</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>maximum foreseeing white area score</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1633,19 +1660,20 @@ all variables linking or mastervars, or all constraints and variables are open
 <span class="sig-name descname"><span class="pre">maxWhiteScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.maxWhiteScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the maximum white area score</p>
 <p>“maximum white score” is fraction of the area of the decomposed matrix that is neither block or border
-:note: -1 iff not calculated yet, see GCGconshdlrDecompCalcMaxWhiteScore
+.. note:: -1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcMaxWhiteScore
 :return: maximum  white area score</p>
 </dd></dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.partForWhiteAggScore">
 <span class="sig-name descname"><span class="pre">partForWhiteAggScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.partForWhiteAggScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the setpartitioning maximum foreseeing white area score with respect to aggregateable</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcSetPartForWhiteAggScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcSetPartForWhiteAggScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>setpartitioning maximum foreseeing white area score with respect to aggregateable.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>setpartitioning maximum foreseeing white area score with respect to aggregateable.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1653,19 +1681,20 @@ all variables linking or mastervars, or all constraints and variables are open
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.partForWhiteScore">
 <span class="sig-name descname"><span class="pre">partForWhiteScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.partForWhiteScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the setpartitioning maximum foreseeing white area score</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GGCGconshdlrDecompCalcSetPartForseeingWhiteScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GGCGconshdlrDecompCalcSetPartForseeingWhiteScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>setpartitioning maximum foreseeing white area score</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>setpartitioning maximum foreseeing white area score</p>
 </dd>
 </dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.prepare">
 <span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.prepare" title="Permalink to this definition">¶</a></dt>
-<dd><p>!sorts the partialdec and calculates a its implicit assignments, hashvalue and evaluation</p>
+<dd><p>sorts the partialdec and calculates a its implicit assignments, hashvalue and evaluation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>SCIP_OKAY if the result is consistent, SCIP_ERROR if there was an inconsistency.</p>
@@ -1678,7 +1707,7 @@ all variables linking or mastervars, or all constraints and variables are open
 <dd><p>refine partialdec with focus on blocks</p>
 <p>strategy: assigns open conss and vars if they can be found in blocks
 (without respect to open vars and conss  see assignHittingOpenconss(), see assignHittingOpenvars())
-:note: partialdec might be not complete.</p>
+.. note:: partialdec might be not complete.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.refineToMaster">
@@ -1690,7 +1719,7 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.removeAncestorID">
 <span class="sig-name descname"><span class="pre">removeAncestorID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">ancestorid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.removeAncestorID" title="Permalink to this definition">¶</a></dt>
-<dd><p>!removes ancestor id from list.</p>
+<dd><p>removes ancestor id from list.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.removeMastercons">
@@ -1899,10 +1928,11 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <li><p><strong>block2</strong> – id of block two</p></li>
 </ul>
 </dd>
-<dt class="field-even">Note</dt>
-<dd class="field-even"><p>stairlinking variables are only registered in block with smaller index.</p>
-</dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>stairlinking variables are only registered in block with smaller index.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.shouldCompletedByConsToMaster">
@@ -1915,11 +1945,10 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.showVisualization">
 <span class="sig-name descname"><span class="pre">showVisualization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.showVisualization" title="Permalink to this definition">¶</a></dt>
 <dd><p>generates and opens a gp visualization of the partialdec</p>
-<dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>linux only.</p>
-</dd>
-</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>linux only.</p>
+</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.sort">
@@ -1935,12 +1964,13 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.strongDecompScore">
 <span class="sig-name descname"><span class="pre">strongDecompScore</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.strongDecompScore" title="Permalink to this definition">¶</a></dt>
 <dd><p>gets the strong decomposition score</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>-1 iff not calculated yet, .. seealso:: GCGconshdlrDecompCalcStrongDecompositionScore</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Note</dt>
-<dd class="field-odd"><p>-1 iff not calculated yet, see GCGconshdlrDecompCalcStrongDecompositionScore</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>strong decomposition score.</p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>strong decomposition score.</p>
 </dd>
 </dl>
 </dd></dl>
