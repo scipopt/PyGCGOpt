@@ -1996,10 +1996,10 @@ cdef class PartialDecomposition:
                         fig.colorbar(scatter)
                 elif matrixType == 'miplibconstype':
                     if cmap == None:
-                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=plt.get_cmap('tab20', 18), vmin=-1, vmax=17, s=s, alpha=1, zorder=zorderForBoxes)
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=plt.get_cmap('tab20', 17), vmin=-1, vmax=16, s=s, alpha=1, zorder=zorderForBoxes)
                         cbar = plt.colorbar(scatter)  
-                        cbar.set_ticks(np.arange(-0.5, 17.5, 1))
-                        cbar.set_ticklabels(['NONE','EMPTY','FREE','SING','AGGR','PREC','VARB','SPAR','SPAC','SCOV','CARD','INVK','EQUK','BINP','KNAP','IKNA','MIXB','GENL'])
+                        cbar.set_ticks(np.arange(-0.5, 16.5, 1))
+                        cbar.set_ticklabels(['NONE','EMPTY','FREE','SING','AGGR','VARB','SPAR','SPAC','SCOV','CARD','INVK','EQUK','BINP','KNAP','IKNA','MIXB','GENL'])
                         cbar.ax.set_ylabel('MIPLIB constypes', rotation=270)
                     else:
                         scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
