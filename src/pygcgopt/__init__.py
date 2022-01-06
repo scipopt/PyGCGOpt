@@ -1,4 +1,4 @@
-__version__ = '0.1.0.dev0'
+__version__ = '0.1.3'
 
 # required for Python 3.8 on Windows
 import os
@@ -42,4 +42,5 @@ from pyscipopt import SCIP_BENDERSENFOTYPE
 from pyscipopt import SCIP_ROWORIGINTYPE
 
 # export user-relevant objects
-from pygcgopt.gcg import GCGModel, Detector
+from pygcgopt.gcg import GCGModel, Detector, PricingSolver
+from pygcgopt.gcg import PY_GCG_PRICINGSTATUS as GCG_PRICINGSTATUS

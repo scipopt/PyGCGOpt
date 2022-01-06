@@ -6,11 +6,16 @@ build/
 dist/
 include
 lib
-src/pyscipopt/*.c
-src/pyscipopt/*.cpp
+src/pygcgopt/*.c
+src/pygcgopt/*.cpp
 __pycache__
 .cache
 scripts/
+docs/README.md
+docs/INSTALL.md
+docs/CHANGELOG.md
+docs/examples/*
+!docs/examples/index.rst
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -133,3 +138,6 @@ model.lp
 # documentation
 docs/html
 docs/*.tag
+
+# MacOS
+.DS_Store

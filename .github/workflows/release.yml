@@ -1,0 +1,80 @@
+name: Release Package
+
+on: 
+  workflow_call:
+    inputs:
+      production:
+        type: boolean
+        required: true
+        default: false
+    secrets:
+      PYPI_API_TOKEN:
+        required: true
+
+jobs:
+  Build-Package-Linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        
+      - name: Setup SCIPOptSuite
+        uses: ./.github/actions/setup-scipoptsuite-action
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+
+      - name: Prepare Python Environment
+        run: |
+          pip install -r requirements.txt
+
+      - name: Setup PySCIPOpt
+        uses: ./.github/actions/setup-pyscipopt-action
+        with:
+          ref: scip-8
+      
+      - name: Build PyGCGOpt
+        run: |
+          python -m build --sdist --no-isolation --outdir dist/
+
+      - name: Install PyGCGOpt
+        run: |
+          pip install dist/*.tar.gz
+      
+      - name: Upload PyGCGOpt dist artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: PyGCGOpt-source-distribution
+          path: dist/
+
+  Release-PyPI:
+    needs: [Build-Package-Linux]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Download PyGCGOpt dist artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: PyGCGOpt-source-distribution
+          path: dist/
+
+      - name: "Publish to pypi.org"
+        if: ${{ inputs.production }} 
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true
+          packages_dir: dist/
+
+      - name: "Publish to test.pypi.org"
+        if: ${{ !inputs.production }} 
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository_url: https://test.pypi.org/legacy/
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true
+          packages_dir: dist/

@@ -1,0 +1,14 @@
+name: Release Package PyPI
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release-test:
+    uses: scipopt/PyGCGOpt/.github/workflows/release.yml@master
+    with:
+      production: true
+    secrets:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}

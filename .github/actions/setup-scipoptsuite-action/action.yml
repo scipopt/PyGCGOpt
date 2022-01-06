@@ -1,0 +1,22 @@
+name: "Setup SCIPOptSuite"
+
+inputs:
+  version:
+    description: "SCIPOptSuite version to install"
+    required: true
+    default: "8.0.0"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache SCIPOptSuite Package
+      uses: actions/cache@v2
+      with:
+        path: ~/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
+        key: ${{ runner.os }}-SCIPOptSuite-${{ env.version }}-home
+
+    - name: Install dependencies (SCIPOptSuite)
+      run: |
+        wget --quiet --timestamping --directory-prefix=$HOME https://scipopt.org/download/release/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
+        sudo apt-get install -y ~/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
+      shell: bash

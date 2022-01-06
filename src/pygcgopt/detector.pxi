@@ -1,6 +1,5 @@
-##@file detector.pxi
-#@brief Base class of the Detector Plugin
 cdef class Detector:
+    """Base class of the Detector Plugin"""
     cdef public Model model
     cdef public str detectorname
 
