@@ -1834,7 +1834,7 @@ cdef class PartialDecomposition:
         output = self.thisptr.getVisualizationName().decode('UTF-8')
         return output
 
-    def matrix(PartialDecomposition self, obj=False, b=False):
+    def matrix(PartialDecomposition self, obj=False, bcoef=False):
         cdef map[pair[int, int], double] mat = self.thisptr.writeNonzeroMatrix()
         dictionary = <dict>mat
 
@@ -1842,16 +1842,16 @@ cdef class PartialDecomposition:
         Y = list()
         vals = list()
         for key, value in dictionary.items():
-            if obj == True and b == True:
+            if obj == True and bcoef == True:
                 X.append(key[0])
                 Y.append(key[1])
                 vals.append(value)
-            elif b == True and obj == False:
+            elif bcoef == True and obj == False:
                 if key[0] != -1:
                     X.append(key[0])
                     Y.append(key[1])
                     vals.append(value)
-            elif obj == True and b == False:
+            elif obj == True and bcoef == False:
                 if key[1] != self.getNVars() and key[1] != -1:
                     X.append(key[0])
                     Y.append(key[1])
@@ -1863,7 +1863,12 @@ cdef class PartialDecomposition:
                     vals.append(value)
         return X, Y, vals
 
-    def matrixMIPLIBConsType(PartialDecomposition self, obj=False, b=False):
+    def uniqueMatrixValues(PartialDecomposition self, obj=False, bcoef=False):
+        _, _, matrix = self.matrix(obj=obj, bcoef=bcoef)
+
+        return set(matrix)
+
+    def matrixMIPLIBConsType(PartialDecomposition self, obj=False, bcoef=False):
         cdef map[pair[int, int], int] mat = self.thisptr.writeMIPLIBConsTypeMatrix()
         dictionary = <dict>mat
 
@@ -1871,16 +1876,16 @@ cdef class PartialDecomposition:
         Y = list()
         vals = list()
         for key, value in dictionary.items():
-            if obj == True and b == True:
+            if obj == True and bcoef == True:
                 X.append(key[0])
                 Y.append(key[1])
                 vals.append(value)
-            elif b == True and obj == False:
+            elif bcoef == True and obj == False:
                 if key[0] != -1:
                     X.append(key[0])
                     Y.append(key[1])
                     vals.append(value)
-            elif obj == True and b == False:
+            elif obj == True and bcoef == False:
                 if key[1] != self.getNVars() and key[1] != -1:
                     X.append(key[0])
                     Y.append(key[1])
@@ -1892,7 +1897,12 @@ cdef class PartialDecomposition:
                     vals.append(value)
         return X, Y, vals
 
-    def matrixSCIPVarType(PartialDecomposition self, obj=False, b=False):
+    def uniqueMatrixMIPLIBConsType(PartialDecomposition self, obj=False, bcoef=False):
+        _, _, matrix = self.matrixMIPLIBConsType(obj=obj, bcoef=bcoef)
+
+        return set(matrix)
+
+    def matrixSCIPVarType(PartialDecomposition self, obj=False, bcoef=False):
         cdef map[pair[int, int], int] mat = self.thisptr.writeSCIPVarTypeMatrix()
         dictionary = <dict>mat
 
@@ -1900,16 +1910,16 @@ cdef class PartialDecomposition:
         Y = list()
         vals = list()
         for key, value in dictionary.items():
-            if obj == True and b == True:
+            if obj == True and bcoef == True:
                 X.append(key[0])
                 Y.append(key[1])
                 vals.append(value)
-            elif b == True and obj == False:
+            elif bcoef == True and obj == False:
                 if key[0] != -1:
                     X.append(key[0])
                     Y.append(key[1])
                     vals.append(value)
-            elif obj == True and b == False:
+            elif obj == True and bcoef == False:
                 if key[1] != self.getNVars() and key[1] != -1:
                     X.append(key[0])
                     Y.append(key[1])
@@ -1921,19 +1931,71 @@ cdef class PartialDecomposition:
                     vals.append(value)
         return X, Y, vals
 
-    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=True, matrixType='nonzero', only_boxes=False, nonzero=True, obj=False, b=False, boxes=True, s=1, alpha=1, cmap=None, linkingcolor='#FFB72D', mastercolor='#1340C7', blockcolor='#718CDB', stairlinkingcolor='#886100', opencolor='#FFD88F', linecolor='#000000'):
+    def uniqueMatrixSCIPVarType(PartialDecomposition self, obj=False, bcoef=False):
+        _, _, matrix = self.matrixSCIPVarType(obj=obj, bcoef=bcoef)
+
+        return set(matrix)
+
+    def scipVarMap(self, value):
+        if value==0:
+            return "BIN"
+        elif value==1:
+            return "INT"
+        elif value==2:
+            return "IMP"
+        elif value==3:
+            return "CONT"
+        else:
+            return "NONE"
+
+    def miplibConsMap(self, value):
+        if value==0:
+            return "EMPTY"
+        elif value==1:
+            return "FREE"
+        elif value==2:
+            return "SING"
+        elif value==3:
+            return "AGGR"
+        elif value==4:
+            return "VARB"
+        elif value==5:
+            return "SPAR"
+        elif value==6:
+            return "SPAC"
+        elif value==7:
+            return "SCOV"
+        elif value==8:
+            return "CARD"
+        elif value==9:
+            return "INVK"
+        elif value==10:
+            return "EQUK"
+        elif value==11:
+            return "BINP"
+        elif value==12:
+            return "KNAP"
+        elif value==13:
+            return "IKNA"
+        elif value==14:
+            return "MIXB"
+        elif value==15:
+            return "GENL"
+        else:
+            return "NONE"
+
+    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=True, matrixType="nonzero", only_boxes=False, nonzero=True, obj=False, bcoef=False, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
         try:
             import matplotlib.pyplot as plt
             import matplotlib.patches as patches
             import matplotlib.colors as colors
-            import numpy as np
 
-            if matrixType=='nonzero':
-                X, Y, vals = self.matrix(obj=obj, b=b)
-            elif matrixType == 'miplibconstype':
-                X, Y, vals = self.matrixMIPLIBConsType(obj=obj, b=b)
-            elif matrixType == 'scipvartype':
-                X, Y, vals = self.matrixSCIPVarType(obj=obj, b=b)
+            if matrixType=="nonzero":
+                X, Y, vals = self.matrix(obj=obj, bcoef=bcoef)
+            elif matrixType == "miplibconstype":
+                X, Y, vals = self.matrixMIPLIBConsType(obj=obj, bcoef=bcoef)
+            elif matrixType == "scipvartype":
+                X, Y, vals = self.matrixSCIPVarType(obj=obj, bcoef=bcoef)
 
             fig, ax = plt.subplots(figsize=figsize)
 
@@ -1982,49 +2044,70 @@ cdef class PartialDecomposition:
 
             #plot the coefficients
             if only_boxes != True:
-                if matrixType == 'nonzero':
+                if matrixType == "nonzero":
                     if nonzero == True:
                         if cmap == None:
-                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c='black', s=s, alpha=1, zorder=zorderForBoxes)
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c="black", s=s, alpha=1, zorder=zorderForBoxes)
                         else:
                             scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=cmap, s=s, alpha=1, zorder=zorderForBoxes)
                     else:
                         if cmap == None:
                             scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, s=s, alpha=1, zorder=zorderForBoxes)
                         else:
-                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
-                        fig.colorbar(scatter)
-                elif matrixType == 'miplibconstype':
+                            if norm == None:
+                                scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                            else:
+                                scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
+                        cbar = fig.colorbar(scatter)
+                        cbar.ax.set_ylabel("coefficients", rotation=90)
+                elif matrixType == "miplibconstype":
                     if cmap == None:
-                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=plt.get_cmap('tab20', 17), vmin=-1, vmax=16, s=s, alpha=1, zorder=zorderForBoxes)
-                        cbar = plt.colorbar(scatter)  
-                        cbar.set_ticks(np.arange(-0.5, 16.5, 1))
-                        cbar.set_ticklabels(['NONE','EMPTY','FREE','SING','AGGR','VARB','SPAR','SPAC','SCOV','CARD','INVK','EQUK','BINP','KNAP','IKNA','MIXB','GENL'])
-                        cbar.ax.set_ylabel('MIPLIB constypes', rotation=270)
+                        uniqueMatrixMIPLIBConsTypeList = list(self.uniqueMatrixMIPLIBConsType(obj=obj, bcoef=bcoef))
+                        uniqueMatrixMIPLIBConsTypeList.sort()
+                        selfcolors=["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:brown", "tab:pink", "tab:gray", "tab:olive", "tab:cyan", "black", "hotpink", "peachpuff", "lime", "darkblue", "tan"]
+                        colors_used=selfcolors[0:len(uniqueMatrixMIPLIBConsTypeList)]
+                        cmap_self = colors.ListedColormap(colors_used)
+                        boundaries = [-1.5] + [i+0.5 for i in uniqueMatrixMIPLIBConsTypeList]
+                        norm = colors.BoundaryNorm(boundaries, cmap_self.N)
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap_self, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
+                        cbar = fig.colorbar(scatter)
+                        cbar.set_ticks([(boundaries[i]+boundaries[i+1])/(2) for i in range(len(boundaries)) if i != len(boundaries)-1])
+                        cbar.set_ticklabels([self.miplibConsMap(i) for i in uniqueMatrixMIPLIBConsTypeList])
+                        cbar.ax.set_ylabel("MIPLIB constypes", rotation=90)
                     else:
                         scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
                         fig.colorbar(scatter)
-                elif matrixType == 'scipvartype':
+                elif matrixType == "scipvartype":
                     if cmap == None:
-                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=plt.get_cmap('tab10', 5), vmin=-1, vmax=4, s=s, alpha=1, zorder=zorderForBoxes)
+                        uniqueMatrixSCIPVarTypeList = list(self.uniqueMatrixSCIPVarType(obj=obj, bcoef=bcoef))
+                        uniqueMatrixSCIPVarTypeList.sort()
+                        selfcolors=["blue", "green", "red", "gray", "black"]
+                        colors_used=selfcolors[0:len(uniqueMatrixSCIPVarTypeList)]
+                        cmap_self = colors.ListedColormap(colors_used)
+                        boundaries = [-1.5] + [i+0.5 for i in uniqueMatrixSCIPVarTypeList]
+                        norm = colors.BoundaryNorm(boundaries, cmap_self.N)
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap_self, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
                         cbar = plt.colorbar(scatter)  
-                        cbar.set_ticks(np.arange(-0.5, 4.5, 1))
-                        cbar.set_ticklabels(['NONE','BIN','INT','IMPL','CONT'])
-                        cbar.ax.set_ylabel('SCIP vartypes', rotation=270)
+                        cbar.set_ticks([(boundaries[i]+boundaries[i+1])/(2) for i in range(len(boundaries)) if i != len(boundaries)-1])
+                        cbar.set_ticklabels([self.scipVarMap(i) for i in uniqueMatrixSCIPVarTypeList])
+                        cbar.ax.set_ylabel("SCIP vartypes", rotation=90)
                     else:
                         scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
                         fig.colorbar(scatter)
 
             #adjust x-axis and y-axis
-            if b == True:
-                ax.set_xlim([-1, self.getNVars()+1])
+            ax.xaxis.get_major_locator().set_params(integer=True)
+            if bcoef == True:
+                ax.set_xlim(xmin=-1, xmax=self.getNVars()+1)
             else:
-                ax.set_xlim([0, self.getNVars()])
+                ax.set_xlim(xmin=0, xmax=self.getNVars())
             
+            ax.yaxis.get_major_locator().set_params(integer=True)
             if obj == True:
-                ax.set_ylim([-1, self.getNConss()])
+                ax.set_ylim(bottom=-1, top=self.getNConss())
             else:
-                ax.set_ylim([0, self.getNConss()])
+                ax.set_ylim(bottom=0, top=self.getNConss())
+           
             ax.xaxis.tick_top()
             ax.invert_yaxis()
 
