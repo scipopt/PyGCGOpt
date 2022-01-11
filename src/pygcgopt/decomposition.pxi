@@ -2075,7 +2075,10 @@ cdef class PartialDecomposition:
                         cbar.set_ticklabels([self.miplibConsMap(i) for i in uniqueMatrixMIPLIBConsTypeList])
                         cbar.ax.set_ylabel("MIPLIB constypes", rotation=90)
                     else:
-                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                        if norm == None:
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                        else:
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
                         fig.colorbar(scatter)
                 elif matrixType == "scipvartype":
                     if cmap == None:
@@ -2092,7 +2095,10 @@ cdef class PartialDecomposition:
                         cbar.set_ticklabels([self.scipVarMap(i) for i in uniqueMatrixSCIPVarTypeList])
                         cbar.ax.set_ylabel("SCIP vartypes", rotation=90)
                     else:
-                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                        if norm == None:
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                        else:
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
                         fig.colorbar(scatter)
 
             #adjust x-axis and y-axis
