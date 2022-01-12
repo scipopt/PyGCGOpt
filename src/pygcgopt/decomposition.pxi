@@ -1984,24 +1984,27 @@ cdef class PartialDecomposition:
         else:
             return "NONE"
 
-    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=True, matrixType="nonzero", only_boxes=False, nonzero=True, obj=False, bcoef=False, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
         try:
             import matplotlib.pyplot as plt
             import matplotlib.patches as patches
             import matplotlib.colors as colors
 
-            if matrixType=="nonzero":
-                X, Y, vals = self.matrix(obj=obj, bcoef=bcoef)
-            elif matrixType == "miplibconstype":
-                X, Y, vals = self.matrixMIPLIBConsType(obj=obj, bcoef=bcoef)
-            elif matrixType == "scipvartype":
-                X, Y, vals = self.matrixSCIPVarType(obj=obj, bcoef=bcoef)
+            if dots == True:
+                if matrixType == "nonzero" or matrixType == "nonzerowithvalue":
+                    X, Y, vals = self.matrix(obj=obj, bcoef=bcoef)
+                elif matrixType == "miplibconstype":
+                    X, Y, vals = self.matrixMIPLIBConsType(obj=obj, bcoef=bcoef)
+                elif matrixType == "scipvartype":
+                    X, Y, vals = self.matrixSCIPVarType(obj=obj, bcoef=bcoef)
 
             fig, ax = plt.subplots(figsize=figsize)
 
             #set title
-            if title==True:
+            if title == None:
                 ax.set_title(self.getVisuName())
+            else:
+                ax.set_title(title)
 
             #create the boxes
             if boxes==True:
@@ -2043,23 +2046,22 @@ cdef class PartialDecomposition:
                 zorderForBoxes = 1
 
             #plot the coefficients
-            if only_boxes != True:
+            if dots == True:
                 if matrixType == "nonzero":
-                    if nonzero == True:
-                        if cmap == None:
-                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c="black", s=s, alpha=1, zorder=zorderForBoxes)
-                        else:
-                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                    if cmap == None:
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c="black", s=s, alpha=1, zorder=zorderForBoxes)
                     else:
-                        if cmap == None:
-                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, s=s, alpha=1, zorder=zorderForBoxes)
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=cmap, s=s, alpha=1, zorder=zorderForBoxes)
+                elif matrixType == "nonzerowithvalue":
+                    if cmap == None:
+                        scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, s=s, alpha=1, zorder=zorderForBoxes)
+                    else:
+                        if norm == None:
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
                         else:
-                            if norm == None:
-                                scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, s=s, alpha=1, zorder=zorderForBoxes)
-                            else:
-                                scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
-                        cbar = fig.colorbar(scatter)
-                        cbar.ax.set_ylabel("coefficients", rotation=90)
+                            scatter=ax.scatter([y+0.5 for y in Y], [x+0.5 for x in X], c=vals, cmap=cmap, norm=norm, s=s, alpha=1, zorder=zorderForBoxes)
+                    cbar = fig.colorbar(scatter)
+                    cbar.ax.set_ylabel("coefficients", rotation=90)
                 elif matrixType == "miplibconstype":
                     if cmap == None:
                         uniqueMatrixMIPLIBConsTypeList = list(self.uniqueMatrixMIPLIBConsType(obj=obj, bcoef=bcoef))
