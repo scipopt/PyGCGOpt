@@ -1984,7 +1984,7 @@ cdef class PartialDecomposition:
         else:
             return "NONE"
 
-    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
         try:
             import matplotlib.pyplot as plt
             import matplotlib.patches as patches
@@ -2012,12 +2012,12 @@ cdef class PartialDecomposition:
                 colboxcounter = 0
 
                 if self.getNLinkingvars()!=0:
-                    lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
+                    lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
                     ax.add_patch(lvars)
                     colboxcounter+=self.getNLinkingvars()
 
                 if self.getNMasterconss()!=0:
-                    master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=0.8, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
+                    master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=linewidth, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
                     ax.add_patch(master)
                     rowboxcounter+=self.getNMasterconss()
 
@@ -2025,17 +2025,17 @@ cdef class PartialDecomposition:
                     colboxcounter+=self.getNMastervars()
 
                 for b in range(self.getNBlocks()):
-                    block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=0.8, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
+                    block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=linewidth, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
                     ax.add_patch(block)
                     colboxcounter += self.getNVarsForBlock(b)
                     if self.getNStairlinkingvars(b)!=0:
-                        stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
+                        stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
                         ax.add_patch(stairlinking)
                     colboxcounter += self.getNStairlinkingvars(b)
                     rowboxcounter += self.getNConssForBlock(b)
 
                 if self.getNOpenvars()!=0:
-                    openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=0.8, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
+                    openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=linewidth, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
                     ax.add_patch(openrec)
                     colboxcounter += self.getNOpenvars()
                     rowboxcounter += self.getNOpenconss()

@@ -3647,7 +3647,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_322matrixSCIPVar
 static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_324uniqueMatrixSCIPVarType(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_obj, PyObject *__pyx_v_bcoef); /* proto */
 static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_326scipVarMap(CYTHON_UNUSED struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_328miplibConsMap(CYTHON_UNUSED struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_fname, PyObject *__pyx_v_figsize, PyObject *__pyx_v_dpi, PyObject *__pyx_v_title, PyObject *__pyx_v_matrixType, PyObject *__pyx_v_obj, PyObject *__pyx_v_bcoef, PyObject *__pyx_v_dots, PyObject *__pyx_v_boxes, PyObject *__pyx_v_s, PyObject *__pyx_v_alpha, PyObject *__pyx_v_cmap, PyObject *__pyx_v_norm, PyObject *__pyx_v_linkingcolor, PyObject *__pyx_v_mastercolor, PyObject *__pyx_v_blockcolor, PyObject *__pyx_v_stairlinkingcolor, PyObject *__pyx_v_opencolor, PyObject *__pyx_v_linecolor); /* proto */
+static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_fname, PyObject *__pyx_v_figsize, PyObject *__pyx_v_dpi, PyObject *__pyx_v_title, PyObject *__pyx_v_matrixType, PyObject *__pyx_v_obj, PyObject *__pyx_v_bcoef, PyObject *__pyx_v_dots, PyObject *__pyx_v_boxes, PyObject *__pyx_v_s, PyObject *__pyx_v_alpha, PyObject *__pyx_v_cmap, PyObject *__pyx_v_norm, PyObject *__pyx_v_linkingcolor, PyObject *__pyx_v_mastercolor, PyObject *__pyx_v_blockcolor, PyObject *__pyx_v_stairlinkingcolor, PyObject *__pyx_v_opencolor, PyObject *__pyx_v_linecolor, PyObject *__pyx_v_linewidth); /* proto */
 static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_332_repr_svg_(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_334_repr_png_(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_336__repr__(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self); /* proto */
@@ -33134,7 +33134,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_328miplibConsMap
  *         else:
  *             return "NONE"             # <<<<<<<<<<<<<<
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
@@ -33165,14 +33165,14 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_328miplibConsMap
 /* "src/pygcgopt/decomposition.pxi":1987
  *             return "NONE"
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):             # <<<<<<<<<<<<<<
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):             # <<<<<<<<<<<<<<
  *         try:
  *             import matplotlib.pyplot as plt
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_8pygcgopt_3gcg_20PartialDecomposition_330visualize[] = "PartialDecomposition.visualize(self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType=u'nonzero', obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor=u'#FFB72D', mastercolor=u'#1340C7', blockcolor=u'#718CDB', stairlinkingcolor=u'#886100', opencolor=u'#FFD88F', linecolor=u'#000000')";
+static char __pyx_doc_8pygcgopt_3gcg_20PartialDecomposition_330visualize[] = "PartialDecomposition.visualize(self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType=u'nonzero', obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor=u'#FFB72D', mastercolor=u'#1340C7', blockcolor=u'#718CDB', stairlinkingcolor=u'#886100', opencolor=u'#FFD88F', linecolor=u'#000000', linewidth=0.8)";
 static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_fname = 0;
   PyObject *__pyx_v_figsize = 0;
@@ -33193,6 +33193,7 @@ static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyO
   PyObject *__pyx_v_stairlinkingcolor = 0;
   PyObject *__pyx_v_opencolor = 0;
   PyObject *__pyx_v_linecolor = 0;
+  PyObject *__pyx_v_linewidth = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -33200,8 +33201,8 @@ static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyO
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("visualize (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_fname,&__pyx_n_s_figsize,&__pyx_n_s_dpi,&__pyx_n_s_title,&__pyx_n_s_matrixType,&__pyx_n_s_obj,&__pyx_n_s_bcoef,&__pyx_n_s_dots,&__pyx_n_s_boxes,&__pyx_n_s_s,&__pyx_n_s_alpha,&__pyx_n_s_cmap,&__pyx_n_s_norm,&__pyx_n_s_linkingcolor,&__pyx_n_s_mastercolor,&__pyx_n_s_blockcolor,&__pyx_n_s_stairlinkingcolor,&__pyx_n_s_opencolor,&__pyx_n_s_linecolor,0};
-    PyObject* values[19] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_fname,&__pyx_n_s_figsize,&__pyx_n_s_dpi,&__pyx_n_s_title,&__pyx_n_s_matrixType,&__pyx_n_s_obj,&__pyx_n_s_bcoef,&__pyx_n_s_dots,&__pyx_n_s_boxes,&__pyx_n_s_s,&__pyx_n_s_alpha,&__pyx_n_s_cmap,&__pyx_n_s_norm,&__pyx_n_s_linkingcolor,&__pyx_n_s_mastercolor,&__pyx_n_s_blockcolor,&__pyx_n_s_stairlinkingcolor,&__pyx_n_s_opencolor,&__pyx_n_s_linecolor,&__pyx_n_s_linewidth,0};
+    PyObject* values[20] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     values[0] = ((PyObject *)Py_None);
     values[1] = ((PyObject *)__pyx_tuple__11);
     values[2] = ((PyObject *)Py_None);
@@ -33221,10 +33222,13 @@ static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyO
     values[16] = ((PyObject *)__pyx_kp_u_886100);
     values[17] = ((PyObject *)__pyx_kp_u_FFD88F);
     values[18] = ((PyObject *)__pyx_kp_u_000000);
+    values[19] = ((PyObject *)__pyx_float_0_8);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case 20: values[19] = PyTuple_GET_ITEM(__pyx_args, 19);
+        CYTHON_FALLTHROUGH;
         case 19: values[18] = PyTuple_GET_ITEM(__pyx_args, 18);
         CYTHON_FALLTHROUGH;
         case 18: values[17] = PyTuple_GET_ITEM(__pyx_args, 17);
@@ -33381,12 +33385,20 @@ static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyO
           PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_linecolor);
           if (value) { values[18] = value; kw_args--; }
         }
+        CYTHON_FALLTHROUGH;
+        case 19:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_linewidth);
+          if (value) { values[19] = value; kw_args--; }
+        }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "visualize") < 0)) __PYX_ERR(2, 1987, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case 20: values[19] = PyTuple_GET_ITEM(__pyx_args, 19);
+        CYTHON_FALLTHROUGH;
         case 19: values[18] = PyTuple_GET_ITEM(__pyx_args, 18);
         CYTHON_FALLTHROUGH;
         case 18: values[17] = PyTuple_GET_ITEM(__pyx_args, 17);
@@ -33448,23 +33460,24 @@ static PyObject *__pyx_pw_8pygcgopt_3gcg_20PartialDecomposition_331visualize(PyO
     __pyx_v_stairlinkingcolor = values[16];
     __pyx_v_opencolor = values[17];
     __pyx_v_linecolor = values[18];
+    __pyx_v_linewidth = values[19];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("visualize", 0, 0, 19, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(2, 1987, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("visualize", 0, 0, 20, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(2, 1987, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("pygcgopt.gcg.PartialDecomposition.visualize", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(((struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *)__pyx_v_self), __pyx_v_fname, __pyx_v_figsize, __pyx_v_dpi, __pyx_v_title, __pyx_v_matrixType, __pyx_v_obj, __pyx_v_bcoef, __pyx_v_dots, __pyx_v_boxes, __pyx_v_s, __pyx_v_alpha, __pyx_v_cmap, __pyx_v_norm, __pyx_v_linkingcolor, __pyx_v_mastercolor, __pyx_v_blockcolor, __pyx_v_stairlinkingcolor, __pyx_v_opencolor, __pyx_v_linecolor);
+  __pyx_r = __pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(((struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *)__pyx_v_self), __pyx_v_fname, __pyx_v_figsize, __pyx_v_dpi, __pyx_v_title, __pyx_v_matrixType, __pyx_v_obj, __pyx_v_bcoef, __pyx_v_dots, __pyx_v_boxes, __pyx_v_s, __pyx_v_alpha, __pyx_v_cmap, __pyx_v_norm, __pyx_v_linkingcolor, __pyx_v_mastercolor, __pyx_v_blockcolor, __pyx_v_stairlinkingcolor, __pyx_v_opencolor, __pyx_v_linecolor, __pyx_v_linewidth);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_fname, PyObject *__pyx_v_figsize, PyObject *__pyx_v_dpi, PyObject *__pyx_v_title, PyObject *__pyx_v_matrixType, PyObject *__pyx_v_obj, PyObject *__pyx_v_bcoef, PyObject *__pyx_v_dots, PyObject *__pyx_v_boxes, PyObject *__pyx_v_s, PyObject *__pyx_v_alpha, PyObject *__pyx_v_cmap, PyObject *__pyx_v_norm, PyObject *__pyx_v_linkingcolor, PyObject *__pyx_v_mastercolor, PyObject *__pyx_v_blockcolor, PyObject *__pyx_v_stairlinkingcolor, PyObject *__pyx_v_opencolor, PyObject *__pyx_v_linecolor) {
+static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(struct __pyx_obj_8pygcgopt_3gcg_PartialDecomposition *__pyx_v_self, PyObject *__pyx_v_fname, PyObject *__pyx_v_figsize, PyObject *__pyx_v_dpi, PyObject *__pyx_v_title, PyObject *__pyx_v_matrixType, PyObject *__pyx_v_obj, PyObject *__pyx_v_bcoef, PyObject *__pyx_v_dots, PyObject *__pyx_v_boxes, PyObject *__pyx_v_s, PyObject *__pyx_v_alpha, PyObject *__pyx_v_cmap, PyObject *__pyx_v_norm, PyObject *__pyx_v_linkingcolor, PyObject *__pyx_v_mastercolor, PyObject *__pyx_v_blockcolor, PyObject *__pyx_v_stairlinkingcolor, PyObject *__pyx_v_opencolor, PyObject *__pyx_v_linecolor, PyObject *__pyx_v_linewidth) {
   PyObject *__pyx_v_plt = NULL;
   PyObject *__pyx_v_patches = NULL;
   PyObject *__pyx_v_colors = NULL;
@@ -33550,7 +33563,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
   /* "src/pygcgopt/decomposition.pxi":1988
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
  *         try:             # <<<<<<<<<<<<<<
  *             import matplotlib.pyplot as plt
  *             import matplotlib.patches as patches
@@ -33565,7 +33578,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
     /*try:*/ {
 
       /* "src/pygcgopt/decomposition.pxi":1989
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
  *         try:
  *             import matplotlib.pyplot as plt             # <<<<<<<<<<<<<<
  *             import matplotlib.patches as patches
@@ -34136,7 +34149,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                 colboxcounter = 0
  * 
  *                 if self.getNLinkingvars()!=0:             # <<<<<<<<<<<<<<
- *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
+ *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(lvars)
  */
         __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getNLinkingvars); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 2014, __pyx_L3_error)
@@ -34166,7 +34179,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           /* "src/pygcgopt/decomposition.pxi":2015
  * 
  *                 if self.getNLinkingvars()!=0:
- *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
+ *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
  *                     ax.add_patch(lvars)
  *                     colboxcounter+=self.getNLinkingvars()
  */
@@ -34219,7 +34232,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __pyx_t_9 = 0;
           __pyx_t_9 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_9)) __PYX_ERR(2, 2015, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_9);
-          if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_linewidth, __pyx_float_0_8) < 0) __PYX_ERR(2, 2015, __pyx_L3_error)
+          if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_linewidth, __pyx_v_linewidth) < 0) __PYX_ERR(2, 2015, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_alpha, __pyx_v_alpha) < 0) __PYX_ERR(2, 2015, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_facecolor, __pyx_v_linkingcolor) < 0) __PYX_ERR(2, 2015, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_9, __pyx_n_s_zorder, __pyx_int_0) < 0) __PYX_ERR(2, 2015, __pyx_L3_error)
@@ -34234,7 +34247,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
           /* "src/pygcgopt/decomposition.pxi":2016
  *                 if self.getNLinkingvars()!=0:
- *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
+ *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(lvars)             # <<<<<<<<<<<<<<
  *                     colboxcounter+=self.getNLinkingvars()
  * 
@@ -34259,7 +34272,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
           /* "src/pygcgopt/decomposition.pxi":2017
- *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
+ *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(lvars)
  *                     colboxcounter+=self.getNLinkingvars()             # <<<<<<<<<<<<<<
  * 
@@ -34292,7 +34305,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                 colboxcounter = 0
  * 
  *                 if self.getNLinkingvars()!=0:             # <<<<<<<<<<<<<<
- *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
+ *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(lvars)
  */
         }
@@ -34301,7 +34314,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     colboxcounter+=self.getNLinkingvars()
  * 
  *                 if self.getNMasterconss()!=0:             # <<<<<<<<<<<<<<
- *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=0.8, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
+ *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=linewidth, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(master)
  */
         __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getNMasterconss); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 2019, __pyx_L3_error)
@@ -34331,7 +34344,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           /* "src/pygcgopt/decomposition.pxi":2020
  * 
  *                 if self.getNMasterconss()!=0:
- *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=0.8, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
+ *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=linewidth, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
  *                     ax.add_patch(master)
  *                     rowboxcounter+=self.getNMasterconss()
  */
@@ -34384,7 +34397,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __pyx_t_4 = 0;
           __pyx_t_4 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 2020, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_4);
-          if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_linewidth, __pyx_float_0_8) < 0) __PYX_ERR(2, 2020, __pyx_L3_error)
+          if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_linewidth, __pyx_v_linewidth) < 0) __PYX_ERR(2, 2020, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_alpha, __pyx_v_alpha) < 0) __PYX_ERR(2, 2020, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_facecolor, __pyx_v_mastercolor) < 0) __PYX_ERR(2, 2020, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_zorder, __pyx_int_0) < 0) __PYX_ERR(2, 2020, __pyx_L3_error)
@@ -34399,7 +34412,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
           /* "src/pygcgopt/decomposition.pxi":2021
  *                 if self.getNMasterconss()!=0:
- *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=0.8, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
+ *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=linewidth, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(master)             # <<<<<<<<<<<<<<
  *                     rowboxcounter+=self.getNMasterconss()
  * 
@@ -34424,7 +34437,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
           /* "src/pygcgopt/decomposition.pxi":2022
- *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=0.8, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
+ *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=linewidth, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(master)
  *                     rowboxcounter+=self.getNMasterconss()             # <<<<<<<<<<<<<<
  * 
@@ -34457,7 +34470,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     colboxcounter+=self.getNLinkingvars()
  * 
  *                 if self.getNMasterconss()!=0:             # <<<<<<<<<<<<<<
- *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=0.8, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
+ *                     master = patches.Rectangle((0,0), self.getNVars(), self.getNMasterconss(), linewidth=linewidth, alpha=alpha, facecolor=mastercolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(master)
  */
         }
@@ -34536,7 +34549,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     colboxcounter+=self.getNMastervars()
  * 
  *                 for b in range(self.getNBlocks()):             # <<<<<<<<<<<<<<
- *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=0.8, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
+ *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=linewidth, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(block)
  */
         __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getNBlocks); if (unlikely(!__pyx_t_9)) __PYX_ERR(2, 2027, __pyx_L3_error)
@@ -34605,7 +34618,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           /* "src/pygcgopt/decomposition.pxi":2028
  * 
  *                 for b in range(self.getNBlocks()):
- *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=0.8, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
+ *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=linewidth, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
  *                     ax.add_patch(block)
  *                     colboxcounter += self.getNVarsForBlock(b)
  */
@@ -34666,7 +34679,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __pyx_t_10 = 0;
           __pyx_t_10 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_10)) __PYX_ERR(2, 2028, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_10);
-          if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_linewidth, __pyx_float_0_8) < 0) __PYX_ERR(2, 2028, __pyx_L3_error)
+          if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_linewidth, __pyx_v_linewidth) < 0) __PYX_ERR(2, 2028, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_alpha, __pyx_v_alpha) < 0) __PYX_ERR(2, 2028, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_facecolor, __pyx_v_blockcolor) < 0) __PYX_ERR(2, 2028, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_zorder, __pyx_int_0) < 0) __PYX_ERR(2, 2028, __pyx_L3_error)
@@ -34681,7 +34694,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
           /* "src/pygcgopt/decomposition.pxi":2029
  *                 for b in range(self.getNBlocks()):
- *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=0.8, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
+ *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=linewidth, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(block)             # <<<<<<<<<<<<<<
  *                     colboxcounter += self.getNVarsForBlock(b)
  *                     if self.getNStairlinkingvars(b)!=0:
@@ -34706,11 +34719,11 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
           /* "src/pygcgopt/decomposition.pxi":2030
- *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=0.8, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
+ *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=linewidth, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(block)
  *                     colboxcounter += self.getNVarsForBlock(b)             # <<<<<<<<<<<<<<
  *                     if self.getNStairlinkingvars(b)!=0:
- *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
+ *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
  */
           __pyx_t_10 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getNVarsForBlock); if (unlikely(!__pyx_t_10)) __PYX_ERR(2, 2030, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_10);
@@ -34739,7 +34752,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     ax.add_patch(block)
  *                     colboxcounter += self.getNVarsForBlock(b)
  *                     if self.getNStairlinkingvars(b)!=0:             # <<<<<<<<<<<<<<
- *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
+ *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
  *                         ax.add_patch(stairlinking)
  */
           __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getNStairlinkingvars); if (unlikely(!__pyx_t_5)) __PYX_ERR(2, 2031, __pyx_L3_error)
@@ -34769,7 +34782,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
             /* "src/pygcgopt/decomposition.pxi":2032
  *                     colboxcounter += self.getNVarsForBlock(b)
  *                     if self.getNStairlinkingvars(b)!=0:
- *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
+ *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
  *                         ax.add_patch(stairlinking)
  *                     colboxcounter += self.getNStairlinkingvars(b)
  */
@@ -34854,7 +34867,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
             __pyx_t_15 = 0;
             __pyx_t_15 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_15)) __PYX_ERR(2, 2032, __pyx_L3_error)
             __Pyx_GOTREF(__pyx_t_15);
-            if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_linewidth, __pyx_float_0_8) < 0) __PYX_ERR(2, 2032, __pyx_L3_error)
+            if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_linewidth, __pyx_v_linewidth) < 0) __PYX_ERR(2, 2032, __pyx_L3_error)
             if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_alpha, __pyx_v_alpha) < 0) __PYX_ERR(2, 2032, __pyx_L3_error)
             if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_facecolor, __pyx_v_stairlinkingcolor) < 0) __PYX_ERR(2, 2032, __pyx_L3_error)
             if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_zorder, __pyx_int_0) < 0) __PYX_ERR(2, 2032, __pyx_L3_error)
@@ -34869,7 +34882,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
             /* "src/pygcgopt/decomposition.pxi":2033
  *                     if self.getNStairlinkingvars(b)!=0:
- *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
+ *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
  *                         ax.add_patch(stairlinking)             # <<<<<<<<<<<<<<
  *                     colboxcounter += self.getNStairlinkingvars(b)
  *                     rowboxcounter += self.getNConssForBlock(b)
@@ -34897,13 +34910,13 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     ax.add_patch(block)
  *                     colboxcounter += self.getNVarsForBlock(b)
  *                     if self.getNStairlinkingvars(b)!=0:             # <<<<<<<<<<<<<<
- *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
+ *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
  *                         ax.add_patch(stairlinking)
  */
           }
 
           /* "src/pygcgopt/decomposition.pxi":2034
- *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=0.8, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
+ *                         stairlinking = patches.Rectangle((colboxcounter,rowboxcounter), self.getNStairlinkingvars(b), self.getNConssForBlock(b)+self.getNConssForBlock(b+1), linewidth=linewidth, alpha=alpha, facecolor=stairlinkingcolor, zorder=0, edgecolor=linecolor)
  *                         ax.add_patch(stairlinking)
  *                     colboxcounter += self.getNStairlinkingvars(b)             # <<<<<<<<<<<<<<
  *                     rowboxcounter += self.getNConssForBlock(b)
@@ -34966,7 +34979,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     colboxcounter+=self.getNMastervars()
  * 
  *                 for b in range(self.getNBlocks()):             # <<<<<<<<<<<<<<
- *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=0.8, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
+ *                     block = patches.Rectangle((colboxcounter,rowboxcounter), self.getNVarsForBlock(b), self.getNConssForBlock(b), linewidth=linewidth, alpha=alpha, facecolor=blockcolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(block)
  */
         }
@@ -34976,7 +34989,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     rowboxcounter += self.getNConssForBlock(b)
  * 
  *                 if self.getNOpenvars()!=0:             # <<<<<<<<<<<<<<
- *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=0.8, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
+ *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=linewidth, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(openrec)
  */
         __pyx_t_14 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_getNOpenvars); if (unlikely(!__pyx_t_14)) __PYX_ERR(2, 2037, __pyx_L3_error)
@@ -35006,7 +35019,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           /* "src/pygcgopt/decomposition.pxi":2038
  * 
  *                 if self.getNOpenvars()!=0:
- *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=0.8, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
+ *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=linewidth, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
  *                     ax.add_patch(openrec)
  *                     colboxcounter += self.getNOpenvars()
  */
@@ -35067,7 +35080,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __pyx_t_8 = 0;
           __pyx_t_8 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 2038, __pyx_L3_error)
           __Pyx_GOTREF(__pyx_t_8);
-          if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_linewidth, __pyx_float_0_8) < 0) __PYX_ERR(2, 2038, __pyx_L3_error)
+          if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_linewidth, __pyx_v_linewidth) < 0) __PYX_ERR(2, 2038, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_alpha, __pyx_v_alpha) < 0) __PYX_ERR(2, 2038, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_facecolor, __pyx_v_opencolor) < 0) __PYX_ERR(2, 2038, __pyx_L3_error)
           if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_zorder, __pyx_int_0) < 0) __PYX_ERR(2, 2038, __pyx_L3_error)
@@ -35082,7 +35095,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
           /* "src/pygcgopt/decomposition.pxi":2039
  *                 if self.getNOpenvars()!=0:
- *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=0.8, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
+ *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=linewidth, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(openrec)             # <<<<<<<<<<<<<<
  *                     colboxcounter += self.getNOpenvars()
  *                     rowboxcounter += self.getNOpenconss()
@@ -35107,7 +35120,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
 
           /* "src/pygcgopt/decomposition.pxi":2040
- *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=0.8, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
+ *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=linewidth, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(openrec)
  *                     colboxcounter += self.getNOpenvars()             # <<<<<<<<<<<<<<
  *                     rowboxcounter += self.getNOpenconss()
@@ -35170,7 +35183,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
  *                     rowboxcounter += self.getNConssForBlock(b)
  * 
  *                 if self.getNOpenvars()!=0:             # <<<<<<<<<<<<<<
- *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=0.8, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
+ *                     openrec = patches.Rectangle((colboxcounter,rowboxcounter), self.getNOpenvars(), self.getNOpenconss(), linewidth=linewidth, alpha=alpha, facecolor=opencolor, zorder=0, edgecolor=linecolor)
  *                     ax.add_patch(openrec)
  */
         }
@@ -38490,7 +38503,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
       /* "src/pygcgopt/decomposition.pxi":1988
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
  *         try:             # <<<<<<<<<<<<<<
  *             import matplotlib.pyplot as plt
  *             import matplotlib.patches as patches
@@ -38546,7 +38559,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
 
     /* "src/pygcgopt/decomposition.pxi":1988
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
  *         try:             # <<<<<<<<<<<<<<
  *             import matplotlib.pyplot as plt
  *             import matplotlib.patches as patches
@@ -38567,7 +38580,7 @@ static PyObject *__pyx_pf_8pygcgopt_3gcg_20PartialDecomposition_330visualize(str
   /* "src/pygcgopt/decomposition.pxi":1987
  *             return "NONE"
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):             # <<<<<<<<<<<<<<
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):             # <<<<<<<<<<<<<<
  *         try:
  *             import matplotlib.pyplot as plt
  */
@@ -58209,7 +58222,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "src/pygcgopt/decomposition.pxi":1987
  *             return "NONE"
  * 
- *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000"):             # <<<<<<<<<<<<<<
+ *     def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=None, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):             # <<<<<<<<<<<<<<
  *         try:
  *             import matplotlib.pyplot as plt
  */
@@ -58220,7 +58233,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "src/pygcgopt/decomposition.pxi":2015
  * 
  *                 if self.getNLinkingvars()!=0:
- *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=0.8, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
+ *                     lvars = patches.Rectangle((0,0), self.getNLinkingvars(), self.getNConss(), linewidth=linewidth, alpha=alpha, facecolor=linkingcolor, zorder=0, edgecolor=linecolor)             # <<<<<<<<<<<<<<
  *                     ax.add_patch(lvars)
  *                     colboxcounter+=self.getNLinkingvars()
  */
