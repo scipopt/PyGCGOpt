@@ -1,5 +1,5 @@
 cdef class DetProbData:
-    """class to manage the detection process and data for one coefficient matrix of a MIP, usually there is one detprobdata for the original and one detprobdata for the presolved problem.
+    """class to manage the detection process and data for one coefficient matrix of a MIP, usually there is one detprobdata for the original and one detprobdata for the presolved problem
     """
     cdef DETPROBDATA * thisptr
     cdef bool delete_thisptr
@@ -34,7 +34,7 @@ cdef class DetProbData:
 
     @property
     def candidatesNBlocks(DetProbData self):
-        """candidate for the number of blocks, second int indicates how often a candidate was added.
+        """candidate for the number of blocks, second int indicates how often a candidate was added
         """
         cdef vector[pair[int, int]] result = self.thisptr.candidatesNBlocks
         return result
@@ -46,7 +46,7 @@ cdef class DetProbData:
 
     @property
     def conspartitioncollection(DetProbData self):
-        """collection of different constraint class distributions.
+        """collection of different constraint class distributions
         """
         cdef vector[ConsPartition *] result = self.thisptr.conspartitioncollection
         return [ConsPart.create(r, <DetProbData>weakref.proxy(self)) for r in result]
@@ -65,7 +65,7 @@ cdef class DetProbData:
 
     @property
     def varpartitioncollection(DetProbData self):
-        """collection of different variable class distributions.
+        """collection of different variable class distributions
         """
         cdef vector[VarPartition *] result = self.thisptr.varpartitioncollection
         return [VarPart.create(r) for r in result]
@@ -84,7 +84,7 @@ cdef class DetProbData:
 
     @property
     def classificationtime(DetProbData self):
-        """time that was consumed by the classification of the constraint and variables classifiers.
+        """time that was consumed by the classification of the constraint and variables classifiers
         """
         cdef double result = self.thisptr.classificationtime
         return result
@@ -96,7 +96,7 @@ cdef class DetProbData:
 
     @property
     def nblockscandidatescalctime(DetProbData self):
-        """time that was used to calulate the candidates of te block number.
+        """time that was used to calulate the candidates of te block number
         """
         cdef double result = self.thisptr.nblockscandidatescalctime
         return result
@@ -108,7 +108,7 @@ cdef class DetProbData:
 
     @property
     def postprocessingtime(DetProbData self):
-        """time that was spent in postproceesing decomposigtions.
+        """time that was spent in postproceesing decomposigtions
         """
         cdef double result = self.thisptr.postprocessingtime
         return result
@@ -120,7 +120,7 @@ cdef class DetProbData:
 
     @property
     def translatingtime(DetProbData self):
-        """time that was spent by transforming partialdecs between presolved and orig problem.
+        """time that was spent by transforming partialdecs between presolved and orig problem
         """
         cdef double result = self.thisptr.translatingtime
         return result
@@ -131,13 +131,13 @@ cdef class DetProbData:
         self.thisptr.translatingtime = cpp_translatingtime
 
     def addConsPartition(DetProbData self, ConsPart partition):
-        """adds a constraint partition if it is no duplicate of an existing constraint partition.
+        """adds a constraint partition if it is no duplicate of an existing constraint partition
         """
         cdef ConsPartition * cpp_partition = partition.thisptr
         self.thisptr.addConsPartition(cpp_partition)
 
     def addCandidatesNBlocksNVotes(DetProbData self, int candidate, int nvotes):
-        """adds a candidate for block number and counts how often a candidate is added.
+        """adds a candidate for block number and counts how often a candidate is added
         """
         cdef int cpp_candidate = candidate
         cdef int cpp_nvotes = nvotes
@@ -146,7 +146,7 @@ cdef class DetProbData:
     def addPartialdecToAncestor(DetProbData self, PartialDecomposition partialdec):
         """adds a partialdec to ancestor partialdecs
 
-        :param partialdec: partialdec that is added to the ancestor partialdecs.
+        :param partialdec: partialdec that is added to the ancestor partialdecs
         """
         cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
         self.thisptr.addPartialdecToAncestor(cpp_partialdec)
@@ -192,32 +192,33 @@ cdef class DetProbData:
         self.thisptr.addVarPartition(cpp_partition)
 
     def clearAncestorPartialdecs(DetProbData self):
-        """clears ancestor partialdec data structure,
-        .. note:: does not free the partialdecs themselves.
+        """clears ancestor partialdec data structure
+
+        .. note:: Does not free the partialdecs themselves.
         """
         self.thisptr.clearAncestorPartialdecs()
 
     def clearCurrentPartialdecs(DetProbData self):
         """clears current partialdec data structure
 
-        .. note:: does not free the partialdecs themselves.
+        .. note:: Does not free the partialdecs themselves.
         """
         self.thisptr.clearCurrentPartialdecs()
 
     def clearFinishedPartialdecs(DetProbData self):
         """clears finished partialdec data structure
 
-        .. note:: does not free the partialdecs themselves.
+        .. note:: Does not free the partialdecs themselves.
         """
         self.thisptr.clearFinishedPartialdecs()
 
     def createConssAdjacency(DetProbData self):
-        """create the constraint adjacency datastructure that is used (if created) for some methods to faster access the constarints that have variables in common.
+        """creates the constraint adjacency datastructure that is used (if created) for some methods to faster access the constarints that have variables in common
         """
         self.thisptr.createConssAdjacency()
 
     def freeTemporaryData(DetProbData self):
-        """frees temporary data that is only needed during the detection process.
+        """frees temporary data that is only needed during the detection process
         """
         self.thisptr.freeTemporaryData()
 
@@ -247,7 +248,7 @@ cdef class DetProbData:
         return Constraint.create(self.thisptr.getCons(consIndex))
 
     def getConssForCons(DetProbData self, int consIndex):
-        """return array of constraint indices that have a common variable with the given constraint
+        """returns array of constraint indices that have a common variable with the given constraint
 
         :return: return vector of constraint indices that have a common variable with the given constraint
 
@@ -260,7 +261,7 @@ cdef class DetProbData:
     def getConssForVar(DetProbData self, int varIndex):
         """returns the constraint indices of the coefficient matrix for a variable
 
-        :return: vector of constraint indices that have a nonzero entry with this variable.
+        :return: vector of constraint indices that have a nonzero entry with this variable
         """
         cdef int cpp_varIndex = varIndex
         cdef vector[int] result = self.thisptr.getConssForVar(cpp_varIndex)
@@ -286,7 +287,7 @@ cdef class DetProbData:
     def getFinishedPartialdecs(DetProbData self):
         """gets all finished partialdecs
 
-        :return: all finished partialdecs.
+        :return: all finished partialdecs
         """
         cdef vector[PARTIALDECOMP *] result = self.thisptr.getFinishedPartialdecs()
         return [PartialDecomposition.create(r) for r in result]
@@ -310,7 +311,7 @@ cdef class DetProbData:
     def getNAncestorPartialdecs(DetProbData self):
         """returns size of ancestor partialdec data structure
 
-        :return: size of ancestor partialdec data structure.
+        :return: size of ancestor partialdec data structure
         """
         cdef int result = self.thisptr.getNAncestorPartialdecs()
         return result
@@ -318,7 +319,7 @@ cdef class DetProbData:
     def getNConsPartitions(DetProbData self):
         """returns number of different constraint partitions
 
-        :return: number of different constraint partitions.
+        :return: number of different constraint partitions
         """
         cdef int result = self.thisptr.getNConsPartitions()
         return result
@@ -326,7 +327,7 @@ cdef class DetProbData:
     def getNConss(DetProbData self):
         """returns the number of variables considered in the detprobdata
 
-        :return: number of variables considered in the detprobdata.
+        :return: number of variables considered in the detprobdata
         """
         cdef int result = self.thisptr.getNConss()
         return result
@@ -334,7 +335,7 @@ cdef class DetProbData:
     def getNConssForCons(DetProbData self, int consIndex):
         """returns the number of constraints for a given constraint
 
-        :return: the number of constraints for a given constraint.
+        :return: the number of constraints for a given constraint
         """
         cdef int cpp_consIndex = consIndex
         cdef int result = self.thisptr.getNConssForCons(cpp_consIndex)
@@ -343,7 +344,7 @@ cdef class DetProbData:
     def getNConssForVar(DetProbData self, int varIndex):
         """returns the number of constraints for a given variable where the var has a nonzero entry in
 
-        :return: the number of constraints for a given variable.
+        :return: the number of constraints for a given variable
         """
         cdef int cpp_varIndex = varIndex
         cdef int result = self.thisptr.getNConssForVar(cpp_varIndex)
@@ -352,7 +353,7 @@ cdef class DetProbData:
     def getNOpenPartialdecs(DetProbData self):
         """returns size of current (open) partialdec data structure
 
-        :return: size of current (open) partialdec data structure.
+        :return: size of current (open) partialdec data structure
         """
         cdef int result = self.thisptr.getNOpenPartialdecs()
         return result
@@ -360,7 +361,7 @@ cdef class DetProbData:
     def getNFinishedPartialdecs(DetProbData self):
         """size of finished partialdec data structure
 
-        :return:  size of finished partialdec data structure.
+        :return:  size of finished partialdec data structure
         """
         cdef int result = self.thisptr.getNFinishedPartialdecs()
         return result
@@ -368,7 +369,7 @@ cdef class DetProbData:
     def getNPartialdecs(DetProbData self):
         """returns the number of stored partialdecs
 
-        :return:  number of stored partialdecs.
+        :return:  number of stored partialdecs
         """
         cdef int result = self.thisptr.getNPartialdecs()
         return result
@@ -376,7 +377,7 @@ cdef class DetProbData:
     def getNNonzeros(DetProbData self):
         """returns the number of nonzero entries in the coefficient matrix
 
-        :return: the number of nonzero entries in the coefficient matrix.
+        :return: the number of nonzero entries in the coefficient matrix
         """
         cdef int result = self.thisptr.getNNonzeros()
         return result
@@ -384,15 +385,15 @@ cdef class DetProbData:
     def getNVarPartitions(DetProbData self):
         """returns number of different variable partitions
 
-        :return:  number of different variable partitions.
+        :return: number of different variable partitions.
         """
         cdef int result = self.thisptr.getNVarPartitions()
         return result
 
     def getNVars(DetProbData self):
-        """return the number of variables considered in the detprobdata
+        """returns the number of variables considered in the detprobdata
 
-        :return: the number of variables considered in the detprobdata.
+        :return: the number of variables considered in the detprobdata
         """
         cdef int result = self.thisptr.getNVars()
         return result
@@ -400,7 +401,7 @@ cdef class DetProbData:
     def getNVarsForCons(DetProbData self, int consIndex):
         """returns the number of variables for a given constraint
 
-        :return: the number of variables for a given constraint.
+        :return: the number of variables for a given constraint
         """
         cdef int cpp_consIndex = consIndex
         cdef int result = self.thisptr.getNVarsForCons(cpp_consIndex)
@@ -409,7 +410,7 @@ cdef class DetProbData:
     def getOrigVarsFixedZero(DetProbData self):
         """returns pointers to all orig vars that are fixed to zero
 
-        :return: vector of vars.
+        :return: vector of vars
         """
         cdef vector[SCIP_VAR *] result = self.thisptr.getOrigVarsFixedZero()
         return [Variable.create(v) for v in result]
@@ -417,7 +418,7 @@ cdef class DetProbData:
     def getRelevantConss(DetProbData self):
         """returns pointers to all constraints that are not marked as deleted or obsolete
 
-        :return: vector of conss.
+        :return: vector of conss
         """
         cdef vector[SCIP_CONS *] result = self.thisptr.getRelevantConss()
         return [Constraint.create(c) for c in result]
@@ -425,7 +426,7 @@ cdef class DetProbData:
     def getRelevantVars(DetProbData self):
         """returns pointers to all problem vars that are not fixed to 0
 
-        :return: vector of vars.
+        :return: vector of vars
         """
         cdef vector[SCIP_VAR *] result = self.thisptr.getRelevantVars()
         return [Variable.create(v) for v in result]
@@ -441,7 +442,7 @@ cdef class DetProbData:
     def getSortedCandidatesNBlocks(DetProbData self, object candidates):
         """gets the candidates for number of blocks added by the user followed by the found ones sorted in descending order by how often a candidate was proposed
 
-        :param candidates: will contain the candidates for number of blocks sorted in descending order by how often a candidate was added.
+        :param candidates: will contain the candidates for number of blocks sorted in descending order by how often a candidate was added
         """
         cdef vector[int] cpp_candidates = candidates
         self.thisptr.getSortedCandidatesNBlocks(cpp_candidates)
@@ -449,7 +450,7 @@ cdef class DetProbData:
     def getVal(DetProbData self, int row, int col):
         """returns a coefficient from the coefficient matrix
 
-        :return: a coefficient from the coefficient matrix.
+        :return: a coefficient from the coefficient matrix
         """
         cdef int cpp_row = row
         cdef int cpp_col = col
@@ -461,7 +462,7 @@ cdef class DetProbData:
 
         :return: vector of coefficients of in matrix for constraints
 
-        :note: same order as in :meth:`getVarsForCons`.
+        :note: same order as in :meth:`getVarsForCons`
         """
         cdef int cpp_consIndex = consIndex
         cdef vector[double] result = self.thisptr.getValsForCons(cpp_consIndex)
@@ -470,7 +471,7 @@ cdef class DetProbData:
     def getVarPartition(DetProbData self, int partitionIndex):
         """returns pointer to a variable partition with given index
 
-        :return: pointer to a variable partition with given index.
+        :return: pointer to a variable partition with given index
         """
         cdef int cpp_partitionIndex = partitionIndex
         cdef VarPartition * result = self.thisptr.getVarPartition(cpp_partitionIndex)
@@ -479,7 +480,7 @@ cdef class DetProbData:
     def getVarPartitions(DetProbData self):
         """returns vector to stored variable partitions
 
-        :return: returns vector to stored variable partitions.
+        :return: vector to stored variable partitions
         """
         cdef vector[VarPartition *] result = self.thisptr.getVarPartitions()
         return [VarPart.create(r) for r in result]
@@ -487,7 +488,7 @@ cdef class DetProbData:
     def getVar(DetProbData self, int varIndex):
         """returns SCIP variable related to a variable index
 
-        :return: SCIP variable pointer related to a variable index.
+        :return: SCIP variable pointer related to a variable index
         """
         cdef int cpp_varIndex = varIndex
         # TODO implement function
@@ -515,7 +516,7 @@ cdef class DetProbData:
     def isConssAdjInitialized(DetProbData self):
         """determines whether or not the constraint-constraint adjacency data structure is initilized
 
-        :return: True iff the constraint-constraint adjacency data structure is initilized.
+        :return: True iff the constraint-constraint adjacency data structure is initilized
         """
         cdef unsigned int result = self.thisptr.isConssAdjInitialized()
         return result
@@ -524,7 +525,7 @@ cdef class DetProbData:
         """is cons with specified indec partitioning, or packing covering constraint?
 
         :param consindexd: index of the given cons
-        :return: is cons with specified indec partitioning, or packing covering constraint.
+        :return: is cons with specified indec partitioning, or packing covering constraint
         """
         cdef int cpp_consindexd = consindexd
         cdef bool result = self.thisptr.isConsSetpp(cpp_consindexd)
@@ -534,7 +535,7 @@ cdef class DetProbData:
         """is cons with specified index partitioning packing, or covering constraint?
 
         :param consindexd: index of cons to be checked
-        :return: whether a constraint is partitioning packing, or covering constraint?.
+        :return: whether a constraint is partitioning packing, or covering constraint?
         """
         cdef int cpp_consindexd = consindexd
         cdef bool result = self.thisptr.isConsSetppc(cpp_consindexd)
@@ -551,10 +552,10 @@ cdef class DetProbData:
     #     raise NotImplementedError()
 
     def isPartialdecDuplicateofFinished(DetProbData self, PartialDecomposition partialdec):
-        """check if partialdec is a duplicate of an existing finished partialdec
+        """checks if partialdec is a duplicate of an existing finished partialdec
 
         :param partialdec: partialdec to be checked
-        :return: True iff partialdec is a duplicate of an existing finished partialdec.
+        :return: True iff partialdec is a duplicate of an existing finished partialdec
         """
         cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
         cdef unsigned int result = self.thisptr.isPartialdecDuplicateofFinished(cpp_partialdec)
@@ -563,7 +564,7 @@ cdef class DetProbData:
     def isAssignedToOrigProb(DetProbData self):
         """returns True if the matrix structure corresponds to the presolved problem
 
-        :return: True if the matrix structure corresponds to the presolved problem.
+        :return: True if the matrix structure corresponds to the presolved problem
         """
         cdef unsigned int result = self.thisptr.isAssignedToOrigProb()
         return result
@@ -578,12 +579,12 @@ cdef class DetProbData:
     #     raise NotImplementedError()
 
     def partialdecIsNoDuplicateOfPartialdecs(DetProbData self, PartialDecomposition comppartialdec, object partialdecs, bool sort):
-        """check if partialdec is a duplicate of any given partialdecs
+        """checks if partialdec is a duplicate of any given partialdecs
 
         :param comppartialdec: partialdec to be checked
         :param partialdecs: partialdecs to compare with
         :param sort: sort the vars and conss data structures in the partialdecs by their indices
-        :return: True iff partialdec is no duplicate of any given partialdecs.
+        :return: True iff partialdec is no duplicate of any given partialdecs
         """
         cdef PARTIALDECOMP * cpp_comppartialdec = comppartialdec.thisptr
         # this seems to be possible only when we use C++11 (-std=c++11)
@@ -614,7 +615,7 @@ cdef class DetProbData:
     #     raise NotImplementedError()
 
     def sortFinishedForScore(DetProbData self):
-        """sorts partialdecs in finished partialdecs data structure according to the current scoretype.
+        """sorts partialdecs in finished partialdecs data structure according to the current scoretype
         """
         self.thisptr.sortFinishedForScore()
 

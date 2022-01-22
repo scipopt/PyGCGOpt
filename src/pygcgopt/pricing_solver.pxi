@@ -1,5 +1,5 @@
 cdef class PricingSolver:
-    """Base class of the Pricing Solver Plugin"""
+    """base class of the Pricing Solver Plugin"""
 
     cdef public Model model
     cdef public str solvername

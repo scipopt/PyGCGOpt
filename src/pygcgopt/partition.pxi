@@ -28,14 +28,14 @@ cdef class ConsPart:
     #     raise NotImplementedError()
 
     def assignConsToClass(ConsPart self, Constraint cons, int classindex):
-        """assigns a constraint to a class.
+        """assigns a constraint to a class
         """
         cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
         cdef int cpp_classindex = classindex
         self.thisptr.assignConsToClass(cpp_consindex, cpp_classindex)
 
     def getAllSubsets(ConsPart self, bool both, bool only_master, bool only_pricing):
-        """returns a vector containing all possible subsets of the chosen classindices.
+        """returns a vector containing all possible subsets of the chosen classindices
         """
         cdef bool cpp_both = both
         cdef bool cpp_only_master = only_master
@@ -51,14 +51,14 @@ cdef class ConsPart:
     #     raise NotImplementedError()
 
     def getClassNameOfCons(ConsPart self, Constraint cons):
-        """returns the name of the class a constraint is assigned to.
+        """returns the name of the class a constraint is assigned to
         """
         cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
         cdef const char * result = self.thisptr.getClassNameOfCons(cpp_consindex)
         return result.decode('utf-8')
 
     def getClassOfCons(ConsPart self, Constraint cons):
-        """returns the index of the class a constraint is assigned to.
+        """returns the index of the class a constraint is assigned to
         """
         cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
         cdef int result = self.thisptr.getClassOfCons(cpp_consindex)
@@ -71,19 +71,19 @@ cdef class ConsPart:
     #     raise NotImplementedError()
 
     def getNConss(ConsPart self):
-        """returns the number of constraints.
+        """returns the number of constraints
         """
         cdef int result = self.thisptr.getNConss()
         return result
 
     def getNConssOfClasses(ConsPart self):
-        """returns a vector with the numbers of constraints that are assigned to the classes.
+        """returns a vector with the numbers of constraints that are assigned to the classes
         """
         cdef vector[int] result = self.thisptr.getNConssOfClasses()
         return result
 
     def isConsClassified(ConsPart self, Constraint cons):
-        """returns whether a constraint is already assigned to a class.
+        """returns whether a constraint is already assigned to a class
         """
         cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
         cdef bool result = self.thisptr.isConsClassified(cpp_consindex)
@@ -91,6 +91,7 @@ cdef class ConsPart:
 
     def reduceClasses(ConsPart self, int maxNumberOfClasses):
         """returns partition with reduced number of classes
+
         if the current number of classes is greater than an upper bound
         and lower than 2*(upper bound) (returns NULL otherwise).
         """
@@ -140,14 +141,14 @@ cdef class VarPart:
     #     raise NotImplementedError()
 
     def assignVarToClass(VarPart self, int varindex, int classindex):
-        """assigns a variable to a class.
+        """assigns a variable to a class
         """
         cdef int cpp_varindex = varindex
         cdef int cpp_classindex = classindex
         self.thisptr.assignVarToClass(cpp_varindex, cpp_classindex)
 
     def getAllSubsets(VarPart self, bool all, bool linking, bool master, bool block):
-        """returns a vector containing all possible subsets of the chosen classindices.
+        """returns a vector containing all possible subsets of the chosen classindices
         """
         cdef bool cpp_all = all
         cdef bool cpp_linking = linking
@@ -164,14 +165,14 @@ cdef class VarPart:
     #     raise NotImplementedError()
 
     def getClassNameOfVar(VarPart self, int varindex):
-        """returns the name of the class a variable is assigned to.
+        """returns the name of the class a variable is assigned to
         """
         cdef int cpp_varindex = varindex
         cdef const char * result = self.thisptr.getClassNameOfVar(cpp_varindex)
         return result.decode('utf-8')
 
     def getClassOfVar(VarPart self, int varindex):
-        """returns the index of the class a variable is assigned to.
+        """returns the index of the class a variable is assigned to
         """
         cdef int cpp_varindex = varindex
         cdef int result = self.thisptr.getClassOfVar(cpp_varindex)
@@ -184,19 +185,19 @@ cdef class VarPart:
     #     raise NotImplementedError()
 
     def getNVars(VarPart self):
-        """returns the number of variables.
+        """returns the number of variables
         """
         cdef int result = self.thisptr.getNVars()
         return result
 
     def getNVarsOfClasses(VarPart self):
-        """returns a vector with the numbers of variables that are assigned to the classes.
+        """returns a vector with the numbers of variables that are assigned to the classes
         """
         cdef vector[int] result = self.thisptr.getNVarsOfClasses()
         return result
 
     def isVarClassified(VarPart self, int varindex):
-        """returns whether a variable is already assigned to a class.
+        """returns whether a variable is already assigned to a class
         """
         cdef int cpp_varindex = varindex
         cdef bool result = self.thisptr.isVarClassified(cpp_varindex)
@@ -204,6 +205,7 @@ cdef class VarPart:
 
     def reduceClasses(VarPart self, int maxNumberOfClasses):
         """returns partition with reduced number of classes
+        
         if the current number of classes is greater than an upper bound
         and lower than 2*(upper bound) (returns NULL otherwise).
         """

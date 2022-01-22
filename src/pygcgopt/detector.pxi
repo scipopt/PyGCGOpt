@@ -1,5 +1,5 @@
 cdef class Detector:
-    """Base class of the Detector Plugin"""
+    """base class of the Detector Plugin"""
     cdef public Model model
     cdef public str detectorname
 
