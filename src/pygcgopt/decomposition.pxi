@@ -1984,7 +1984,7 @@ cdef class PartialDecomposition:
         else:
             return "NONE"
 
-    def visualize(PartialDecomposition self, fname=None, figsize=(12, 8), dpi=100.0, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1, alpha=1, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
+    def visualize(PartialDecomposition self, fname=None, figsize=(12.0, 8.0), dpi=100.0, title=None, matrixType="nonzero", obj=False, bcoef=False, dots=True, boxes=True, s=1.0, alpha=1.0, cmap=None, norm=None, linkingcolor="#FFB72D", mastercolor="#1340C7", blockcolor="#718CDB", stairlinkingcolor="#886100", opencolor="#FFD88F", linecolor="#000000", linewidth=0.8):
         try:
             import matplotlib.pyplot as plt
             import matplotlib.patches as patches
