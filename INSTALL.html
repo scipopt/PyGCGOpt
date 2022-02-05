@@ -208,6 +208,15 @@
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<section id="using-conda">
+<h2>Using Conda<a class="headerlink" href="#using-conda" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://anaconda.org/conda-forge/pygcgopt"><img alt="Conda version" src="https://img.shields.io/conda/vn/conda-forge/pygcgopt?logo=conda-forge"/></a>
+<a class="reference external" href="https://anaconda.org/conda-forge/pygcgopt"><img alt="Conda platforms" src="https://img.shields.io/conda/pn/conda-forge/pygcgopt?logo=conda-forge"/></a></p>
+<p>Conda will install <code class="docutils literal notranslate"><span class="pre">GCG</span></code>, <code class="docutils literal notranslate"><span class="pre">SCIP</span></code> and <code class="docutils literal notranslate"><span class="pre">PySCIPOpt</span></code> automatically, hence everything can be installed in a single command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install --channel conda-forge pygcgopt
+</pre></div>
+</div>
+</section>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <p>PyGCGOpt requires a working installation of the <a class="reference external" href="https://scipopt.org">SCIPOptSuite</a> and the <a class="reference external" href="https://gcg.or.rwth-aachen.de/">GCG Solver</a> which is usually included in the release. In addition, the Python interface for SCIP, <a class="reference external" href="https://github.com/scipopt/PySCIPOpt">PySCIPOpt</a>, has to be installed. Currently, GCG only runs on Linux and macOS, therefore you can use PyGCGOpt only on these operating systems.</p>
@@ -421,6 +430,7 @@ removed harmlessly.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#using-conda">Using Conda</a></li>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#installing-scipoptsuite-from-the-binary-distribution">Installing SCIPOptSuite from the binary distribution</a></li>
 <li><a class="reference internal" href="#compiling-scipoptsuite-from-source">Compiling SCIPOptSuite from source</a></li>

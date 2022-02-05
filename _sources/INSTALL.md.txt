@@ -1,5 +1,16 @@
 # Installation
 
+
+## Using Conda
+
+[![Conda version](https://img.shields.io/conda/vn/conda-forge/pygcgopt?logo=conda-forge)](https://anaconda.org/conda-forge/pygcgopt)
+[![Conda platforms](https://img.shields.io/conda/pn/conda-forge/pygcgopt?logo=conda-forge)](https://anaconda.org/conda-forge/pygcgopt)
+
+Conda will install `GCG`, `SCIP` and `PySCIPOpt` automatically, hence everything can be installed in a single command:
+```bash
+conda install --channel conda-forge pygcgopt
+```
+
 ## Requirements
 
 PyGCGOpt requires a working installation of the [SCIPOptSuite](https://scipopt.org) and the [GCG Solver](https://gcg.or.rwth-aachen.de/) which is usually included in the release. In addition, the Python interface for SCIP, [PySCIPOpt](https://github.com/scipopt/PySCIPOpt), has to be installed. Currently, GCG only runs on Linux and macOS, therefore you can use PyGCGOpt only on these operating systems.
