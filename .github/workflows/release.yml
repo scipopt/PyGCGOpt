@@ -36,7 +36,7 @@ jobs:
       - name: Setup PySCIPOpt
         uses: ./.github/actions/setup-pyscipopt-action
         with:
-          ref: scip-8
+          ref: master
       
       - name: Build PyGCGOpt
         run: |
