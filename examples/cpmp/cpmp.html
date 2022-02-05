@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Exploring DW Dual Bounds" href="../alldecomps/alldecomps.html" /><link rel="prev" title="Examples" href="../index.html" />
 
     <link rel="shortcut icon" href="../../_static/favicon.ico"/><meta name="generator" content="sphinx-4.3.1, furo 2021.11.23"/>
-        <title>Decomposing the Capacitated p-Median Problem - PyGCGOpt 0.1.3</title>
+        <title>Decomposing the Capacitated p-Median Problem - PyGCGOpt 0.1.4</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">PyGCGOpt 0.1.3</div></a>
+      <a href="../../index.html"><div class="brand">PyGCGOpt 0.1.4</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">PyGCGOpt 0.1.3</span>
+  <span class="sidebar-brand-text">PyGCGOpt 0.1.4</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -165,7 +165,7 @@
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/gcgmodel.html">GCGModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/model.html">Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/decomposition.html">Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/detprobdata.html">DetProbData</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/detector.html">Detector</a></li>
@@ -503,17 +503,17 @@ z^{\star}_{IP}\,\,\,=\,\,\,\min{} &amp;\sum_{i=1}^n \sum_{j=1}^n d_{ij} x_{ij} \
 </section>
 <section id="Setting-up-the-Model">
 <h2>Setting up the Model<a class="headerlink" href="#Setting-up-the-Model" title="Permalink to this headline">¶</a></h2>
-<p>Now, we want to build the model based on the above formulation. Please note that this part is <em>not</em> specific to GCG but is <em>almost</em> identical to how one would build the same model with <code class="docutils literal notranslate"><span class="pre">PySCIPOpt</span></code>. In fact, the only difference is that we import and instanciate <code class="docutils literal notranslate"><span class="pre">GCGModel</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Model</span></code>. In technical terms, <code class="docutils literal notranslate"><span class="pre">GCGModel</span></code> is a subclass of <code class="docutils literal notranslate"><span class="pre">Model</span></code> and, therefore, you can use all methods of <code class="docutils literal notranslate"><span class="pre">Model</span></code> to build your problem.</p>
+<p>Now, we want to build the model based on the above formulation. Please note that this part is <em>not</em> specific to GCG but is identical to how one would build the same model with <code class="docutils literal notranslate"><span class="pre">PySCIPOpt</span></code>. In technical terms, <code class="docutils literal notranslate"><span class="pre">Model</span></code> in <code class="docutils literal notranslate"><span class="pre">PyGCGOpt</span></code> is a subclass of <code class="docutils literal notranslate"><span class="pre">Model</span></code> in <code class="docutils literal notranslate"><span class="pre">PySCIPOpt</span></code> and, therefore, you can use all methods of <code class="docutils literal notranslate"><span class="pre">PySCIPOpt</span></code> <code class="docutils literal notranslate"><span class="pre">Model</span></code> to build your problem.</p>
 <p>In order to recreate the model multiple times during this example, we create a method that will return the model. The method also returns the different constraints added to the model grouped by type. This will be important later in use-case 3.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pygcgopt</span> <span class="kn">import</span> <span class="n">GCGModel</span><span class="p">,</span> <span class="n">quicksum</span>
+<span></span><span class="kn">from</span> <span class="nn">pygcgopt</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">quicksum</span>
 
 <span class="k">def</span> <span class="nf">build_model</span><span class="p">(</span><span class="n">n_locations</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">,</span> <span class="n">distances</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacities</span><span class="p">):</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">GCGModel</span><span class="p">()</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
 
     <span class="n">m</span><span class="o">.</span><span class="n">printVersion</span><span class="p">()</span>
     <span class="n">m</span><span class="o">.</span><span class="n">redirectOutput</span><span class="p">()</span>
@@ -571,16 +571,16 @@ z^{\star}_{IP}\,\,\,=\,\,\,\min{} &amp;\sum_{i=1}^n \sum_{j=1}^n d_{ij} x_{ij} \
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-GCG version 3.5.0 [GitHash: b54569ac6-dirty]
+GCG version 3.5.0 [GitHash: 202908425-dirty]
 Copyright (C) 2010-2021 Operations Research, RWTH Aachen University
                         Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
-SCIP version 8.0.0 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 6.0.0] [GitHash: 1af84b0617]
+SCIP version 8.0.0 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 6.0.0] [GitHash: 8441670cd5-dirty]
 Copyright (C) 2002-2021 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 presolving:
 (round 1, exhaustive) 0 del vars, 0 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 0 chg coeffs, 100 upgd conss, 0 impls, 50 clqs
-   (0.1s) probing: 51/2550 (2.0%) - 0 fixings, 0 aggregations, 0 implications, 0 bound changes
-   (0.1s) probing aborted: 50/50 successive totally useless probings
+   (0.0s) probing: 51/2550 (2.0%) - 0 fixings, 0 aggregations, 0 implications, 0 bound changes
+   (0.0s) probing aborted: 50/50 successive totally useless probings
 presolving (2 rounds: 2 fast, 2 medium, 2 exhaustive):
  0 deleted vars, 0 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 0 changed sides, 0 changed coefficients
  0 implications, 2550 cliques
@@ -589,7 +589,7 @@ presolved problem has 2550 variables (2550 bin, 0 int, 0 impl, 0 cont) and 101 c
      50 constraints of type &lt;setppc&gt;
       1 constraints of type &lt;linear&gt;
 transformed objective value is always integral (scale: 1)
-Presolving Time: 0.06
+Presolving Time: 0.04
  Consclassifier "nonzeros" yields a classification with 2  different constraint classes
  Consclassifier "constypes" yields a classification with 3 different constraint classes
  Consclassifier "constypes according to miplib" yields a classification with 3 different constraint classes
@@ -612,13 +612,12 @@ Presolving Time: 0.06
  dec_consclass found 11 new partialdecs
 dec_densemasterconss found 1 new partialdec
 dec_neighborhoodmaster found 1 new partialdec
- the current varclass distribution includes 116 classes but only 9 are allowed for propagatePartialdec() of var class detector
-POSTPROCESSING of decompositions. Added 0 new decomps.
+ the current varclass distribution includes POSTPROCESSING of decompositions. Added 0 new decomps.
 Found 11 finished decompositions.
 Measured running time per detector:
-Detector consclass                 worked on        7 finished decompositions and took a total time of      0.001
+Detector consclass                 worked on        7 finished decompositions and took a total time of      0.000
 Detector neighborhoodmaster        worked on        1 finished decompositions and took a total time of      0.000
-Detector connectedbase             worked on       10 finished decompositions and took a total time of      0.005
+Detector connectedbase             worked on       10 finished decompositions and took a total time of      0.007
 Detector varclass                  worked on        2 finished decompositions and took a total time of      0.001
 Detection Time: 0.02
 
@@ -627,28 +626,29 @@ Chosen structure has 50 blocks and 51 linking constraints.
 This decomposition has a maxwhite score of 0.485149.
 Matrix has 50 blocks, using 50 pricing problems.
 
-  time | node  | left  |SLP iter|MLP iter|LP it/n| mem |mdpt |ovars|mvars|ocons|mcons|mcuts|  dualbound   | primalbound  |  deg   |  gap
-p  0.3s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 2.711000e+03 |   --   |    Inf
-p  0.3s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.785000e+03 |   --   |    Inf
-p  0.4s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.102000e+03 |   --   |    Inf
-   0.4s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.102000e+03 |   --   |    Inf
+  time | 116 classes but only 9 are allowed for propagatePartialdec() of var class detector
+node  | left  |SLP iter|MLP iter|LP it/n| mem |mdpt |ovars|mvars|ocons|mcons|mcuts|  dualbound   | primalbound  |  deg   |  gap
+p  0.2s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 2.711000e+03 |   --   |    Inf
+p  0.2s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.785000e+03 |   --   |    Inf
+p  0.3s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.102000e+03 |   --   |    Inf
+   0.3s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.102000e+03 |   --   |    Inf
 
-   0.4s
-|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf
- 0.4s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 | 150 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf
-   0.7s|     1 |     0 |   2081 |   2081 |     - |  41M|   0 |2550 |1699 | 102 | 102 |   0 | 7.050000e+02 | 1.102000e+03 |Starting reduced cost pricing...
-  36.95%|  56.31%X  1.9s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1749 | 102 |
- 102 |   0 | 7.050000e+02 | 8.150000e+02 |  36.95%|  15.60%
-Y  2.0s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-   2.0s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-   2.1s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-   2.1s|     1 |     2 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-*r 2.4s|     6 |     5 |   4384 |   4384 | 327.4 |  59M|   3 |2550 |2002 | 102 | 102 |   0 | 7.065000e+02 | 7.380000e+02 |   --   |   4.46%
-*r 2.4s|     6 |     5 |   4482 |   4482 | 347.0 |  59M|   3 |2550 |2053 | 102 | 102 |   0 | 7.065000e+02 | 7.340000e+02 |   --   |   3.89%
-*r 3.1s|    15 |     6 |   6679 |   6679 | 280.9 |  60M|   5 |2550 |2237 | 102 | 102 |   0 | 7.102222e+02 | 7.130000e+02 |   --   |   0.39%
+ 0.3s|
+     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf    0.3s
+|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 | 150 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf
+Starting reduced cost pricing...
+   0.5s|     1 |     0 |   2081 |   2081 |     - |  41M|   0 |2550 |1699 | 102 | 102 |   0 | 7.050000e+02 | 1.102000e+03 |  36.95%|  56.31%
+d  1.1s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1749 | 102 | 102 |   0 | 7.050000e+02 | 1.016000e+03 |  36.95%|  44.11%
+X  1.4s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.730000e+02 |  36.95%|   9.65%
+Y  1.5s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+   1.5s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+   1.6s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+   1.6s|     1 |     2 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+*r 1.6s|     2 |     1 |   3063 |   3063 | 316.0 |  58M|   1 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.140000e+02 |   --   |   1.28%
+*r 2.3s|    16 |     5 |   6962 |   6962 | 281.0 |  61M|   5 |2550 |2305 | 102 | 102 |   0 | 7.102222e+02 | 7.130000e+02 |   --   |   0.39%
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 3.73
+Solving Time (sec) : 2.62
 Solving Nodes      : 21
 Primal Bound       : +7.13000000000000e+02 (13 solutions)
 Dual Bound         : +7.13000000000000e+02
@@ -679,11 +679,11 @@ Gap                : 0.00 %
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-GCG version 3.5.0 [GitHash: b54569ac6-dirty]
+GCG version 3.5.0 [GitHash: 202908425-dirty]
 Copyright (C) 2010-2021 Operations Research, RWTH Aachen University
                         Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
-SCIP version 8.0.0 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 6.0.0] [GitHash: 1af84b0617]
+SCIP version 8.0.0 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 6.0.0] [GitHash: 8441670cd5-dirty]
 Copyright (C) 2002-2021 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 presolving:
 (round 1, exhaustive) 0 del vars, 0 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 0 chg coeffs, 100 upgd conss, 0 impls, 50 clqs
@@ -697,7 +697,7 @@ presolved problem has 2550 variables (2550 bin, 0 int, 0 impl, 0 cont) and 101 c
      50 constraints of type &lt;setppc&gt;
       1 constraints of type &lt;linear&gt;
 transformed objective value is always integral (scale: 1)
-Presolving Time: 0.05
+Presolving Time: 0.04
 starting detection
  Consclassifier "nonzeros" yields a classification with 2  different constraint classes
  Consclassifier "constypes" yields a classification with 3 different constraint classes
@@ -722,15 +722,15 @@ starting detection
 dec_densemasterconss found 1 new partialdec
 dec_neighborhoodmaster found 1 new partialdec
 POSTPROCESSING of decompositions. Added 0 new decomps.
- the current varclass distribution includes 116 classes but only 9 are allowed for propagatePartialdec() of var class detector
 Found 11 finished decompositions.
 Measured running time per detector:
 Detector consclass                 worked on        7 finished decompositions and took a total time of      0.000
 Detector neighborhoodmaster        worked on        1 finished decompositions and took a total time of      0.000
-Detector connectedbase             worked on       10 finished decompositions and took a total time of      0.005
+Detector connectedbase             worked on       10 finished decompositions and took a total time of      0.006
 Detector varclass                  worked on        2 finished decompositions and took a total time of      0.001
-Detection Time: 0.01
+Detection Time: 0.02
 GCG found 11 finnished decompositions.
+ the current varclass distribution includes 116 classes but only 9 are allowed for propagatePartialdec() of var class detector
 </pre></div></div>
 </div>
 <section id="Inspecting-Decompositions">
@@ -809,31 +809,28 @@ Matrix has 50 blocks, using 50 pricing problems.
 
   time | node  | left  |SLP iter|MLP iter|LP it/n| mem |mdpt |ovars|mvars|ocons|mcons|mcuts|  dualbound   | primalbound  |  deg   |  gap
 p  0.2s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 2.711000e+03 |   --   |    Inf
-p  0.3s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.785000e+03 |   --   |    Inf
+p  0.2s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.785000e+03 |   --   |    Inf
 p  0.3s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.102000e+03 |   --   |    Inf
    0.3s|     1 |     0 |      0 |      0 |     - |  33M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 1.102000e+03 |   --   |    Inf
 
- 0.3s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf    0.4s|     1 |     0 |      0 |      0 |     -
-|  34M|   0 |2550 | 150 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf
+ 0.3s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf    0.3s|     1 |     0 |      0 |      0 |     - |  34M|   0 |2550 | 150 | 102 | 102 |   0 | 0.000000e+00 | 1.102000e+03 |   0.00%|    Inf
+
 
 Starting reduced cost pricing...
- 0.6s|     1 |     0 |   2081 |   2081 |     - |  41M|   0 |2550 |1699 | 102 | 102 |   0 | 7.050000e+02 | 1.102000e+03 |  36.95%|  56.31%X
-  1.8s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1749 | 102 | 102 |   0 | 7.050000e+02 | 8.150000e+02 |  36.95%|  15.60%
-Y  1.9s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-   1.9s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-   1.9s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-   1.9s|     1 |     2 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
-*r 2.2s|     6 |     5 |   4384 |   4384 | 327.4 |  59M|   3 |2550 |2002 | 102 | 102 |   0 | 7.065000e+02 | 7.380000e+02 |   --   |   4.46%
-*r 2.2s|     6 |     5 |   4482 |   4482 | 347.0 |  59M|   3 |2550 |2053 | 102 | 102 |   0 | 7.065000e+02 | 7.340000e+02 |   --   |   3.89%
-*r 3.8s|    21 |     8 |  10167 |  10167 | 371.0 |  61M|   5 |2550 |2320 | 102 | 102 |   0 | 7.123333e+02 | 7.150000e+02 |   --   |   0.37%
-  time | node  | left  |SLP iter|MLP iter|LP it/n| mem |mdpt |ovars|mvars|ocons|mcons|mcuts|  dualbound   | primalbound  |  deg   |  gap
-*r 3.8s|    22 |     5 |  10229 |  10229 | 356.3 |  61M|   6 |2550 |2320 | 102 | 102 |   0 | 7.123333e+02 | 7.140000e+02 |   --   |   0.23%
-*r 3.9s|    22 |     0 |  10437 |  10437 | 366.2 |  62M|   6 |2550 |2507 | 102 | 102 |   0 | 7.123333e+02 | 7.130000e+02 |   --   |   0.09%
+   0.5s|     1 |     0 |   2081 |   2081 |     - |  41M|   0 |2550 |1699 | 102 | 102 |   0 | 7.050000e+02 | 1.102000e+03 |  36.95%|  56.31%d  1.0s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1749 | 102 | 102 |   0 | 7.050000e+02 | 1.016000e+03 |  36.95%|  44.11%
+X  1.4s
+|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1799 | 102 | 102 |   0 | 7.050000e+02 | 7.730000e+02 |  36.95%|   9.65%
+Y  1.5s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+   1.5s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+   1.5s|     1 |     0 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+   1.5s|     1 |     2 |   3055 |   3055 |     - |  57M|   0 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.580000e+02 |  36.95%|   7.52%
+*r 1.5s|     2 |     1 |   3063 |   3063 | 316.0 |  58M|   1 |2550 |1849 | 102 | 102 |   0 | 7.050000e+02 | 7.140000e+02 |   --   |   1.28%
+*r 2.2s|    16 |     5 |   6962 |   6962 | 281.0 |  61M|   5 |2550 |2305 | 102 | 102 |   0 | 7.102222e+02 | 7.130000e+02 |   --   |   0.39%
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 3.95
-Solving Nodes      : 22
-Primal Bound       : +7.13000000000000e+02 (12 solutions)
+Solving Time (sec) : 2.55
+Solving Nodes      : 21
+Primal Bound       : +7.13000000000000e+02 (13 solutions)
 Dual Bound         : +7.13000000000000e+02
 Gap                : 0.00 %
 </pre></div></div>
@@ -874,11 +871,11 @@ Gap                : 0.00 %
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-GCG version 3.5.0 [GitHash: b54569ac6-dirty]
+GCG version 3.5.0 [GitHash: 202908425-dirty]
 Copyright (C) 2010-2021 Operations Research, RWTH Aachen University
                         Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
-SCIP version 8.0.0 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 6.0.0] [GitHash: 1af84b0617]
+SCIP version 8.0.0 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 6.0.0] [GitHash: 8441670cd5-dirty]
 Copyright (C) 2002-2021 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
  added complete decomp for original problem with 50 blocks and 51 masterconss, 0 linkingvars, 0 mastervars, and max white score of   0.485149
 there is an original decomposition and problem is not presolved yet -&gt; disable presolving and start optimizing (rerun with presolve command before detect command for detecting in presolved problem)
@@ -902,25 +899,26 @@ Matrix has 50 blocks, using 50 pricing problems.
 p  0.1s|     1 |     0 |      0 |      0 |     - |  28M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 2.848000e+03 |   --   |    Inf
    0.1s|     1 |     0 |      0 |      0 |     - |  28M|   0 |2550 |   0 | 101 |   0 |   0 | 0.000000e+00 | 2.848000e+03 |   --   |    Inf
 
-
-   0.2s|     1 |     0 |      0 |      0 |     - |  28M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 2.848000e+03 |   0.00%|    Inf    0.2s|     1 |     0 |      0 |      0 |     - |  28M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 2.848000e+03 |   0.00%|    Inf
-   0.5s|     1 |     0 |   1839 |   1839 |     - |  38M|   0 |2550 |2302 | 102 | 102 |   0 | 0.000000e+00 | 2.848000e+03 |  49.42%|    Inf    0.9s|
+ 0.1s|     1 |     0 |      0 |      0 |     - |  28M|
+   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 2.848000e+03 |   0.00%|    Inf    0.1s|     1 |     0 |      0
+|      0 |     - |  28M|   0 |2550 |  50 | 102 | 102 |   0 | 0.000000e+00 | 2.848000e+03 |   0.00%|    Inf    0.3s|     1 |     0 |   1839 |   1839 |     - |  38M|   0 |2550 |2302 | 102 | 102 |   0 | 0.000000e+00 | 2.848000e+03 |  49.42%|    Inf    0.6s|     1 |     0 |   3939 |   3939 |     - |  41M|   0 |2550 |2933 | 102 | 102 |   0 | 7.024809e+02 | 2.848000e+03 |  35.22%| 305.42%   0.6s|     1 |     0 |   3939 |   3939 |     - |  41M|   0 |2550 |2933 | 102 | 102 |   0 | 7.050000e+02 | 2.848000e+03 |  35.29%| 303.97%d  1.2s|     1 |     0 |   5187 |   5187
 Starting reduced cost pricing...
 
-     1 |     0 |   3939 |   3939 |     - |  41M|   0 |2550 |2933 | 102 | 102 |   0 | 7.024809e+02 | 2.848000e+03 |  35.22%| 305.42%
- 1.0s|     1 |     0 |   3939 |   3939 |     - |  41M|   0 |2550 |2933 | 102 | 102 |   0 | 7.050000e+02 | 2.848000e+03 |  35.29%| 303.97%
-d  1.9s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |2983 | 102 | 102 |   0 | 7.050000e+02 | 1.245000e+03 |  35.29%|  76.60%
-X  2.4s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |3033 | 102 | 102 |   0 | 7.050000e+02 | 8.110000e+02 |  35.29%|  15.04%
-   2.6s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |3083 | 102 | 102 |   0 | 7.050000e+02 | 8.110000e+02 |  35.29%|  15.04%
-   2.6s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |3083 | 102 | 102 |   0 | 7.050000e+02 | 8.110000e+02 |  35.29%|  15.04%
-   2.6s|     1 |     2 |   5187 |   5187 |     - |  51M|   0 |2550 |3083 | 102 | 102 |   0 | 7.050000e+02 | 8.110000e+02 |  35.29%|  15.04%
-*r 2.8s|     4 |     3 |   5815 |   5815 | 395.7 |  52M|   2 |2550 |3169 | 102 | 102 |   0 | 7.051111e+02 | 7.340000e+02 |   --   |   4.10%
-*r 3.9s|    15 |     6 |   9636 |   9636 | 357.7 |  54M|   5 |2550 |3386 | 102 | 102 |   0 | 7.102222e+02 | 7.130000e+02 |   --   |   0.39%
+
+|     - |  51M|   0 |2550 |2983 | 102 | 102 |   0 | 7.050000e+02 | 1.016000e+03 |  35.29%|  44.11%
+X
+  1.6s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |3033 | 102 | 102 |   0 | 7.050000e+02 | 8.040000e+02 |  35.29%|  14.04%
+   1.7s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |3083 | 102 | 102 |   0 | 7.050000e+02 | 8.040000e+02 |  35.29%|  14.04%
+   1.8s|     1 |     0 |   5187 |   5187 |     - |  51M|   0 |2550 |3083 | 102 | 102 |   0 | 7.050000e+02 | 8.040000e+02 |  35.29%|  14.04%
+   1.8s|     1 |     2 |   5187 |   5187 |     - |  51M|   0 |2550 |3083 | 102 | 102 |   0 | 7.050000e+02 | 8.040000e+02 |  35.29%|  14.04%
+c  2.1s|     5 |     6 |   6968 |   6968 | 585.0 |  53M|   2 |2550 |3315 | 102 | 102 |   0 | 7.093889e+02 | 7.350000e+02 |   --   |   3.61%
+*r 2.3s|     7 |     4 |   7395 |   7395 | 461.2 |  54M|   2 |2550 |3362 | 102 | 102 |   0 | 7.093889e+02 | 7.190000e+02 |   --   |   1.35%
+*r 2.3s|     7 |     2 |   7534 |   7534 | 484.3 |  54M|   2 |2550 |3469 | 102 | 102 |   0 | 7.093889e+02 | 7.130000e+02 |   --   |   0.51%
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 5.11
-Solving Nodes      : 21
-Primal Bound       : +7.13000000000000e+02 (10 solutions)
+Solving Time (sec) : 2.54
+Solving Nodes      : 9
+Primal Bound       : +7.13000000000000e+02 (9 solutions)
 Dual Bound         : +7.13000000000000e+02
 Gap                : 0.00 %
 </pre></div></div>

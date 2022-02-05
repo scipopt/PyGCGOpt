@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Decomposition" href="decomposition.html" /><link rel="prev" title="API Reference" href="index.html" />
 
     <link rel="shortcut icon" href="../_static/favicon.ico"/><meta name="generator" content="sphinx-4.3.1, furo 2021.11.23"/>
-        <title>GCGModel - PyGCGOpt 0.1.3</title>
+        <title>Model - PyGCGOpt 0.1.4</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=7f0192ddeb2adecfbaa87ffbcf67d16358b30bc1" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
@@ -124,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">PyGCGOpt 0.1.3</div></a>
+      <a href="../index.html"><div class="brand">PyGCGOpt 0.1.4</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -147,7 +147,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">PyGCGOpt 0.1.3</span>
+  <span class="sidebar-brand-text">PyGCGOpt 0.1.4</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -165,7 +165,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">GCGModel</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decomposition.html">Decomposition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="detprobdata.html">DetProbData</a></li>
 <li class="toctree-l2"><a class="reference internal" href="detector.html">Detector</a></li>
@@ -206,23 +206,23 @@
           </label>
         </div>
         <article role="main">
-          <section id="gcgmodel">
-<h1>GCGModel<a class="headerlink" href="#gcgmodel" title="Permalink to this headline">¶</a></h1>
+          <section id="model">
+<h1>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcgopt.gcg.</span></span><span class="sig-name descname"><span class="pre">GCGModel</span></span><a class="headerlink" href="#pygcgopt.gcg.GCGModel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcgopt.gcg.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><a class="headerlink" href="#pygcgopt.gcg.Model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Main class for interaction with the GCG solver.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.addDecomposition">
-<span class="sig-name descname"><span class="pre">addDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PartialDecomposition</span> <span class="pre">partialdec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.addDecomposition" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.addDecomposition">
+<span class="sig-name descname"><span class="pre">addDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PartialDecomposition</span> <span class="pre">partialdec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.addDecomposition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a user specified decomposition to GCG.</p>
 <p>The passed PartialDecomposition can be partial or finnished. A partial decomposition will be completed by GCG using
 its detector loop. If a finnished decomposition is passed, GCG will skip the detection loop and use the
 provided decomposition right away.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.addDecompositionFromConss">
-<span class="sig-name descname"><span class="pre">addDecompositionFromConss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">master_conss</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">block_conss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.addDecompositionFromConss" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.addDecompositionFromConss">
+<span class="sig-name descname"><span class="pre">addDecompositionFromConss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">master_conss</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">block_conss</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.addDecompositionFromConss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a user specified decomposition to GCG based on constraints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -239,16 +239,16 @@ provided decomposition right away.</p>
 fixMasterConss() and the block constraints with fixBlockConss(). The decomposition is added with addDecomposition().</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.addPreexistingPartialDecomposition">
-<span class="sig-name descname"><span class="pre">addPreexistingPartialDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PartialDecomposition</span> <span class="pre">partialdec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.addPreexistingPartialDecomposition" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.addPreexistingPartialDecomposition">
+<span class="sig-name descname"><span class="pre">addPreexistingPartialDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PartialDecomposition</span> <span class="pre">partialdec</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.addPreexistingPartialDecomposition" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.addVar">
-<span class="sig-name descname"><span class="pre">addVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.addVar" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.addVar">
+<span class="sig-name descname"><span class="pre">addVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.addVar" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.createDecomposition">
-<span class="sig-name descname"><span class="pre">createDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.createDecomposition" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.createDecomposition">
+<span class="sig-name descname"><span class="pre">createDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.createDecomposition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new empty PartialDecomposition.</p>
 <p>The created PartialDecomposition object can be used to fix constraints and variables. Afterwards, it can be
 passed to the model through addPreexistingPartialDecomposition().</p>
@@ -265,25 +265,25 @@ passed to the model through addPreexistingPartialDecomposition().</p>
 </div>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.createPartialDecomposition">
-<span class="sig-name descname"><span class="pre">createPartialDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.createPartialDecomposition" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.createPartialDecomposition">
+<span class="sig-name descname"><span class="pre">createPartialDecomposition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.createPartialDecomposition" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.detect">
-<span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.detect" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.detect">
+<span class="sig-name descname"><span class="pre">detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.detect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detect the problem.</p>
 <p>Can be executed before or after presolving. If executed before presolving, the structure is detected on the original problem and presolving is skiped when solving the problem later.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.presolve" title="pygcgopt.gcg.GCGModel.presolve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">presolve()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.optimize" title="pygcgopt.gcg.GCGModel.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.presolve" title="pygcgopt.gcg.Model.presolve"><code class="xref py py-meth docutils literal notranslate"><span class="pre">presolve()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.optimize" title="pygcgopt.gcg.Model.optimize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">optimize()</span></code></a></p></li>
 </ul>
 </div>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.getDualbound">
-<span class="sig-name descname"><span class="pre">getDualbound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.getDualbound" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.getDualbound">
+<span class="sig-name descname"><span class="pre">getDualbound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.getDualbound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the best dual bound.</p>
 <p>This retrieves the same dual bound that GCG reports in the console log. The dual bound is based on the
 objective value of the optimized linear programming relaxation at the current node.</p>
@@ -298,8 +298,8 @@ objective value of the optimized linear programming relaxation at the current no
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.getMasterProb">
-<span class="sig-name descname"><span class="pre">getMasterProb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.getMasterProb" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.getMasterProb">
+<span class="sig-name descname"><span class="pre">getMasterProb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.getMasterProb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Provides access to the GCG master problem.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -308,14 +308,14 @@ objective value of the optimized linear programming relaxation at the current no
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.includeDefaultPlugins">
-<span class="sig-name descname"><span class="pre">includeDefaultPlugins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.includeDefaultPlugins" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.includeDefaultPlugins">
+<span class="sig-name descname"><span class="pre">includeDefaultPlugins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.includeDefaultPlugins" title="Permalink to this definition">¶</a></dt>
 <dd><p>Includes all default plug-ins of GCG into SCIP</p>
 <p>Called automatically during initialization of the model.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.includeDetector">
-<span class="sig-name descname"><span class="pre">includeDetector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Detector</span> <span class="pre">detector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectorname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decchar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqcallround=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxcallround=INT_MAX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mincallround=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqcallroundoriginal=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxcallroundoriginal=INT_MAX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mincallroundoriginal=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabledfinishing=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabledpostprocessing=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usefulrecall=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.includeDetector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.includeDetector">
+<span class="sig-name descname"><span class="pre">includeDetector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Detector</span> <span class="pre">detector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectorname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decchar</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqcallround=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxcallround=INT_MAX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mincallround=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqcallroundoriginal=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxcallroundoriginal=INT_MAX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mincallroundoriginal=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabled=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabledfinishing=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enabledpostprocessing=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usefulrecall=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.includeDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>includes a detector</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -328,17 +328,17 @@ objective value of the optimized linear programming relaxation at the current no
 <p>For an explanation for all arguments, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">DECincludeDetector()</span></code>.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.includePricingSolver">
-<span class="sig-name descname"><span class="pre">includePricingSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PricingSolver</span> <span class="pre">pricingSolver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solvername</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heuristicEnabled=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exactEnabled=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.includePricingSolver" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.includePricingSolver">
+<span class="sig-name descname"><span class="pre">includePricingSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PricingSolver</span> <span class="pre">pricingSolver</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solvername</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heuristicEnabled=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exactEnabled=False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.includePricingSolver" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.listDecompositions">
-<span class="sig-name descname"><span class="pre">listDecompositions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition" title="pygcgopt.gcg.PartialDecomposition"><span class="pre">PartialDecomposition</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.listDecompositions" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.listDecompositions">
+<span class="sig-name descname"><span class="pre">listDecompositions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="decomposition.html#pygcgopt.gcg.PartialDecomposition" title="pygcgopt.gcg.PartialDecomposition"><span class="pre">PartialDecomposition</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pygcgopt.gcg.Model.listDecompositions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists all finnished decompositions found during the detection loop or provided by the user.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.listDetectors">
-<span class="sig-name descname"><span class="pre">listDetectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.listDetectors" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.listDetectors">
+<span class="sig-name descname"><span class="pre">listDetectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.listDetectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lists all detectors that are currently included</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -352,41 +352,41 @@ objective value of the optimized linear programming relaxation at the current no
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="pygcgopt.gcg.GCGModel.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorFinishingEnabled" title="pygcgopt.gcg.GCGModel.setDetectorFinishingEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorFinishingEnabled()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled" title="pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorPostprocessingEnabled()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.setDetectorEnabled" title="pygcgopt.gcg.Model.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.setDetectorFinishingEnabled" title="pygcgopt.gcg.Model.setDetectorFinishingEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorFinishingEnabled()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.setDetectorPostprocessingEnabled" title="pygcgopt.gcg.Model.setDetectorPostprocessingEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorPostprocessingEnabled()</span></code></a></p></li>
 </ul>
 </div>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.listPricingSolvers">
-<span class="sig-name descname"><span class="pre">listPricingSolvers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.listPricingSolvers">
+<span class="sig-name descname"><span class="pre">listPricingSolvers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.listPricingSolvers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.optimize">
-<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.optimize" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.optimize">
+<span class="sig-name descname"><span class="pre">optimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.optimize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimize the problem.</p>
 <p>This will transform, presolve and detect the problem if neccessary.
 Otherwise, GCG will solve the problem directly.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.presolve">
-<span class="sig-name descname"><span class="pre">presolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.presolve" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.presolve">
+<span class="sig-name descname"><span class="pre">presolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.presolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Presolve the problem.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.printStatistics">
-<span class="sig-name descname"><span class="pre">printStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.printStatistics" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.printStatistics">
+<span class="sig-name descname"><span class="pre">printStatistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.printStatistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print solving statistics of GCG to stdout.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.printVersion">
-<span class="sig-name descname"><span class="pre">printVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.printVersion" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.printVersion">
+<span class="sig-name descname"><span class="pre">printVersion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.printVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print version, copyright information and compile mode of GCG and SCIP</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setDetectorEnabled">
-<span class="sig-name descname"><span class="pre">setDetectorEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setDetectorEnabled">
+<span class="sig-name descname"><span class="pre">setDetectorEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setDetectorEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables or disables a detector for detecting partial decompositions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -404,8 +404,8 @@ Otherwise, GCG will solve the problem directly.</p>
 <p>Use listDetectors() to obtain a list of all detectors.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setDetectorFinishingEnabled">
-<span class="sig-name descname"><span class="pre">setDetectorFinishingEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setDetectorFinishingEnabled" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setDetectorFinishingEnabled">
+<span class="sig-name descname"><span class="pre">setDetectorFinishingEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setDetectorFinishingEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables or disables a detector for finishing partial decompositions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,13 +419,13 @@ Otherwise, GCG will solve the problem directly.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="pygcgopt.gcg.GCGModel.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.setDetectorEnabled" title="pygcgopt.gcg.Model.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
 </ul>
 </div>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled">
-<span class="sig-name descname"><span class="pre">setDetectorPostprocessingEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setDetectorPostprocessingEnabled" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setDetectorPostprocessingEnabled">
+<span class="sig-name descname"><span class="pre">setDetectorPostprocessingEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setDetectorPostprocessingEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables or disables a detector for postprocessing partial decompositions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -439,13 +439,13 @@ Otherwise, GCG will solve the problem directly.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#pygcgopt.gcg.GCGModel.setDetectorEnabled" title="pygcgopt.gcg.GCGModel.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pygcgopt.gcg.Model.setDetectorEnabled" title="pygcgopt.gcg.Model.setDetectorEnabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">setDetectorEnabled()</span></code></a></p></li>
 </ul>
 </div>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setGCGSeparating">
-<span class="sig-name descname"><span class="pre">setGCGSeparating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setGCGSeparating" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setGCGSeparating">
+<span class="sig-name descname"><span class="pre">setGCGSeparating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setting</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setGCGSeparating" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets parameter settings of all separators</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -454,8 +454,8 @@ Otherwise, GCG will solve the problem directly.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setPricingSolverEnabled">
-<span class="sig-name descname"><span class="pre">setPricingSolverEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_solver_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setPricingSolverEnabled" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setPricingSolverEnabled">
+<span class="sig-name descname"><span class="pre">setPricingSolverEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_solver_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setPricingSolverEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables or disables exact and heuristic solving for the specified pricing solver.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -467,11 +467,11 @@ Otherwise, GCG will solve the problem directly.</p>
 </dl>
 <p>This is a convenience method to access the boolean parameters “pricingsolver/&lt;name&gt;/exactenabled” and
 “pricingsolver/&lt;name&gt;/heurenabled”.</p>
-<p>Use <a class="reference internal" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="pygcgopt.gcg.GCGModel.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
+<p>Use <a class="reference internal" href="#pygcgopt.gcg.Model.listPricingSolvers" title="pygcgopt.gcg.Model.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setPricingSolverExactEnabled">
-<span class="sig-name descname"><span class="pre">setPricingSolverExactEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_solver_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setPricingSolverExactEnabled" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setPricingSolverExactEnabled">
+<span class="sig-name descname"><span class="pre">setPricingSolverExactEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_solver_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setPricingSolverExactEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables or disables exact solving for the specified pricing solver.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -482,11 +482,11 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “pricingsolver/&lt;name&gt;/exactenabled”.</p>
-<p>Use <a class="reference internal" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="pygcgopt.gcg.GCGModel.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
+<p>Use <a class="reference internal" href="#pygcgopt.gcg.Model.listPricingSolvers" title="pygcgopt.gcg.Model.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.setPricingSolverHeuristicEnabled">
-<span class="sig-name descname"><span class="pre">setPricingSolverHeuristicEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_solver_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.setPricingSolverHeuristicEnabled" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.setPricingSolverHeuristicEnabled">
+<span class="sig-name descname"><span class="pre">setPricingSolverHeuristicEnabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pricing_solver_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_enabled</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.setPricingSolverHeuristicEnabled" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables or disables heuristic solving for the specified pricing solver.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -497,11 +497,11 @@ Otherwise, GCG will solve the problem directly.</p>
 </dd>
 </dl>
 <p>This is a convenience method to access the boolean parameter “pricingsolver/&lt;name&gt;/heurenabled”.</p>
-<p>Use <a class="reference internal" href="#pygcgopt.gcg.GCGModel.listPricingSolvers" title="pygcgopt.gcg.GCGModel.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
+<p>Use <a class="reference internal" href="#pygcgopt.gcg.Model.listPricingSolvers" title="pygcgopt.gcg.Model.listPricingSolvers"><code class="xref py py-meth docutils literal notranslate"><span class="pre">listPricingSolvers()</span></code></a> to obtain a list of all pricing solvers.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.GCGModel.writeAllDecomps">
-<span class="sig-name descname"><span class="pre">writeAllDecomps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory=u'alldecompositions/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension=u'dec'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool</span> <span class="pre">original=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool</span> <span class="pre">presolved=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">createDirectory=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.GCGModel.writeAllDecomps" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.Model.writeAllDecomps">
+<span class="sig-name descname"><span class="pre">writeAllDecomps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory=u'alldecompositions/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension=u'dec'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool</span> <span class="pre">original=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bool</span> <span class="pre">presolved=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">createDirectory=True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.Model.writeAllDecomps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes all decompositions to disk</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -547,7 +547,7 @@ Otherwise, GCG will solve the problem directly.</p>
               Copyright &#169; 2021, Operations Research, RWTH Aachen University |
           Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
           <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            | <a class="muted-link" href="../_sources/api/gcgmodel.rst.txt"
+            | <a class="muted-link" href="../_sources/api/model.rst.txt"
                rel="nofollow">
               Show Source
             </a>
