@@ -3,11 +3,9 @@ import decimal
 from functools import reduce
 from collections import defaultdict
 
-from pygcgopt import GCGModel, quicksum, PricingSolver, GCG_PRICINGSTATUS
+from pygcgopt import Model, PricingSolver, GCG_PRICINGSTATUS
 
 from ortools.algorithms import pywrapknapsack_solver
-
-from test_cpmp import build_model
 
 import pytest
 
@@ -151,7 +149,7 @@ def test_pypricer_fast(lp_file, dec_file):
     lp_file = os.path.join(dirname, lp_file)
     dec_file = os.path.join(dirname, dec_file)
 
-    m = GCGModel()
+    m = Model()
     m.readProblem(lp_file)
     m.readProblem(dec_file)
 
@@ -161,7 +159,7 @@ def test_pypricer_fast(lp_file, dec_file):
 
     gcg_pricer_sol_obj_val = m.getSolObjVal(m.getBestSol())
 
-    m = GCGModel()
+    m = Model()
     m.readProblem(lp_file)
     m.readProblem(dec_file)
 

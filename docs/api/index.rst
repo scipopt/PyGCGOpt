@@ -3,7 +3,7 @@ API Reference
 
 .. toctree::
 
-    gcgmodel.rst
+    model.rst
     decomposition.rst
     detprobdata.rst
     detector.rst

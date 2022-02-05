@@ -1,7 +1,7 @@
 cdef class PricingSolver:
     """Base class of the Pricing Solver Plugin"""
 
-    cdef public Model model
+    cdef public SCIPModel model
     cdef public str solvername
 
     def freeSolver(self):
