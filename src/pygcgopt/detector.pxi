@@ -1,6 +1,6 @@
 cdef class Detector:
     """Base class of the Detector Plugin"""
-    cdef public Model model
+    cdef public SCIPModel model
     cdef public str detectorname
 
     def freeDetector(self):

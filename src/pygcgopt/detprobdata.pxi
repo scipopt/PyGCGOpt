@@ -436,7 +436,7 @@ cdef class DetProbData:
         :return: the corresponding Model instance wrapping scip data structure.
         """
         cdef SCIP * scip = self.thisptr.getScip()
-        return Model.create(scip)
+        return SCIPModel.create(scip)
 
     def getSortedCandidatesNBlocks(DetProbData self, object candidates):
         """gets the candidates for number of blocks added by the user followed by the found ones sorted in descending order by how often a candidate was proposed

@@ -1,7 +1,8 @@
 # distutils: language = c++
 
 from pyscipopt.scip import PY_SCIP_CALL
-from pyscipopt.scip cimport Model, Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData, SCIPgetBestSol
+from pyscipopt.scip cimport Model as SCIPModel
+from pyscipopt.scip cimport Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData, SCIPgetBestSol
 
 from cpython cimport Py_INCREF, Py_DECREF
 
@@ -50,7 +51,7 @@ cdef class PY_GCG_PRICINGSTATUS:
     UNBOUNDED = GCG_PRICINGSTATUS_UNBOUNDED
 
 
-cdef class GCGModel(Model):
+cdef class Model(SCIPModel):
     """Main class for interaction with the GCG solver."""
 
     def includeDefaultPlugins(self):
@@ -183,16 +184,16 @@ cdef class GCGModel(Model):
         c_desc = str_conversion(desc)
 
         PY_SCIP_CALL(GCGpricerIncludeSolver(
-            (<Model>self.getMasterProb())._scip, c_solvername, c_desc, priority, heuristicEnabled, exactEnabled, PyPricingSolverUpdate,
+            (<SCIPModel>self.getMasterProb())._scip, c_solvername, c_desc, priority, heuristicEnabled, exactEnabled, PyPricingSolverUpdate,
             PyPricingSolverSolve, PyPricingSolverSolveHeur, PyPricingSolverFree, PyPricingSolverInit, PyPricingSolverExit,
             PyPricingSolverInitSol, PyPricingSolverExitSol, <GCG_SOLVERDATA*>pricingSolver))
 
-        pricingSolver.model = <Model>weakref.proxy(self)
+        pricingSolver.model = <SCIPModel>weakref.proxy(self)
         pricingSolver.solvername = solvername
         Py_INCREF(pricingSolver)
 
     def listPricingSolvers(self):
-        cdef Model mp = <Model>self.getMasterProb()
+        cdef SCIPModel mp = <SCIPModel>self.getMasterProb()
         cdef int n_pricing_solvers = GCGpricerGetNSolvers(mp._scip)
         cdef GCG_SOLVER** pricing_solvers = GCGpricerGetSolvers(mp._scip)
 
@@ -257,7 +258,7 @@ cdef class GCGModel(Model):
             PyDetectorExit, PyDetectorPropagatePartialdec, PyDetectorFinishPartialdec, PyDetectorPostprocessPartialdec,
             PyDetectorSetParamAggressive, PyDetectorSetParamDefault, PyDetectorSetParamFast))
 
-        detector.model = <Model>weakref.proxy(self)
+        detector.model = <SCIPModel>weakref.proxy(self)
         detector.detectorname = detectorname
         Py_INCREF(detector)
 
@@ -348,7 +349,7 @@ cdef class GCGModel(Model):
         PY_SCIP_CALL(DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
 
 
-cdef class GCGPricingModel(Model):
+cdef class GCGPricingModel(SCIPModel):
     @staticmethod
     cdef create(SCIP* scip):
         """Creates a pricing problem model and appropriately assigns the scip and bestsol parameters
@@ -388,7 +389,7 @@ cdef class GCGPricingModel(Model):
         return pyGCGCol
 
 
-cdef class GCGMasterModel(Model):
+cdef class GCGMasterModel(SCIPModel):
     @staticmethod
     cdef create(SCIP* scip):
         """Creates a pricing problem model and appropriately assigns the scip and bestsol parameters

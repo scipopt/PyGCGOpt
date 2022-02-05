@@ -1,4 +1,4 @@
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 
 # required for Python 3.8 on Windows
 import os
@@ -8,7 +8,6 @@ if hasattr(os, 'add_dll_directory'):
 
 # Expose pyscipopt object through pygcgopt
 from pyscipopt import multidict
-from pyscipopt import Model
 from pyscipopt import Benders
 from pyscipopt import Benderscut
 from pyscipopt import Branchrule
@@ -42,5 +41,5 @@ from pyscipopt import SCIP_BENDERSENFOTYPE
 from pyscipopt import SCIP_ROWORIGINTYPE
 
 # export user-relevant objects
-from pygcgopt.gcg import GCGModel, Detector, PricingSolver
+from pygcgopt.gcg import Model, Detector, PricingSolver
 from pygcgopt.gcg import PY_GCG_PRICINGSTATUS as GCG_PRICINGSTATUS
