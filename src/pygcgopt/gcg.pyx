@@ -26,6 +26,7 @@ include "pricing_solver.pxi"
 include "partition.pxi"
 include "decomposition.pxi"
 include "detprobdata.pxi"
+include "consclassifier.pxi"
 
 
 cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
@@ -237,11 +238,29 @@ cdef class Model(SCIPModel):
         """
         self.setBoolParam("pricingsolver/{}/heurenabled".format(pricing_solver_name), is_enabled)
 
+    def includeConsClassifier(self, ConsClassifier consclassifier, consclassifiername, desc, priority=0, enabled=True):
+        """includes a constraint classifier
+
+        :param consclassifier: an object of a subclass of consclassifier#ConsClassifier.
+        :param consclassifiername: name of constraint classifier
+        :param desc: description of constraint classifier
+        """
+        c_consclassifiername = str_conversion(consclassifiername)
+        c_desc = str_conversion(consclassifiername)
+        PY_SCIP_CALL(DECincludeConsClassifier(
+            self._scip, c_consclassifiername, c_desc, priority, enabled,
+            <DEC_CLASSIFIERDATA*>consclassifier, PyConsClassifierFree, PyConsClassifierClassify))
+
+        consclassifier.model = <SCIPModel>weakref.proxy(self)
+        consclassifier.consclassifiername = consclassifiername
+        Py_INCREF(consclassifier)
+
     def includeDetector(self, Detector detector, detectorname, decchar, desc, freqcallround=1, maxcallround=INT_MAX, mincallround=0, freqcallroundoriginal=1, maxcallroundoriginal=INT_MAX, mincallroundoriginal=0, priority=0, enabled=True, enabledfinishing=False, enabledpostprocessing=False, skip=False, usefulrecall=False):
         """includes a detector
 
         :param detector: An object of a subclass of detector#Detector.
-        :param detectorname: name of the detector
+        :param detectorname: name of detector
+        :param desc: description of detector
 
         For an explanation for all arguments, see :meth:`DECincludeDetector()`.
         """

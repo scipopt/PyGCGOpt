@@ -44,6 +44,17 @@ cdef extern from "gcg/gcg.h":
 
     SCIP* GCGgetMasterprob(SCIP* scip)
 
+    #ConsClassifier
+    ctypedef struct DEC_CLASSIFIERDATA:
+        pass
+
+    ctypedef struct DEC_CONSCLASSIFIER:
+        pass
+
+    SCIP_RETCODE DECincludeConsClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, DEC_CLASSIFIERDATA *classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, DEC_CONSCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, DEC_CONSCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+
+    DEC_CLASSIFIERDATA* DECconsClassifierGetData(DEC_CONSCLASSIFIER* classifier)
+
     ctypedef enum GP_OUTPUT_FORMAT:
         GP_OUTPUT_FORMAT_PDF
         GP_OUTPUT_FORMAT_PNG
