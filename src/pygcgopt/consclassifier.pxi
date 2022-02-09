@@ -24,5 +24,5 @@ cdef SCIP_RETCODE PyConsClassifierFree(SCIP* scip, DEC_CONSCLASSIFIER* consclass
 
 cdef SCIP_RETCODE PyConsClassifierClassify(SCIP* scip, DEC_CONSCLASSIFIER* consclassifier, SCIP_Bool transformed):
     py_consclassifier = get_py_consclassifier(consclassifier)
-    result_dict = py_consclassifier.classify(transformed)
+    py_consclassifier.classify(transformed)
     return SCIP_OKAY
