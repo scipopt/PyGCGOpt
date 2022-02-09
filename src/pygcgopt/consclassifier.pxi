@@ -7,7 +7,7 @@ cdef class ConsClassifier:
         '''calls destructor and frees memory of constraint classifier'''
         pass
 
-    def classify(self):
+    def classify(self, transformed):
         return {}
 
 cdef ConsClassifier get_py_consclassifier(DEC_CONSCLASSIFIER* consclassifier):
@@ -24,5 +24,5 @@ cdef SCIP_RETCODE PyConsClassifierFree(SCIP* scip, DEC_CONSCLASSIFIER* consclass
 
 cdef SCIP_RETCODE PyConsClassifierClassify(SCIP* scip, DEC_CONSCLASSIFIER* consclassifier, SCIP_Bool transformed):
     py_consclassifier = get_py_consclassifier(consclassifier)
-    result_dict = py_consclassifier.classify()
+    result_dict = py_consclassifier.classify(transformed)
     return SCIP_OKAY
