@@ -140,7 +140,7 @@ cdef class PartialDecomposition:
         """
         if not isinstance(conss, Iterable):
             raise TypeError("Expected iterable as first argument. Got '{}' instead.".format(type(conss)))
-        cdef int block_id
+        cdef int block_id = -1  #assign no block_id at first
         for cons in conss:
             # block_id is the same for all blocks
             block_id = self.fixConsToBlock(<Constraint?>cons, block)
@@ -1856,6 +1856,8 @@ cdef class PartialDecomposition:
                     c_output_format = GP_OUTPUT_FORMAT_SVG
                 elif format == "png":
                     c_output_format = GP_OUTPUT_FORMAT_PNG
+                else:
+                    c_output_format = GP_OUTPUT_FORMAT_SVG #as default output format
 
                 self.thisptr.generateVisualization(c_gp_filename, c_outfile, c_output_format)
 
