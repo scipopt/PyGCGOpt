@@ -55,6 +55,22 @@ cdef extern from "gcg/gcg.h":
 
     DEC_CLASSIFIERDATA* DECconsClassifierGetData(DEC_CONSCLASSIFIER* classifier)
 
+    DEC_CONSCLASSIFIER** GCGconshdlrDecompGetConsClassifiers(SCIP* scip)
+    int GCGconshdlrDecompGetNConsClassifiers(SCIP* scip)
+    const char* DECconsClassifierGetName(DEC_CONSCLASSIFIER* classifier)
+
+    #VarClassifier
+    ctypedef struct DEC_VARCLASSIFIER:
+        pass
+
+    SCIP_RETCODE DECincludeVarClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, DEC_CLASSIFIERDATA* classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, DEC_VARCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, DEC_VARCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+
+    DEC_CLASSIFIERDATA* DECvarClassifierGetData(DEC_VARCLASSIFIER* classifier)
+
+    int GCGconshdlrDecompGetNVarClassifiers(SCIP* scip)
+    DEC_VARCLASSIFIER** GCGconshdlrDecompGetVarClassifiers(SCIP* scip)
+    const char* DECvarClassifierGetName(DEC_VARCLASSIFIER* classifier)
+
     ctypedef enum GP_OUTPUT_FORMAT:
         GP_OUTPUT_FORMAT_PDF
         GP_OUTPUT_FORMAT_PNG
@@ -133,6 +149,8 @@ cdef extern from "gcg/cons_decomp.h":
 cdef extern from "gcg/cons_decomp.hpp":
     PARTIALDECOMP* GCGconshdlrDecompGetPartialdecFromID(SCIP* scip, int partialdecid)
     SCIP_RETCODE GCGconshdlrDecompAddPreexisitingPartialDec(SCIP* scip, PARTIALDECOMP* partialdec)
+    DETPROBDATA* GCGconshdlrDecompGetDetprobdataPresolved(SCIP* scip)
+    DETPROBDATA* GCGconshdlrDecompGetDetprobdataOrig(SCIP* scip)
 
 
 cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":

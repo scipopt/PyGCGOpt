@@ -27,6 +27,7 @@ include "partition.pxi"
 include "decomposition.pxi"
 include "detprobdata.pxi"
 include "consclassifier.pxi"
+include "varclassifier.pxi"
 
 
 cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
@@ -112,6 +113,18 @@ cdef class Model(SCIPModel):
         :return: The best dual bound of the current node.
         """
         return GCGgetDualbound(self._scip)
+
+    def getDetprobdataOrig(self):
+        """returns the detprobdata for unpresolved problem
+        """
+        cdef DETPROBDATA *detprobdata = GCGconshdlrDecompGetDetprobdataOrig(self._scip)
+        return DetProbData.create(detprobdata)
+
+    def getDetprobdataPresolved(self):
+        """returns the detprobdata for presolved problem
+        """
+        cdef DETPROBDATA *detprobdata = GCGconshdlrDecompGetDetprobdataPresolved(self._scip)
+        return DetProbData.create(detprobdata)
 
     def listDecompositions(self) -> List[PartialDecomposition]:
         """Lists all finnished decompositions found during the detection loop or provided by the user."""
@@ -246,14 +259,70 @@ cdef class Model(SCIPModel):
         :param desc: description of constraint classifier
         """
         c_consclassifiername = str_conversion(consclassifiername)
-        c_desc = str_conversion(consclassifiername)
+        c_desc = str_conversion(desc)
         PY_SCIP_CALL(DECincludeConsClassifier(
             self._scip, c_consclassifiername, c_desc, priority, enabled,
             <DEC_CLASSIFIERDATA*>consclassifier, PyConsClassifierFree, PyConsClassifierClassify))
 
-        consclassifier.model = <SCIPModel>weakref.proxy(self)
+        consclassifier.model = <Model>weakref.proxy(self)
         consclassifier.consclassifiername = consclassifiername
         Py_INCREF(consclassifier)
+
+    def getNConsClassifiers(self):
+        cdef int n_consclassifiers = GCGconshdlrDecompGetNConsClassifiers(self._scip)
+        return n_consclassifiers
+
+    def listConsClassifiers(self):
+        """lists all constraint classifiers that are currently included
+
+        :return: list of strings of the constraint classifier names
+        """
+        cdef int n_consclassifiers = GCGconshdlrDecompGetNConsClassifiers(self._scip)
+        cdef DEC_CONSCLASSIFIER** consclassifiers = GCGconshdlrDecompGetConsClassifiers(self._scip)
+
+        return [DECconsClassifierGetName(consclassifiers[i]).decode('utf-8') for i in range(n_consclassifiers)]
+
+    def includeVarClassifier(self, VarClassifier varclassifier, varclassifiername, desc, priority=0, enabled=True):
+        """includes a variable classifier
+
+        :param varclassifier: an object of a subclass of varclassifier#VarClassifier.
+        :param varclassifiername: name of variable classifier
+        :param desc: description of variable classifier
+        """
+        c_varclassifiername = str_conversion(varclassifiername)
+        c_desc = str_conversion(desc)
+        PY_SCIP_CALL(DECincludeVarClassifier(
+            self._scip, c_varclassifiername, c_desc, priority, enabled,
+            <DEC_CLASSIFIERDATA*>varclassifier, PyVarClassifierFree, PyVarClassifierClassify))
+
+        varclassifier.model = <Model>weakref.proxy(self)
+        varclassifier.varclassifiername = varclassifiername
+        Py_INCREF(varclassifier)
+
+    def getNVarClassifiers(self):
+        cdef int n_varclassifiers = GCGconshdlrDecompGetNVarClassifiers(self._scip)
+        return n_varclassifiers
+
+    def listVarClassifiers(self):
+        """lists all variable classifiers that are currently included
+
+        :return: list of strings of the variable classifier names
+        """
+        cdef int n_varclassifiers = GCGconshdlrDecompGetNVarClassifiers(self._scip)
+        cdef DEC_VARCLASSIFIER** varclassifiers = GCGconshdlrDecompGetVarClassifiers(self._scip)
+
+        return [DECvarClassifierGetName(varclassifiers[i]).decode('utf-8') for i in range(n_varclassifiers)]
+
+    def setVarClassifierEnabled(self, varclassifier_name, is_enabled=True):
+        """enables or disables a variable classifier
+
+        :param varclassifier_name: the name of the variable classifier
+        :param is_enabled: decides weather the variable classifier should be enabled or diabled.
+
+        This is a convenience method to access the boolean parameter "detection/classification/varclassifier/<name>/enabled".
+        """
+        # TODO test if varclassifier_name exists
+        self.setBoolParam("detection/classification/varclassifier/{}/enabled".format(varclassifier_name), is_enabled)
 
     def includeDetector(self, Detector detector, detectorname, decchar, desc, freqcallround=1, maxcallround=INT_MAX, mincallround=0, freqcallroundoriginal=1, maxcallroundoriginal=INT_MAX, mincallroundoriginal=0, priority=0, enabled=True, enabledfinishing=False, enabledpostprocessing=False, skip=False, usefulrecall=False):
         """includes a detector
