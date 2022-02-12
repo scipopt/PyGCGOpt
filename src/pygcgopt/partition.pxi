@@ -11,25 +11,68 @@ cdef class ConsPart:
         return new_ConsPart
 
     def getClassDescription(self, classindex):
+        """returns the description of the class corresponding to the classindex
+
+        :param classindex: index of the class
+        :type classindex: int
+        :return: description of the class
+        :rtype: str
+        """
         return self.consPartition.getClassDescription(classindex).decode('utf-8')
 
     def getClassName(self, classindex):
+        """returns the name of the class corresponding to the classindex
+
+        :param classindex: index of the class
+        :type classindex: int
+        :return: name of the class
+        :rtype: str
+        """
         return self.consPartition.getClassName(classindex).decode('utf-8')
 
     def getName(self):
+        """returns the name of the constraint partition
+
+        :return: name of the constraint partition
+        :rtype: str
+        """
         return self.consPartition.getName().decode('utf-8')
 
     def getNClasses(self):
+        """returns the number of classes of the constraint partition
+
+        :return: number of classes
+        :rtype: int
+        """
         return self.consPartition.getNClasses()
 
     def removeEmptyClasses(self):
+        """removes all classes which do not have any assigned indices (classindices may change)
+
+        :return: number of removed classes
+        :rtype: int
+        """
         return self.consPartition.removeEmptyClasses()
 
     def setClassDescription(self, classindex, desc):
+        """sets the description of the class corresponding to the classindex
+
+        :param classindex: index of the class
+        :type classindex: int
+        :param desc: description of the class
+        :type desc: str
+        """
         c_desc = str_conversion(desc)
         self.consPartition.setClassDescription(classindex, c_desc)
 
     def setClassName(self, classindex, name):
+        """sets the name of the class corresponding to the classindex
+
+        :param classindex: index of the class
+        :type classindex: int
+        :param desc: name of the class
+        :type desc: str
+        """
         c_name = str_conversion(name)
         self.consPartition.setClassName(classindex, name)
 
@@ -38,8 +81,9 @@ cdef class ConsPart:
         c_desc = str_conversion(desc)
         return self.consPartition.addClass(c_name, c_desc, decompInfo)
 
-    def assignConsToClass(self, consindex, classindex):
-        self.consPartition.assignConsToClass(consindex, classindex)
+    def assignConsToClass(self, Constraint cons, classindex):
+        cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
+        self.consPartition.assignConsToClass(cpp_consindex, classindex)
 
     def getAllSubsets(self, both, only_master, only_pricing):
         return self.consPartition.getAllSubsets(both, only_master, only_pricing)
@@ -47,11 +91,13 @@ cdef class ConsPart:
     def getClassDecompInfo(self, classindex):
         return self.consPartition.getClassDecompInfo(classindex)
 
-    def getClassNameOfCons(self, consindex):
-        return self.consPartition.getClassNameOfCons(consindex).decode('utf-8')
+    def getClassNameOfCons(self, Constraint cons):
+        cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
+        return self.consPartition.getClassNameOfCons(cpp_consindex).decode('utf-8')
 
-    def getClassOfCons(self, consindex):
-        return self.consPartition.getClassOfCons(consindex)
+    def getClassOfCons(self, Constraint cons):
+        cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
+        return self.consPartition.getClassOfCons(cpp_consindex)
 
     def getNConss(self):
         return self.consPartition.getNConss()
@@ -59,8 +105,9 @@ cdef class ConsPart:
     def getNConssOfClasses(self):
         return self.consPartition.getNConssOfClasses()
 
-    def isConsClassified(self, consindex):
-        return self.consPartition.isConsClassified(consindex)
+    def isConsClassified(self, Constraint cons):
+        cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
+        return self.consPartition.isConsClassified(cpp_consindex)
 
     def reduceClasses(self, maxNumberOfClasses):
         cdef ConsPartition* result = self.consPartition.reduceClasses(maxNumberOfClasses)
@@ -69,97 +116,8 @@ cdef class ConsPart:
     def setClassDecompInfo(self, classindex, decompInfo):
         self.consPartition.setClassDecompInfo(classindex, decompInfo)
 
-
-    # def addClass(ConsPart self, name, desc, CONS_DECOMPINFO decompInfo):
-    #     """creates a new class, returns index of the class.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    #def assignConsToClass(ConsPart self, Constraint cons, int classindex):
-    #    """assigns a constraint to a class.
-    #    """
-    #    cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
-    #    cdef int cpp_classindex = classindex
-    #    self.thisptr.assignConsToClass(cpp_consindex, cpp_classindex)
-
-    #def getAllSubsets(ConsPart self, bool both, bool only_master, bool only_pricing):
-    #    """returns a vector containing all possible subsets of the chosen classindices.
-    #    """
-    #    cdef bool cpp_both = both
-    #    cdef bool cpp_only_master = only_master
-    #    cdef bool cpp_only_pricing = only_pricing
-    #    cdef vector[vector[int]] result = self.thisptr.getAllSubsets(cpp_both, cpp_only_master, cpp_only_pricing)
-    #    return result
-
-    # def getClassDecompInfo(ConsPart self, int classindex):
-    #     """returns the decomposition info of a class.
-    #     """
-    #     cdef int cpp_classindex = classindex
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    #def getClassNameOfCons(ConsPart self, Constraint cons):
-    #    """returns the name of the class a constraint is assigned to.
-    #    """
-    #    cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
-    #    cdef const char * result = self.thisptr.getClassNameOfCons(cpp_consindex)
-    #    return result.decode('utf-8')
-
-    #def getClassOfCons(ConsPart self, Constraint cons):
-    #    """returns the index of the class a constraint is assigned to.
-    #    """
-    #    cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
-    #    cdef int result = self.thisptr.getClassOfCons(cpp_consindex)
-    #    return result
-
-    # def getConssToClasses(ConsPart self):
-    #     """returns vector containing the assigned class of each constraint.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    #def getNConss(ConsPart self):
-    #    """returns the number of constraints.
-    #    """
-    #    cdef int result = self.thisptr.getNConss()
-    #    return result
-
-    #def getNConssOfClasses(ConsPart self):
-    #    """returns a vector with the numbers of constraints that are assigned to the classes.
-    #    """
-    #    cdef vector[int] result = self.thisptr.getNConssOfClasses()
-    #    return result
-
-    #def isConsClassified(ConsPart self, Constraint cons):
-    #    """returns whether a constraint is already assigned to a class.
-    #    """
-    #    cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
-    #    cdef bool result = self.thisptr.isConsClassified(cpp_consindex)
-    #    return result
-
-    #def reduceClasses(ConsPart self, int maxNumberOfClasses):
-    #    """returns partition with reduced number of classes
-    #    if the current number of classes is greater than an upper bound
-    #    and lower than 2*(upper bound) (returns NULL otherwise).
-    #    """
-    #    cdef int cpp_maxNumberOfClasses = maxNumberOfClasses
-    #    cdef ConsPartition * result = self.thisptr.reduceClasses(cpp_maxNumberOfClasses)
-    #    return ConsPart.create(result, self.detProbData)
-
-    #def getName(ConsPart self):
-    #    """returns the name of the partition"""
-    #    return self.thisptr.getName().decode('utf-8')
-
-    # def setClassDecompInfo(ConsPart self, int classindex, CONS_DECOMPINFO decompInfo):
-    #     """sets the decomposition code of a class.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
     def __repr__(ConsPart self):
         return f"<ConsPart: name={self.getName()}>"
-
 
 cdef class VarPart:
     cdef VarPartition * thisptr
