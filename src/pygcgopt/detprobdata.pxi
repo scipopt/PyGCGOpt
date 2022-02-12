@@ -489,9 +489,7 @@ cdef class DetProbData:
 
         :return: SCIP variable pointer related to a variable index.
         """
-        cdef int cpp_varIndex = varIndex
-        # TODO implement function
-        raise NotImplementedError()
+        return Variable.create(self.thisptr.getVar(varIndex))
 
     def getVarsForCons(DetProbData self, int consIndex):
         """returns the variable indices of the coefficient matrix for a constraint

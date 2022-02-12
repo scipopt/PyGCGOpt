@@ -45,12 +45,18 @@ cdef double stop_and_free_clock(SCIP* scip, SCIP_CLOCK* clock):
 
 
 cdef class PY_GCG_PRICINGSTATUS:
-    UNKNOWN = GCG_PRICINGSTATUS_UNKNOWN
+    UNKNOWN       = GCG_PRICINGSTATUS_UNKNOWN
     NOTAPPLICABLE = GCG_PRICINGSTATUS_NOTAPPLICABLE
-    SOLVERLIMIT = GCG_PRICINGSTATUS_SOLVERLIMIT
-    OPTIMAL = GCG_PRICINGSTATUS_OPTIMAL
-    INFEASIBLE = GCG_PRICINGSTATUS_INFEASIBLE
-    UNBOUNDED = GCG_PRICINGSTATUS_UNBOUNDED
+    SOLVERLIMIT   = GCG_PRICINGSTATUS_SOLVERLIMIT
+    OPTIMAL       = GCG_PRICINGSTATUS_OPTIMAL
+    INFEASIBLE    = GCG_PRICINGSTATUS_INFEASIBLE
+    UNBOUNDED     = GCG_PRICINGSTATUS_UNBOUNDED
+
+cdef class PY_VAR_DECOMPINFO:
+    PY_ALL     = ALL
+    PY_LINKING = LINKING
+    PY_MASTER  = MASTER
+    PY_BLOCK   = BLOCK
 
 
 cdef class Model(SCIPModel):
@@ -125,6 +131,13 @@ cdef class Model(SCIPModel):
         """
         cdef DETPROBDATA *detprobdata = GCGconshdlrDecompGetDetprobdataPresolved(self._scip)
         return DetProbData.create(detprobdata)
+
+    def getVarPartition(self, name, nclasses, nvars):
+        """returns a VarPartition
+        """
+        c_name = str_conversion(name)
+        cdef VarPartition* varpatitionptr = new VarPartition(self._scip, c_name, nclasses, nvars)
+        return VarPart.create(varpatitionptr)
 
     def listDecompositions(self) -> List[PartialDecomposition]:
         """Lists all finnished decompositions found during the detection loop or provided by the user."""

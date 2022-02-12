@@ -211,8 +211,39 @@ cdef class VarPart:
         cdef VarPartition * result = self.thisptr.reduceClasses(cpp_maxNumberOfClasses)
         return VarPart.create(result)
 
-    # def setClassDecompInfo(VarPart self, int classindex, VAR_DECOMPINFO decompInfo):
-    #     """sets the decomposition code of a class.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
+    def setClassName(VarPart self, classindex, name):
+        """sets the name of the class
+        """
+        c_name = str_conversion(name)
+        self.thisptr.setClassName(classindex, c_name)
+
+    def setClassDescription(VarPart self, classindex, desc):
+        """sets the description of the class
+        """
+        c_desc = str_conversion(desc)
+        self.thisptr.setClassDescription(classindex, c_desc)
+
+    def setClassDecompInfo(VarPart self, classindex, decompInfo):
+        """sets the decomposition code of a class
+
+        :param classindex: index of the class
+        :type classindex: int
+        :param decompInfo: decomposition code of class
+        :type decompInfo: VAR_DECOMPINFO
+        """
+        self.thisptr.setClassDecompInfo(classindex, decompInfo)
+
+    def removeEmptyClasses(VarPart self):
+        """removes all classes which do not have any assigned index (classindices may change)
+        """
+        return self.thisptr.removeEmptyClasses()
+
+    def getName(VarPart self):
+        """returns the name of the partition
+        """
+        return self.thisptr.getName().decode('utf-8')
+
+    def getNClasses(VarPart self):
+        """returns the number of classes the partition provides
+        """
+        return self.thisptr.getNClasses()

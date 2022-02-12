@@ -413,9 +413,15 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         unsigned int partialdecIsNoDuplicateOfPartialdecs(PARTIALDECOMP * comppartialdec, vector[PARTIALDECOMP *] partialdecs, bool sort) except +
         void sortFinishedForScore() except +
         vector[PARTIALDECOMP *] translatePartialdecs(DETPROBDATA * otherdata, vector[PARTIALDECOMP *] otherpartialdecs) except +
+        SCIP_VAR* getVar(int varIndex) except +
 
 
 cdef extern from "gcg/class_conspartition.h" namespace "gcg":
+    ctypedef enum CONS_DECOMPINFO:
+        BOTH         = 0
+        ONLY_MASTER  = 1
+        ONLY_PRICING = 2
+
     cdef cppclass ConsPartition:
         ConsPartition(ConsPartition * toCopy)
         void assignConsToClass(int consindex, int classindex) except +
@@ -430,8 +436,15 @@ cdef extern from "gcg/class_conspartition.h" namespace "gcg":
 
 
 cdef extern from "gcg/class_varpartition.h" namespace "gcg":
+    ctypedef enum VAR_DECOMPINFO:
+        ALL     = 0
+        LINKING = 1
+        MASTER  = 2
+        BLOCK   = 3
+
     cdef cppclass VarPartition:
         VarPartition(VarPartition * toCopy)
+        VarPartition(SCIP* scip, const char* name, int nClasses, int nVars)
         void assignVarToClass(int varindex, int classindex) except +
         vector[vector[int]] getAllSubsets(bool all, bool linking, bool master, bool block) except +
         char * getClassNameOfVar(int varindex)
@@ -440,6 +453,12 @@ cdef extern from "gcg/class_varpartition.h" namespace "gcg":
         vector[int] getNVarsOfClasses() except +
         bool isVarClassified(int varindex) except +
         VarPartition * reduceClasses(int maxNumberOfClasses) except +
+        void setClassName(int classindex, const char* name) except +
+        void setClassDescription(int classindex, const char* desc) except +
+        void setClassDecompInfo(int classindex, VAR_DECOMPINFO decompInfo) except +
+        int removeEmptyClasses() except +
+        const char* getName() except +
+        int getNClasses() except +
 
 
 cdef extern from "scip/scip.h":

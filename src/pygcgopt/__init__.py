@@ -43,3 +43,4 @@ from pyscipopt import SCIP_ROWORIGINTYPE
 # export user-relevant objects
 from pygcgopt.gcg import Model, Detector, PricingSolver, ConsClassifier, VarClassifier
 from pygcgopt.gcg import PY_GCG_PRICINGSTATUS as GCG_PRICINGSTATUS
+from pygcgopt.gcg import PY_VAR_DECOMPINFO as VAR_DECOMPINFO
