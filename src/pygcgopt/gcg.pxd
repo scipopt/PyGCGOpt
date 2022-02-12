@@ -495,6 +495,19 @@ cdef extern from "scip/scip.h":
     SCIP_RETCODE SCIPstopClock(SCIP* scip, SCIP_CLOCK* clck)
     SCIP_Real SCIPgetClockTime(SCIP* scip, SCIP_CLOCK* clck)
 
+cdef class DetProbData:
+    cdef DETPROBDATA* thisptr
+    cdef object __weakref__
+
+    @staticmethod
+    cdef create(DETPROBDATA* thisptr)
+
+cdef class ConsPart:
+    cdef ConsPartition* consPartition
+    cdef DetProbData detProbData
+
+    @staticmethod
+    cdef create(ConsPartition* thisptr, DetProbData detProbData)
 
 cdef class GCGColumn:
     cdef GCG_COL* gcg_col

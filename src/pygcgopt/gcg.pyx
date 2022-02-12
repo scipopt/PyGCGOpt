@@ -58,6 +58,10 @@ cdef class PY_VAR_DECOMPINFO:
     PY_MASTER  = MASTER
     PY_BLOCK   = BLOCK
 
+cdef class PY_CONS_DECOMPINFO:
+    PY_BOTH         = BOTH
+    PY_ONLY_MASTER  = ONLY_MASTER
+    PY_ONLY_PRICING = ONLY_PRICING
 
 cdef class Model(SCIPModel):
     """Main class for interaction with the GCG solver."""

@@ -1,19 +1,6 @@
 cdef class DetProbData:
     """class to manage the detection process and data for one coefficient matrix of a MIP, usually there is one detprobdata for the original and one detprobdata for the presolved problem.
     """
-    cdef DETPROBDATA * thisptr
-    cdef bool delete_thisptr
-
-    # make DetProbData weak referentiable
-    cdef object __weakref__
-
-    def __cinit__(self):
-        self.thisptr = NULL
-        self.delete_thisptr = True
-
-    def __dealloc__(self):
-        if self.delete_thisptr and self.thisptr != NULL:
-            del self.thisptr
 
     @staticmethod
     cdef create(DETPROBDATA* thisptr):
@@ -59,7 +46,7 @@ cdef class DetProbData:
         cdef ConsPartition * conspartitioncollection_ptr = NULL
         cdef ConsPart conspartitioncollection_element
         for conspartitioncollection_element in conspartitioncollection:
-            conspartitioncollection_ptr = <ConsPartition*> conspartitioncollection_element.thisptr
+            conspartitioncollection_ptr = <ConsPartition*> conspartitioncollection_element.consPartition
             cpp_conspartitioncollection.push_back(conspartitioncollection_ptr)
         self.thisptr.conspartitioncollection = cpp_conspartitioncollection
 
@@ -133,7 +120,7 @@ cdef class DetProbData:
     def addConsPartition(DetProbData self, ConsPart partition):
         """adds a constraint partition if it is no duplicate of an existing constraint partition.
         """
-        cdef ConsPartition * cpp_partition = partition.thisptr
+        cdef ConsPartition* cpp_partition = partition.consPartition
         self.thisptr.addConsPartition(cpp_partition)
 
     def addCandidatesNBlocksNVotes(DetProbData self, int candidate, int nvotes):

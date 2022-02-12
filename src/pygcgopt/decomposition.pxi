@@ -1275,7 +1275,7 @@ cdef class PartialDecomposition:
         """registers statistics for a used conspartition.
         """
         cdef int cpp_detectorchainindex = detectorchainindex
-        cdef ConsPartition * cpp_partition = partition.thisptr
+        cdef ConsPartition* cpp_partition = partition.consPartition
         cdef vector[int] cpp_consclassesmaster = consclassesmaster
         self.thisptr.setConsPartitionStatistics(cpp_detectorchainindex, cpp_partition, cpp_consclassesmaster)
 
