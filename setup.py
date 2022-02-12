@@ -106,7 +106,7 @@ setup(
     description='Python interface and modeling environment for GCG',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://git.or.rwth-aachen.de/gcg/PyGCGOpt',
+    url='https://github.com/scipopt/PyGCGOpt',
     author='Lehrstuhl für Operations Research - RWTH Aachen University',
     author_email='',
     license='MIT',
