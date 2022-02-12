@@ -423,17 +423,31 @@ cdef extern from "gcg/class_conspartition.h" namespace "gcg":
         ONLY_PRICING = 2
 
     cdef cppclass ConsPartition:
-        ConsPartition(ConsPartition * toCopy)
+        # methods of superclass IndexPartition
+        const char* getClassDescription(int classindex) except +
+        const char* getClassName(int classindex) except +
+        const char* getName() except +
+        int getNClasses() except +
+        #vector[int] reduceClasses(int maxNumberOfClasses) except +
+        int removeEmptyClasses() except +
+        void setClassDescription(int classindex, const char* desc) except +
+        void setClassName(int classindex, const char* name) except +
+
+        # constructors and methods of class ConsPartition
+        ConsPartition(SCIP* scip, const char* name, int nClasses, int nConss) except +
+        ConsPartition(ConsPartition * toCopy) except +
+        int addClass(const char* name, const char* desc, CONS_DECOMPINFO decompInfo) except +
         void assignConsToClass(int consindex, int classindex) except +
         vector[vector[int]] getAllSubsets(bool both, bool only_master, bool only_pricing) except +
-        char * getClassNameOfCons(int consindex)
+        CONS_DECOMPINFO getClassDecompInfo(int classindex) except +
+        const char* getClassNameOfCons(int consindex) except +
         int getClassOfCons(int consindex) except +
+        #const int* getConssToClasses() except +
         int getNConss() except +
         vector[int] getNConssOfClasses() except +
         bool isConsClassified(int consindex) except +
-        ConsPartition * reduceClasses(int maxNumberOfClasses) except +
-        const char* getName() except +
-
+        ConsPartition* reduceClasses(int maxNumberOfClasses) except +
+        void setClassDecompInfo(int classindex, CONS_DECOMPINFO decompInfo) except +
 
 cdef extern from "gcg/class_varpartition.h" namespace "gcg":
     ctypedef enum VAR_DECOMPINFO:
@@ -443,23 +457,31 @@ cdef extern from "gcg/class_varpartition.h" namespace "gcg":
         BLOCK   = 3
 
     cdef cppclass VarPartition:
-        VarPartition(VarPartition * toCopy)
-        VarPartition(SCIP* scip, const char* name, int nClasses, int nVars)
+        # methods of superclass IndexPartition
+        const char* getClassDescription(int classindex) except +
+        const char* getClassName(int classindex) except +
+        const char* getName() except +
+        int getNClasses() except +
+        #vector[int] reduceClasses(int maxNumberOfClasses) except +
+        int removeEmptyClasses() except +
+        void setClassDescription(int classindex, const char* desc) except +
+        void setClassName(int classindex, const char* name) except +
+
+        # constructors and methods of class VarPartition
+        VarPartition(SCIP* scip, const char* name, int nClasses, int nVars) except +
+        VarPartition(VarPartition * toCopy) except +
+        int addClass(const char* name, const char* desc, VAR_DECOMPINFO decompInfo) except +
         void assignVarToClass(int varindex, int classindex) except +
         vector[vector[int]] getAllSubsets(bool all, bool linking, bool master, bool block) except +
-        char * getClassNameOfVar(int varindex)
+        VAR_DECOMPINFO getClassDecompInfo(int classindex) except +
+        const char* getClassNameOfVar(int varindex) except +
         int getClassOfVar(int varindex) except +
+        #const int* getVarsToClasses() except +
         int getNVars() except +
         vector[int] getNVarsOfClasses() except +
         bool isVarClassified(int varindex) except +
-        VarPartition * reduceClasses(int maxNumberOfClasses) except +
-        void setClassName(int classindex, const char* name) except +
-        void setClassDescription(int classindex, const char* desc) except +
+        VarPartition* reduceClasses(int maxNumberOfClasses) except +
         void setClassDecompInfo(int classindex, VAR_DECOMPINFO decompInfo) except +
-        int removeEmptyClasses() except +
-        const char* getName() except +
-        int getNClasses() except +
-
 
 cdef extern from "scip/scip.h":
     ctypedef struct SCIP_CLOCK:
