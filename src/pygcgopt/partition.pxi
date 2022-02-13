@@ -77,11 +77,29 @@ cdef class ConsPart:
         self.consPartition.setClassName(classindex, name)
 
     def addClass(self, name, desc, decompInfo):
+        """adds a new class to the constraint partition
+
+        :param name: name of the class
+        :type name: str
+        :param desc: description of the class
+        :type desc: str
+        :param decompInfo:                          #missing
+        :type decompInfo: :class:`CONS_DECOMPINFO`
+        :return: index of the added class
+        :rtype: int
+        """
         c_name = str_conversion(name)
         c_desc = str_conversion(desc)
         return self.consPartition.addClass(c_name, c_desc, decompInfo)
 
     def assignConsToClass(self, Constraint cons, classindex):
+        """assigns a constraint to the class corresponding to the classindex
+
+        :param cons: constraint that should be assigned to a class
+        :type cons: :class:`Constraint`
+        :param classindex: index of the class
+        :type classindex: int
+        """
         cdef int cpp_consindex = self.detProbData.getIndexForCons(cons)
         self.consPartition.assignConsToClass(cpp_consindex, classindex)
 
@@ -100,6 +118,11 @@ cdef class ConsPart:
         return self.consPartition.getClassOfCons(cpp_consindex)
 
     def getNConss(self):
+        """returns the number of constraints of the constraint partition
+
+        :return: number of constraints
+        :rtype: int
+        """
         return self.consPartition.getNConss()
 
     def getNConssOfClasses(self):
@@ -117,6 +140,7 @@ cdef class ConsPart:
         self.consPartition.setClassDecompInfo(classindex, decompInfo)
 
 cdef class VarPart:
+    """Base class holding a pointer to corresponding VarPartition"""
 
     @staticmethod
     cdef create(VarPartition* varPartition, DetProbData detProbData):
@@ -259,6 +283,13 @@ cdef class VarPart:
         return self.varPartition.getNVarsOfClasses()
 
     def isVarClassified(self, Variable var):
+        """returns whether a variable is already assigned to a class
+
+        :param var:                                 #missing
+        :type var: :class:`Variable`
+        :return: True iff variable is already assigned to a class
+        :rtype: bool
+        """
         cdef int cpp_varindex = self.detProbData.getIndexForVar(var)
         return self.varPartition.isVarClassified(cpp_varindex)
 
