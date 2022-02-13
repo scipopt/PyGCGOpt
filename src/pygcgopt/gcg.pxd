@@ -509,6 +509,13 @@ cdef class ConsPart:
     @staticmethod
     cdef create(ConsPartition* thisptr, DetProbData detProbData)
 
+cdef class VarPart:
+    cdef VarPartition* varPartition
+    cdef DetProbData detProbData
+
+    @staticmethod
+    cdef create(VarPartition* thisptr, DetProbData detProbData)
+
 cdef class GCGColumn:
     cdef GCG_COL* gcg_col
 
