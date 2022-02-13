@@ -8,7 +8,6 @@ cdef class DetProbData:
             raise Warning("cannot create DetProbData with DETPROBDATA* == NULL")
         new_DetProbData = DetProbData()
         new_DetProbData.thisptr = thisptr
-        new_DetProbData.delete_thisptr = False
         return new_DetProbData
 
     # def __init__(DetProbData self, SCIP * scip, unsigned int _originalProblem):
@@ -18,6 +17,22 @@ cdef class DetProbData:
     #     """
     #     # TODO implement function
     #     raise NotImplementedError()
+
+    def createVarPart(self, name, nclasses, nvars):
+        """returns a VarPartition
+        """
+        cdef SCIP* scip = self.thisptr.getScip()
+        c_name = str_conversion(name)
+        cdef VarPartition* varpatitionptr = new VarPartition(scip, c_name, nclasses, nvars)
+        return VarPart.create(varpatitionptr, self)
+
+    def createConsPart(self, name, nclasses, ncons):
+        """returns a ConsPartition
+        """
+        cdef SCIP* scip = self.thisptr.getScip()
+        c_name = str_conversion(name)
+        cdef ConsPartition* conspatitionptr = new ConsPartition(scip, c_name, nclasses, ncons)
+        return ConsPart.create(conspatitionptr, self)
 
     @property
     def candidatesNBlocks(DetProbData self):
@@ -55,7 +70,7 @@ cdef class DetProbData:
         """collection of different variable class distributions.
         """
         cdef vector[VarPartition *] result = self.thisptr.varpartitioncollection
-        return [VarPart.create(r) for r in result]
+        return [VarPart.create(r, self) for r in result]
 
     @varpartitioncollection.setter
     def varpartitioncollection(DetProbData self, object varpartitioncollection):
@@ -65,7 +80,7 @@ cdef class DetProbData:
         cdef VarPartition * varpartitioncollection_ptr = NULL
         cdef VarPart varpartitioncollection_element
         for varpartitioncollection_element in varpartitioncollection:
-            varpartitioncollection_ptr = <VarPartition*> varpartitioncollection_element.thisptr
+            varpartitioncollection_ptr = <VarPartition*> varpartitioncollection_element.varPartition
             cpp_varpartitioncollection.push_back(varpartitioncollection_ptr)
         self.thisptr.varpartitioncollection = cpp_varpartitioncollection
 
@@ -175,7 +190,7 @@ cdef class DetProbData:
 
         :param partition: varpartition to be added.
         """
-        cdef VarPartition * cpp_partition = partition.thisptr
+        cdef VarPartition * cpp_partition = partition.varPartition
         self.thisptr.addVarPartition(cpp_partition)
 
     def clearAncestorPartialdecs(DetProbData self):
@@ -461,7 +476,7 @@ cdef class DetProbData:
         """
         cdef int cpp_partitionIndex = partitionIndex
         cdef VarPartition * result = self.thisptr.getVarPartition(cpp_partitionIndex)
-        return VarPart.create(result)
+        return VarPart.create(result, self)
 
     def getVarPartitions(DetProbData self):
         """returns vector to stored variable partitions
@@ -469,7 +484,7 @@ cdef class DetProbData:
         :return: returns vector to stored variable partitions.
         """
         cdef vector[VarPartition *] result = self.thisptr.getVarPartitions()
-        return [VarPart.create(r) for r in result]
+        return [VarPart.create(r, self) for r in result]
 
     def getVar(DetProbData self, int varIndex):
         """returns SCIP variable related to a variable index

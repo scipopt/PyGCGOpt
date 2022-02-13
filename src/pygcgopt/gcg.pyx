@@ -136,13 +136,6 @@ cdef class Model(SCIPModel):
         cdef DETPROBDATA *detprobdata = GCGconshdlrDecompGetDetprobdataPresolved(self._scip)
         return DetProbData.create(detprobdata)
 
-    def getVarPartition(self, name, nclasses, nvars):
-        """returns a VarPartition
-        """
-        c_name = str_conversion(name)
-        cdef VarPartition* varpatitionptr = new VarPartition(self._scip, c_name, nclasses, nvars)
-        return VarPart.create(varpatitionptr)
-
     def listDecompositions(self) -> List[PartialDecomposition]:
         """Lists all finnished decompositions found during the detection loop or provided by the user."""
         cdef int npartialdecs = GCGconshdlrDecompGetNPartialdecs(self._scip)

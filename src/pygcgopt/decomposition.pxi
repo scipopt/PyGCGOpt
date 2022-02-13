@@ -1392,7 +1392,7 @@ cdef class PartialDecomposition:
         """registers statistics for a used varpartition.
         """
         cdef int cpp_detectorchainindex = detectorchainindex
-        cdef VarPartition * cpp_partition = partition.thisptr
+        cdef VarPartition * cpp_partition = partition.varPartition
         cdef vector[int] cpp_varclasseslinking = varclasseslinking
         cdef vector[int] cpp_varclassesmaster = varclassesmaster
         self.thisptr.setVarPartitionStatistics(cpp_detectorchainindex, cpp_partition, cpp_varclasseslinking, cpp_varclassesmaster)

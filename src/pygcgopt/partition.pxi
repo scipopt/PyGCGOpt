@@ -70,8 +70,8 @@ cdef class ConsPart:
 
         :param classindex: index of the class
         :type classindex: int
-        :param desc: name of the class
-        :type desc: str
+        :param name: name of the class
+        :type name: str
         """
         c_name = str_conversion(name)
         self.consPartition.setClassName(classindex, name)
@@ -116,18 +116,15 @@ cdef class ConsPart:
     def setClassDecompInfo(self, classindex, decompInfo):
         self.consPartition.setClassDecompInfo(classindex, decompInfo)
 
-    def __repr__(ConsPart self):
-        return f"<ConsPart: name={self.getName()}>"
-
 cdef class VarPart:
 
     @staticmethod
     cdef create(VarPartition* varPartition, DetProbData detProbData):
-        if thisptr == NULL:
+        if varPartition == NULL:
             raise Warning("cannot create VarPart with VarPartition* == NULL")
         new_VarPart = VarPart()
         new_VarPart.varPartition = varPartition
-        new_ConsPart.detProbData = detProbData
+        new_VarPart.detProbData = detProbData
         return new_VarPart
 
     def getClassDescription(self, classindex):
@@ -151,7 +148,7 @@ cdef class VarPart:
         return self.varPartition.getClassName(classindex).decode('utf-8')
 
     def getName(self):
-        """returns the name of the constraint partition
+        """returns the name of the variable partition
 
         :return: name of the constraint partition
         :rtype: str
@@ -159,7 +156,7 @@ cdef class VarPart:
         return self.varPartition.getName().decode('utf-8')
 
     def getNClasses(self):
-        """returns the number of classes of the constraint partition
+        """returns the number of classes of the variable partition
 
         :return: number of classes
         :rtype: int
@@ -190,123 +187,84 @@ cdef class VarPart:
 
         :param classindex: index of the class
         :type classindex: int
-        :param desc: name of the class
-        :type desc: str
+        :param name: name of the class
+        :type name: str
         """
         c_name = str_conversion(name)
         self.varPartition.setClassName(classindex, name)
 
-    # def addClass(VarPart self, name, desc, VAR_DECOMPINFO decompInfo):
-    #     """creates a new class, returns index of the class.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
+    def addClass(self, name, desc, decompInfo):
+        """adds a new class to the variable partition
 
-    #def assignVarToClass(VarPart self, int varindex, int classindex):
-    #    """assigns a variable to a class.
-    #    """
-    #    cdef int cpp_varindex = varindex
-    #    cdef int cpp_classindex = classindex
-    #    self.thisptr.assignVarToClass(cpp_varindex, cpp_classindex)
+        :param name: name of the class
+        :type name: str
+        :param desc: description of the class
+        :type desc: str
+        :param decompInfo:                          #missing
+        :type decompInfo: :class:`VAR_DECOMPINFO`
+        :return: index of the added class
+        :rtype: int
+        """
+        c_name = str_conversion(name)
+        c_desc = str_conversion(desc)
+        return self.varPartition.addClass(c_name, c_desc, decompInfo)
 
-    #def getAllSubsets(VarPart self, bool all, bool linking, bool master, bool block):
-    #    """returns a vector containing all possible subsets of the chosen classindices.
-    #    """
-    #    cdef bool cpp_all = all
-    #    cdef bool cpp_linking = linking
-    #    cdef bool cpp_master = master
-    #    cdef bool cpp_block = block
-    #    cdef vector[vector[int]] result = self.thisptr.getAllSubsets(cpp_all, cpp_linking, cpp_master, cpp_block)
-    #    return result
+    def assignVarToClass(self, Variable var, classindex):
+        """assigns a variable to the class corresponding to the classindex
 
-    # def getClassDecompInfo(VarPart self, int classindex):
-    #     """returns the decomposition info of a class.
-    #     """
-    #     cdef int cpp_classindex = classindex
-    #     # TODO implement function
-    #     raise NotImplementedError()
+        :param var: variable that should be assigned to a class
+        :type var: :class:`Variable`
+        :param classindex: index of the class
+        :type classindex: int
+        """
+        cdef int cpp_varindex = self.detProbData.getIndexForVar(var)
+        self.varPartition.assignVarToClass(cpp_varindex, classindex)
 
-    #def getClassNameOfVar(VarPart self, int varindex):
-    #    """returns the name of the class a variable is assigned to.
-    #    """
-    #    cdef int cpp_varindex = varindex
-    #    cdef const char * result = self.thisptr.getClassNameOfVar(cpp_varindex)
-    #    return result.decode('utf-8')
+    def getAllSubsets(self, all, linking, master, block): #change resulting varindex in list to Variable
+        """returns a vector containing all possible subsets of the chosen classindices
 
-    #def getClassOfVar(VarPart self, int varindex):
-    #    """returns the index of the class a variable is assigned to.
-    #    """
-    #    cdef int cpp_varindex = varindex
-    #    cdef int result = self.thisptr.getClassOfVar(cpp_varindex)
-    #    return result
+        :param all:
+        :type all: bool
+        :param linking:
+        :type linking: bool
+        :param master:
+        :type master: bool
+        :param block:
+        :type block: bool
+        :return: list of lists containing all 
+        :rtype: list
+        """
+        return self.varPartition.getAllSubsets(all, linking, master, block)
 
-    # def getVarsToClasses(VarPart self):
-    #     """returns vector containing the assigned class of each variable.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
+    def getClassDecompInfo(self, classindex):
+        return self.varPartition.getClassDecompInfo(classindex)
 
-    #def getNVars(VarPart self):
-    #    """returns the number of variables.
-    #    """
-    #    cdef int result = self.thisptr.getNVars()
-    #    return result
+    def getClassNameOfVar(self, Variable var):
+        cdef int cpp_varindex = self.detProbData.getIndexForVar(var)
+        return self.varPartition.getClassNameOfVar(cpp_varindex).decode('utf-8')
 
-    #def getNVarsOfClasses(VarPart self):
-    #    """returns a vector with the numbers of variables that are assigned to the classes.
-    #    """
-    #    cdef vector[int] result = self.thisptr.getNVarsOfClasses()
-    #    return result
+    def getClassOfVar(self, Variable var):
+        cdef int cpp_varindex = self.detProbData.getIndexForVar(var)
+        return self.varPartition.getClassOfVar(cpp_varindex)
 
-    #def isVarClassified(VarPart self, int varindex):
-    #    """returns whether a variable is already assigned to a class.
-    #    """
-    #    cdef int cpp_varindex = varindex
-    #    cdef bool result = self.thisptr.isVarClassified(cpp_varindex)
-    #    return result
+    def getNVars(self):
+        """returns the number of variables of the variable partition
 
-    #def reduceClasses(VarPart self, int maxNumberOfClasses):
-    #    """returns partition with reduced number of classes
-    #    if the current number of classes is greater than an upper bound
-    #    and lower than 2*(upper bound) (returns NULL otherwise).
-    #    """
-    #    cdef int cpp_maxNumberOfClasses = maxNumberOfClasses
-    #    cdef VarPartition * result = self.thisptr.reduceClasses(cpp_maxNumberOfClasses)
-    #    return VarPart.create(result)
+        :return: number of variables
+        :rtype: int
+        """
+        return self.varPartition.getNVars()
 
-    #def setClassName(VarPart self, classindex, name):
-    #    """sets the name of the class
-    #    """
-    #    c_name = str_conversion(name)
-    #    self.thisptr.setClassName(classindex, c_name)
+    def getNVarsOfClasses(self):
+        return self.varPartition.getNVarsOfClasses()
 
-    #def setClassDescription(VarPart self, classindex, desc):
-    #    """sets the description of the class
-    #    """
-    #    c_desc = str_conversion(desc)
-    #    self.thisptr.setClassDescription(classindex, c_desc)
+    def isVarClassified(self, Variable var):
+        cdef int cpp_varindex = self.detProbData.getIndexForVar(var)
+        return self.varPartition.isVarClassified(cpp_varindex)
 
-    #def setClassDecompInfo(VarPart self, classindex, decompInfo):
-    #    """sets the decomposition code of a class
+    def reduceClasses(self, maxNumberOfClasses):
+        cdef VarPartition* result = self.varPartition.reduceClasses(maxNumberOfClasses)
+        return VarPart.create(result, self.detProbData)
 
-    #    :param classindex: index of the class
-    #    :type classindex: int
-    #    :param decompInfo: decomposition code of class
-    #    :type decompInfo: VAR_DECOMPINFO
-    #    """
-    #    self.thisptr.setClassDecompInfo(classindex, decompInfo)
-
-    #def removeEmptyClasses(VarPart self):
-    #    """removes all classes which do not have any assigned index (classindices may change)
-    #    """
-    #    return self.thisptr.removeEmptyClasses()
-
-    #def getName(VarPart self):
-    #    """returns the name of the partition
-    #    """
-    #    return self.thisptr.getName().decode('utf-8')
-
-    #def getNClasses(VarPart self):
-    #    """returns the number of classes the partition provides
-    #    """
-    #    return self.thisptr.getNClasses()
+    def setClassDecompInfo(self, classindex, decompInfo):
+        self.varPartition.setClassDecompInfo(classindex, decompInfo)
