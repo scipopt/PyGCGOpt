@@ -279,6 +279,11 @@ cdef class Model(SCIPModel):
         Py_INCREF(consclassifier)
 
     def getNConsClassifiers(self):
+        """returns the number of all constraint classifiers
+
+        :return: number of constraint classifiers
+        :rtype: int
+        """
         cdef int n_consclassifiers = GCGconshdlrDecompGetNConsClassifiers(self._scip)
         return n_consclassifiers
 
@@ -310,6 +315,11 @@ cdef class Model(SCIPModel):
         Py_INCREF(varclassifier)
 
     def getNVarClassifiers(self):
+        """returns the number of all variable classifiers
+
+        :return: number of variable classifiers
+        :rtype: int
+        """
         cdef int n_varclassifiers = GCGconshdlrDecompGetNVarClassifiers(self._scip)
         return n_varclassifiers
 
