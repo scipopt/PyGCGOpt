@@ -42,12 +42,7 @@ cdef class DetProbData:
         c_name = str_conversion(name)
         cdef VarPartition* varpatitionptr = new VarPartition(scip, c_name, nclasses, nvars)
         return VarPart.create(varpatitionptr, self)
-
-
-
-
-
-
+        
     def candidatesNBlocks(self):
         """candidate for the number of blocks, second int indicates how often a candidate was added
         """

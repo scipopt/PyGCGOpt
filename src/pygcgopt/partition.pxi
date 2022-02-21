@@ -273,7 +273,7 @@ cdef class VarPart:
         :type name: str
         """
         c_name = str_conversion(name)
-        self.varPartition.setClassName(classindex, name)
+        self.varPartition.setClassName(classindex, c_name)
 
     def addClass(self, name, desc, decompInfo):
         """adds a new class to the variable partition
