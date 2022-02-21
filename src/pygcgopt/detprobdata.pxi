@@ -1,6 +1,5 @@
 cdef class DetProbData:
-    """class to manage the detection process and data for one coefficient matrix of a MIP, usually there is one detprobdata for the original and one detprobdata for the presolved problem.
-    """
+    """Base class holding a pointer to corresponding DETPROBDATA"""
 
     @staticmethod
     cdef create(DETPROBDATA* thisptr):
@@ -10,39 +9,62 @@ cdef class DetProbData:
         new_DetProbData.thisptr = thisptr
         return new_DetProbData
 
-    def createVarPart(self, name, nclasses, nvars):
-        """returns a VarPartition
-        """
-        cdef SCIP* scip = self.thisptr.getScip()
-        c_name = str_conversion(name)
-        cdef VarPartition* varpatitionptr = new VarPartition(scip, c_name, nclasses, nvars)
-        return VarPart.create(varpatitionptr, self)
-
     def createConsPart(self, name, nclasses, ncons):
-        """returns a ConsPartition
+        """returns a ConsPart object
+
+        :param name: name of the constraint partition
+        :type name: str
+        :param nclasses: number of classes
+        :type nclasses: int
+        :param ncons: number of constraints
+        :type ncons: int
+        :return: constraint partition object
+        :rtype: :class:`ConsPart`
         """
         cdef SCIP* scip = self.thisptr.getScip()
         c_name = str_conversion(name)
         cdef ConsPartition* conspatitionptr = new ConsPartition(scip, c_name, nclasses, ncons)
         return ConsPart.create(conspatitionptr, self)
 
-    def candidatesNBlocks(DetProbData self):
-        """candidate for the number of blocks, second int indicates how often a candidate was added.
+    def createVarPart(self, name, nclasses, nvars):
+        """returns a VarPart object
+
+        :param name: name of the variable partition
+        :type name: str
+        :param nclasses: number of classes
+        :type nclasses: int
+        :param nvars: number of variables
+        :type nvars: int
+        :return: variable partition object
+        :rtype: :class:`VarPart`
+        """
+        cdef SCIP* scip = self.thisptr.getScip()
+        c_name = str_conversion(name)
+        cdef VarPartition* varpatitionptr = new VarPartition(scip, c_name, nclasses, nvars)
+        return VarPart.create(varpatitionptr, self)
+
+
+
+
+
+
+    def candidatesNBlocks(self):
+        """candidate for the number of blocks, second int indicates how often a candidate was added
         """
         cdef vector[pair[int, int]] result = self.thisptr.candidatesNBlocks
         return result
 
-    def candidatesNBlocks(DetProbData self, object candidatesNBlocks):
+    def candidatesNBlocks(self, object candidatesNBlocks):
         cdef vector[pair[int, int]] cpp_candidatesNBlocks = candidatesNBlocks
         self.thisptr.candidatesNBlocks = cpp_candidatesNBlocks
 
-    def conspartitioncollection(DetProbData self):
+    def conspartitioncollection(self):
         """collection of different constraint class distributions.
         """
         cdef vector[ConsPartition *] result = self.thisptr.conspartitioncollection
         return [ConsPart.create(r, <DetProbData>weakref.proxy(self)) for r in result]
 
-    def conspartitioncollection(DetProbData self, object conspartitioncollection):
+    def conspartitioncollection(self, object conspartitioncollection):
         # this seems to be possible only when we use C++11 (-std=c++11)
         # maybe it will be fixed in a future version of Cython
         cdef vector[ConsPartition *] cpp_conspartitioncollection
@@ -53,13 +75,13 @@ cdef class DetProbData:
             cpp_conspartitioncollection.push_back(conspartitioncollection_ptr)
         self.thisptr.conspartitioncollection = cpp_conspartitioncollection
 
-    def varpartitioncollection(DetProbData self):
+    def varpartitioncollection(self):
         """collection of different variable class distributions.
         """
         cdef vector[VarPartition *] result = self.thisptr.varpartitioncollection
         return [VarPart.create(r, self) for r in result]
 
-    def varpartitioncollection(DetProbData self, object varpartitioncollection):
+    def varpartitioncollection(self, object varpartitioncollection):
         # this seems to be possible only when we use C++11 (-std=c++11)
         # maybe it will be fixed in a future version of Cython
         cdef vector[VarPartition *] cpp_varpartitioncollection
@@ -70,17 +92,17 @@ cdef class DetProbData:
             cpp_varpartitioncollection.push_back(varpartitioncollection_ptr)
         self.thisptr.varpartitioncollection = cpp_varpartitioncollection
 
-    def classificationtime(DetProbData self):
+    def classificationtime(self):
         """time that was consumed by the classification of the constraint and variables classifiers.
         """
         cdef double result = self.thisptr.classificationtime
         return result
 
-    def classificationtime(DetProbData self, double classificationtime):
+    def classificationtime(self, double classificationtime):
         cdef double cpp_classificationtime = classificationtime
         self.thisptr.classificationtime = cpp_classificationtime
 
-    def nblockscandidatescalctime(DetProbData self):
+    def nblockscandidatescalctime(self):
         """time that was used to calulate the candidates of te block number.
         """
         cdef double result = self.thisptr.nblockscandidatescalctime
@@ -90,525 +112,541 @@ cdef class DetProbData:
         cdef double cpp_nblockscandidatescalctime = nblockscandidatescalctime
         self.thisptr.nblockscandidatescalctime = cpp_nblockscandidatescalctime
 
-    def postprocessingtime(DetProbData self):
+    def postprocessingtime(self):
         """time that was spent in postproceesing decomposigtions.
         """
         cdef double result = self.thisptr.postprocessingtime
         return result
 
-    def postprocessingtime(DetProbData self, double postprocessingtime):
+    def postprocessingtime(self, double postprocessingtime):
         cdef double cpp_postprocessingtime = postprocessingtime
         self.thisptr.postprocessingtime = cpp_postprocessingtime
 
-    def translatingtime(DetProbData self):
+    def translatingtime(self):
         """time that was spent by transforming partialdecs between presolved and orig problem.
         """
         cdef double result = self.thisptr.translatingtime
         return result
 
-    def translatingtime(DetProbData self, double translatingtime):
+    def translatingtime(self, double translatingtime):
         cdef double cpp_translatingtime = translatingtime
         self.thisptr.translatingtime = cpp_translatingtime
 
-    def addConsPartition(DetProbData self, ConsPart partition):
-        """adds a constraint partition if it is no duplicate of an existing constraint partition.
+
+    def addConsPartition(self, ConsPart partition):
+        """adds a constraint partition if it is no duplicate of an existing constraint partition
+
+        :param partition: constraint partition object
+        :type partition: :class:`ConsPart`
         """
         cdef ConsPartition* cpp_partition = partition.consPartition
         self.thisptr.addConsPartition(cpp_partition)
 
-    def addCandidatesNBlocksNVotes(DetProbData self, int candidate, int nvotes):
-        """adds a candidate for block number and counts how often a candidate is added.
-        """
-        cdef int cpp_candidate = candidate
-        cdef int cpp_nvotes = nvotes
-        self.thisptr.addCandidatesNBlocksNVotes(cpp_candidate, cpp_nvotes)
+    def addCandidatesNBlocksNVotes(self, int candidate, int nvotes):
+        """adds a candidate for block number and counts how often a candidate is added
 
-    def addPartialdecToAncestor(DetProbData self, PartialDecomposition partialdec):
+        :param candidate: candidate for block size
+        :type candidate: int
+        :param nvotes: number of votes this candidates will get
+        :type nvotes: int
+        """
+        self.thisptr.addCandidatesNBlocksNVotes(candidate, nvotes)
+
+    def addPartialdecToAncestor(self, PartialDecomposition partialdec):
         """adds a partialdec to ancestor partialdecs
 
-        :param partialdec: partialdec that is added to the ancestor partialdecs.
+        :param partialdec: partialdec that is added to the ancestor partialdecs
+        :type partialdec: :class:`PartialDecomposition`
         """
-        cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
+        cdef PARTIALDECOMP* cpp_partialdec = partialdec.thisptr
         self.thisptr.addPartialdecToAncestor(cpp_partialdec)
 
-    def addPartialdecToOpen(DetProbData self, PartialDecomposition partialdec):
-        """adds a partialdec to current partialdecs (data structure for partialdecs that are goin to processed in the propagation rounds)
+    def addPartialdecToOpen(self, PartialDecomposition partialdec):
+        """adds a partialdec to current partialdecs (data structure for partialdecs that are going to processed in the propagation rounds)
 
         :param partialdec: pointer of partialdec to be added
+        :type partialdec: :class:`PartialDecomposition`
         :return: True if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
+        :rtype: bool
         """
-        cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
-        cdef bool result = self.thisptr.addPartialdecToOpen(cpp_partialdec)
-        return result
+        cdef PARTIALDECOMP* cpp_partialdec = partialdec.thisptr
+        return self.thisptr.addPartialdecToOpen(cpp_partialdec)
 
-    def addPartialdecToFinished(DetProbData self, PartialDecomposition partialdec):
+    def addPartialdecToFinished(self, PartialDecomposition partialdec):
         """adds a partialdec to finished partialdecs
 
-        :param partialdec: pointer of partialdec that is going to be added to the finished partialdecs (data structure to carry finished decompositions)
-        :return: True if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
-
         .. seealso:: * :meth:`addPartialdecToFinishedUnchecked()`
-        """
-        cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
-        cdef bool result = self.thisptr.addPartialdecToFinished(cpp_partialdec)
-        return result
 
-    def addPartialdecToFinishedUnchecked(DetProbData self, PartialDecomposition partialdec):
+        :param partialdec: pointer of partialdec that is going to be added to the finished partialdecs (data structure to carry finished decompositions)
+        :type partialdec: :class:`PartialDecomposition`
+        :return: True if the partialdecs was successfully added (i.e. it is no duplicate of a known partialdec)
+        :rtype: bool
+        """
+        cdef PARTIALDECOMP* cpp_partialdec = partialdec.thisptr
+        return self.thisptr.addPartialdecToFinished(cpp_partialdec)
+
+    def addPartialdecToFinishedUnchecked(self, PartialDecomposition partialdec):
         """adds a partialdec to finished partialdecs without checking for duplicates, dev has to check this on his own
 
-        :param partialdec: pointer of partialdec that is going to be added unchecked to the finished partialdecs (data structure to carry finished decompositions)
-
         .. seealso:: * :meth:`addPartialdecToFinished()`
+
+        :param partialdec: pointer of partialdec that is going to be added unchecked to the finished partialdecs (data structure to carry finished decompositions)
+        :type partialdec: :class:`PartialDecomposition`
         """
-        cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
+        cdef PARTIALDECOMP* cpp_partialdec = partialdec.thisptr
         self.thisptr.addPartialdecToFinishedUnchecked(cpp_partialdec)
 
-    def addVarPartition(DetProbData self, VarPart partition):
+    def addVarPartition(self, VarPart partition):
         """adds a variable partition if it is no duplicate of an existing variable partition
 
-        :param partition: varpartition to be added.
+        :param partition: variable partition object
+        :type partition: :class:`VarPart`
         """
-        cdef VarPartition * cpp_partition = partition.varPartition
+        cdef VarPartition* cpp_partition = partition.varPartition
         self.thisptr.addVarPartition(cpp_partition)
 
-    def clearAncestorPartialdecs(DetProbData self):
-        """clears ancestor partialdec data structure,
-        .. note:: does not free the partialdecs themselves.
+    def clearAncestorPartialdecs(self):
+        """clears ancestor partialdec data structure
+
+        .. note:: does not free the partialdecs themselves
         """
         self.thisptr.clearAncestorPartialdecs()
 
-    def clearCurrentPartialdecs(DetProbData self):
+    def clearCurrentPartialdecs(self):
         """clears current partialdec data structure
 
         .. note:: does not free the partialdecs themselves.
         """
         self.thisptr.clearCurrentPartialdecs()
 
-    def clearFinishedPartialdecs(DetProbData self):
+    def clearFinishedPartialdecs(self):
         """clears finished partialdec data structure
 
         .. note:: does not free the partialdecs themselves.
         """
         self.thisptr.clearFinishedPartialdecs()
 
-    def createConssAdjacency(DetProbData self):
-        """create the constraint adjacency datastructure that is used (if created) for some methods to faster access the constarints that have variables in common.
+    def createConssAdjacency(self):
+        """creates the constraint adjacency datastructure that is used (if created) for some methods to faster access the constarints that have variables in common
         """
         self.thisptr.createConssAdjacency()
 
-    def freeTemporaryData(DetProbData self):
-        """frees temporary data that is only needed during the detection process.
+    def freeTemporaryData(self):
+        """frees temporary data that is only needed during the detection process
         """
         self.thisptr.freeTemporaryData()
 
-    def getAncestorPartialdec(DetProbData self, int partialdecindex):
+    def getAncestorPartialdec(self, partialdecindex):
         """returns a partialdec from ancestor partialdec data structure with given index
 
-        :return: partialdec from ancestor partialdec data structure.
+        :param partialdecindex: index of the partialdec
+        :type partialdecindex: int
+        :return: partialdec from ancestor partialdec
+        :rtype: :class:`PartialDecomposition`
         """
-        cdef int cpp_partialdecindex = partialdecindex
-        cdef PARTIALDECOMP * result = self.thisptr.getAncestorPartialdec(cpp_partialdecindex)
+        cdef PARTIALDECOMP* result = self.thisptr.getAncestorPartialdec(partialdecindex)
         return PartialDecomposition.create(result)
 
-    def getConsPartition(DetProbData self, int partitionIndex):
-        """returns pointer to a constraint partition
+    def getConsPartition(self, partitionIndex):
+        """returns a constraint partition
 
-        :return: pointer to a cosntraint partition with the given index.
+        :param partitionIndex: index of a constraint partition
+        :type partitionIndex: int
+        :return: constraint partition object
+        :rtype: :class:`ConsPart`
         """
-        cdef int cpp_partitionIndex = partitionIndex
-        cdef ConsPartition * result = self.thisptr.getConsPartition(cpp_partitionIndex)
+        cdef ConsPartition* result = self.thisptr.getConsPartition(partitionIndex)
         return ConsPart.create(result, <DetProbData>weakref.proxy(self))
 
-    def getCons(DetProbData self, int consIndex):
-        """returns the SCIP constraint related to a constraint index
+    def getCons(self, consIndex):
+        """returns constraint related to a constraint index
 
-        :return: the SCIP constraint related to a constraint index.
+        :param consIndex: index of a constraint
+        :type consIndex: int
+        :return: constraint related to a constraint index
+        :rtype: :class:`Constraint`
         """
         return Constraint.create(self.thisptr.getCons(consIndex))
 
-    def getConssForCons(DetProbData self, int consIndex):
-        """return array of constraint indices that have a common variable with the given constraint
+    def getConssForCons(self, consIndex):
+        """returns list of constraint indices that have a common variable with the given constraint
 
-        :return: return vector of constraint indices that have a common variable with the given constraint
+        .. note:: constraint adjacency data structure has to initilized
 
-        .. note:: constraint adjacency data structure has to initilized.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: list of constraint indices that have a common variable with the given constraint
+        :rtype: list
         """
-        cdef int cpp_consIndex = consIndex
-        cdef vector[int] result = self.thisptr.getConssForCons(cpp_consIndex)
-        return result
+        return self.thisptr.getConssForCons(consIndex)
 
-    def getConssForVar(DetProbData self, int varIndex):
+    def getConssForVar(self, varIndex):
         """returns the constraint indices of the coefficient matrix for a variable
 
-        :return: vector of constraint indices that have a nonzero entry with this variable.
+        :param varIndex: index of variable
+        :type varIndex: int
+        :return: list of constraint indices that have a nonzero entry with this variable
+        :rtype: list
         """
-        cdef int cpp_varIndex = varIndex
-        cdef vector[int] result = self.thisptr.getConssForVar(cpp_varIndex)
-        return result
+        return self.thisptr.getConssForVar(varIndex)
 
-    def getOpenPartialdecs(DetProbData self):
+    def getOpenPartialdecs(self):
         """determines all partialdecs from current (open) partialdec data structure
 
-        :return:  all partialdecs in current (open) partialdec data structure
+        :return: all partialdecs in current (open) partialdec data structure
+        :rtype: list
         """
-        cdef vector[PARTIALDECOMP *] result = self.thisptr.getOpenPartialdecs()
+        cdef vector[PARTIALDECOMP*] result = self.thisptr.getOpenPartialdecs()
         return [PartialDecomposition.create(r) for r in result]
 
-    def getFinishedPartialdec(DetProbData self, int partialdecindex):
+    def getFinishedPartialdec(self, int partialdecindex):
         """returns a partialdec from finished partialdec data structure
 
-        :return:  partialdec from finished partialdec data structure.
+        :param partialdecindex: index of partialdec
+        :type partialdecindex: int
+        :return: partialdec from finished partialdec data structure
+        :rtype: :class:`PartialDecomposition`
         """
-        cdef int cpp_partialdecindex = partialdecindex
-        cdef PARTIALDECOMP * result = self.thisptr.getFinishedPartialdec(cpp_partialdecindex)
+        cdef PARTIALDECOMP* result = self.thisptr.getFinishedPartialdec(partialdecindex)
         return PartialDecomposition.create(result)
 
-    def getFinishedPartialdecs(DetProbData self):
+    def getFinishedPartialdecs(self):
         """gets all finished partialdecs
 
-        :return: all finished partialdecs.
+        :return: all finished partialdecs
+        :rtype: list
         """
-        cdef vector[PARTIALDECOMP *] result = self.thisptr.getFinishedPartialdecs()
+        cdef vector[PARTIALDECOMP*] result = self.thisptr.getFinishedPartialdecs()
         return [PartialDecomposition.create(r) for r in result]
 
-    def getIndexForCons(DetProbData self, Constraint cons):
-        """returns the constraint index related to a SCIP constraint
+    def getIndexForCons(self, Constraint cons):
+        """returns the constraint index related to a constraint
 
-        :param cons: the SCIP constraint pointer the index is asked for
-        :return: the constraint index related to a SCIP constraint.
+        :param cons: constraint the index is asked for
+        :type cons: :class:`Constraint`
+        :return: the constraint index related to constraint
+        :rtype: int
         """
         return self.thisptr.getIndexForCons(cons.scip_cons)
 
-    # def getIndexForVar(DetProbData self, SCIP_VAR * var):
-    #     """@brief returns the variable index related to a SCIP variable
-    #     @param var variable pointer the index is asked for
-    #     @return the variable index related to a SCIP variable.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
+    def getIndexForVar(self, Variable var):
+        """returns the variable index related to a variable
 
-    def getNAncestorPartialdecs(DetProbData self):
+        :param var: variable the index is asked for
+        :type var: :class:`Variable`
+        :return: the variable index related to variable
+        :rtype: int
+        """
+        return self.thisptr.getIndexForVar(var.scip_var)
+
+    def getNAncestorPartialdecs(self):
         """returns size of ancestor partialdec data structure
 
-        :return: size of ancestor partialdec data structure.
+        :return: size of ancestor partialdec data structure
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNAncestorPartialdecs()
-        return result
+        return self.thisptr.getNAncestorPartialdecs()
 
-    def getNConsPartitions(DetProbData self):
+    def getNConsPartitions(self):
         """returns number of different constraint partitions
 
-        :return: number of different constraint partitions.
+        :return: number of different constraint partitions
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNConsPartitions()
-        return result
+        return self.thisptr.getNConsPartitions()
 
-    def getNConss(DetProbData self):
+    def getNConss(self):
         """returns the number of variables considered in the detprobdata
 
-        :return: number of variables considered in the detprobdata.
+        :return: number of variables considered in the detprobdata
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNConss()
-        return result
+        return self.thisptr.getNConss()
 
-    def getNConssForCons(DetProbData self, int consIndex):
-        """returns the number of constraints for a given constraint
+    def getNConssForCons(self, consIndex):
+        """returns the number of constraints for a given constraint index
 
-        :return: the number of constraints for a given constraint.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: the number of constraints for a given constraint index
+        :rtype: int
         """
-        cdef int cpp_consIndex = consIndex
-        cdef int result = self.thisptr.getNConssForCons(cpp_consIndex)
-        return result
+        return self.thisptr.getNConssForCons(consIndex)
 
-    def getNConssForVar(DetProbData self, int varIndex):
-        """returns the number of constraints for a given variable where the var has a nonzero entry in
+    def getNConssForVar(self, varIndex):
+        """returns the number of constraints for a given variable index where the variable has a nonzero entry in
 
-        :return: the number of constraints for a given variable.
+        :param varIndex: index of variable
+        :type varIndex: int
+        :return: the number of constraints for a given variable
+        :rtype: int
         """
-        cdef int cpp_varIndex = varIndex
-        cdef int result = self.thisptr.getNConssForVar(cpp_varIndex)
-        return result
+        return self.thisptr.getNConssForVar(varIndex)
 
-    def getNOpenPartialdecs(DetProbData self):
+    def getNOpenPartialdecs(self):
         """returns size of current (open) partialdec data structure
 
-        :return: size of current (open) partialdec data structure.
+        :return: size of current (open) partialdec data structure
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNOpenPartialdecs()
-        return result
+        return self.thisptr.getNOpenPartialdecs()
 
-    def getNFinishedPartialdecs(DetProbData self):
+    def getNFinishedPartialdecs(self):
         """size of finished partialdec data structure
 
-        :return:  size of finished partialdec data structure.
+        :return: size of finished partialdec data structure
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNFinishedPartialdecs()
-        return result
+        return self.thisptr.getNFinishedPartialdecs()
 
-    def getNPartialdecs(DetProbData self):
+    def getNPartialdecs(self):
         """returns the number of stored partialdecs
 
-        :return:  number of stored partialdecs.
+        :return: number of stored partialdecs
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNPartialdecs()
-        return result
+        return self.thisptr.getNPartialdecs()
 
-    def getNNonzeros(DetProbData self):
+    def getNNonzeros(self):
         """returns the number of nonzero entries in the coefficient matrix
 
-        :return: the number of nonzero entries in the coefficient matrix.
+        :return: the number of nonzero entries in the coefficient matrix
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNNonzeros()
-        return result
+        return self.thisptr.getNNonzeros()
 
-    def getNVarPartitions(DetProbData self):
+    def getNVarPartitions(self):
         """returns number of different variable partitions
 
-        :return:  number of different variable partitions.
+        :return: number of different variable partitions
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNVarPartitions()
-        return result
+        return self.thisptr.getNVarPartitions()
 
-    def getNVars(DetProbData self):
+    def getNVars(self):
         """return the number of variables considered in the detprobdata
 
-        :return: the number of variables considered in the detprobdata.
+        :return: the number of variables considered in the detprobdata
+        :rtype: int
         """
-        cdef int result = self.thisptr.getNVars()
-        return result
+        return self.thisptr.getNVars()
 
-    def getNVarsForCons(DetProbData self, int consIndex):
+    def getNVarsForCons(self, consIndex):
         """returns the number of variables for a given constraint
 
-        :return: the number of variables for a given constraint.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: the number of variables for a given constraint
+        :rtype: int
         """
-        cdef int cpp_consIndex = consIndex
-        cdef int result = self.thisptr.getNVarsForCons(cpp_consIndex)
-        return result
+        return self.thisptr.getNVarsForCons(consIndex)
 
-    def getOrigVarsFixedZero(DetProbData self):
-        """returns pointers to all orig vars that are fixed to zero
+    def getOrigVarsFixedZero(self):
+        """returns list of all original variables that are fixed to zero
 
-        :return: vector of vars.
+        :return: list of variables
+        :rtype: list
         """
-        cdef vector[SCIP_VAR *] result = self.thisptr.getOrigVarsFixedZero()
+        cdef vector[SCIP_VAR*] result = self.thisptr.getOrigVarsFixedZero()
         return [Variable.create(v) for v in result]
 
-    def getRelevantConss(DetProbData self):
-        """returns pointers to all constraints that are not marked as deleted or obsolete
+    def getRelevantConss(self):
+        """returns list of all constraints that are not marked as deleted or obsolete
 
-        :return: vector of conss.
+        :return: list of constraints
+        :rtype: list
         """
-        cdef vector[SCIP_CONS *] result = self.thisptr.getRelevantConss()
+        cdef vector[SCIP_CONS*] result = self.thisptr.getRelevantConss()
         return [Constraint.create(c) for c in result]
 
-    def getRelevantVars(DetProbData self):
-        """returns pointers to all problem vars that are not fixed to 0
+    def getRelevantVars(self):
+        """returns list of all problem variables that are not fixed to 0
 
-        :return: vector of vars.
+        :return: list of variables
+        :rtype: list
         """
         cdef vector[SCIP_VAR *] result = self.thisptr.getRelevantVars()
         return [Variable.create(v) for v in result]
 
-    def getModel(DetProbData self):
+    def getModel(self):
         """returns the corresponding Model instance wrapping the scip data structure
 
-        :return: the corresponding Model instance wrapping scip data structure.
+        :return: the corresponding Model instance wrapping scip data structure
+        :rtype: :class:`pyscipopt.Model`
         """
-        cdef SCIP * scip = self.thisptr.getScip()
+        cdef SCIP* scip = self.thisptr.getScip()
         return SCIPModel.create(scip)
 
-    def getSortedCandidatesNBlocks(DetProbData self, object candidates):
+    def getSortedCandidatesNBlocks(self, object candidates):
         """gets the candidates for number of blocks added by the user followed by the found ones sorted in descending order by how often a candidate was proposed
 
-        :param candidates: will contain the candidates for number of blocks sorted in descending order by how often a candidate was added.
+        :param candidates: will contain the candidates for number of blocks sorted in descending order by how often a candidate was added
+        :type candidates: object
         """
         cdef vector[int] cpp_candidates = candidates
         self.thisptr.getSortedCandidatesNBlocks(cpp_candidates)
 
-    def getVal(DetProbData self, int row, int col):
+    def getVal(self, row, col):
         """returns a coefficient from the coefficient matrix
 
-        :return: a coefficient from the coefficient matrix.
+        :param row: index of the constraint to be considered
+        :type row: int
+        :param col: index of the variable to be considered
+        :type col: int
+        :return: a coefficient from the coefficient matrix
+        :rtype: double
         """
-        cdef int cpp_row = row
-        cdef int cpp_col = col
-        cdef double result = self.thisptr.getVal(cpp_row, cpp_col)
-        return result
+        return self.thisptr.getVal(row, col)
 
-    def getValsForCons(DetProbData self, int consIndex):
+    def getValsForCons(self, consIndex):
         """returns the nonzero coefficients of the coefficient matrix for a constraint
 
-        :return: vector of coefficients of in matrix for constraints
+        .. note:: same order as in :meth:`getVarsForCons`
 
-        :note: same order as in :meth:`getVarsForCons`.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: list of coefficients of in matrix for constraints
+        :rtype: list
         """
-        cdef int cpp_consIndex = consIndex
-        cdef vector[double] result = self.thisptr.getValsForCons(cpp_consIndex)
-        return result
+        return self.thisptr.getValsForCons(consIndex)
 
-    def getVarPartition(DetProbData self, int partitionIndex):
-        """returns pointer to a variable partition with given index
+    def getVarPartition(self, partitionIndex):
+        """returns variable partition with given index
 
-        :return: pointer to a variable partition with given index.
+        :param partitionIndex: index of variable partition
+        :type partitionIndex: int
+        :return: variable partition with given index
+        :rtype: :class:`VarPart`
         """
-        cdef int cpp_partitionIndex = partitionIndex
-        cdef VarPartition * result = self.thisptr.getVarPartition(cpp_partitionIndex)
+        cdef VarPartition* result = self.thisptr.getVarPartition(partitionIndex)
         return VarPart.create(result, self)
 
-    def getVarPartitions(DetProbData self):
-        """returns vector to stored variable partitions
+    def getVarPartitions(self):
+        """returns list to stored variable partitions
 
-        :return: returns vector to stored variable partitions.
+        :return: list to stored variable partitions
+        :rtype: list
         """
-        cdef vector[VarPartition *] result = self.thisptr.getVarPartitions()
+        cdef vector[VarPartition*] result = self.thisptr.getVarPartitions()
         return [VarPart.create(r, self) for r in result]
 
-    def getVar(DetProbData self, int varIndex):
-        """returns SCIP variable related to a variable index
+    def getVar(self, varIndex):
+        """returns variable related to a variable index
 
-        :return: SCIP variable pointer related to a variable index.
+        :return: variable related to a variable index
+        :rtype: :class:`Variable`
         """
         return Variable.create(self.thisptr.getVar(varIndex))
 
-    def getVarsForCons(DetProbData self, int consIndex):
+    def getVarsForCons(self, consIndex):
         """returns the variable indices of the coefficient matrix for a constraint
 
-        :return: the variable indices of the coefficient matrix for a constraint.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: list of the variable indices of the coefficient matrix for a constraint
+        :rtype: list
         """
-        cdef int cpp_consIndex = consIndex
-        cdef vector[int] result = self.thisptr.getVarsForCons(cpp_consIndex)
-        return result
+        return self.thisptr.getVarsForCons(consIndex)
 
-    def isConsCardinalityCons(DetProbData self, int consindexd):
+    def isConsCardinalityCons(self, consIndex):
         """returns whether a constraint is a cardinality constraint, i.e. of the .. math::`\\sum_{i} x_i = b`
 
-        :param consindexd: index of constraint that is be checked
+        :param consIndex: index of constraint
+        :type consIndex: int
         :return: returns whether a constraint is a cardinality constraint
+        :rtype: bool
         """
-        cdef int cpp_consindexd = consindexd
-        cdef bool result = self.thisptr.isConsCardinalityCons(cpp_consindexd)
-        return result
+        return self.thisptr.isConsCardinalityCons(consIndex)
 
-    def isConssAdjInitialized(DetProbData self):
+    def isConssAdjInitialized(self):
         """determines whether or not the constraint-constraint adjacency data structure is initilized
 
-        :return: True iff the constraint-constraint adjacency data structure is initilized.
+        :return: True iff the constraint-constraint adjacency data structure is initilized
+        :rtype: bool
         """
-        cdef unsigned int result = self.thisptr.isConssAdjInitialized()
-        return result
+        return self.thisptr.isConssAdjInitialized()
 
-    def isConsSetpp(DetProbData self, int consindexd):
+    def isConsSetpp(self, consIndex):
         """is cons with specified indec partitioning, or packing covering constraint?
 
-        :param consindexd: index of the given cons
-        :return: is cons with specified indec partitioning, or packing covering constraint.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: is constraint with specified index partitioning or packing covering constraint
+        :rtype: bool
         """
-        cdef int cpp_consindexd = consindexd
-        cdef bool result = self.thisptr.isConsSetpp(cpp_consindexd)
-        return result
+        return self.thisptr.isConsSetpp(consIndex)
 
-    def isConsSetppc(DetProbData self, int consindexd):
+    def isConsSetppc(self, consIndex):
         """is cons with specified index partitioning packing, or covering constraint?
 
-        :param consindexd: index of cons to be checked
-        :return: whether a constraint is partitioning packing, or covering constraint?.
+        :param consIndex: index of constraint
+        :type consIndex: int
+        :return: whether a constraint is partitioning packing, or covering constraint?
+        :rtype: bool
         """
-        cdef int cpp_consindexd = consindexd
-        cdef bool result = self.thisptr.isConsSetppc(cpp_consindexd)
-        return result
+        return self.thisptr.isConsSetppc(consIndex)
 
-    # def isFiniteNonnegativeIntegral(DetProbData self, SCIP * scip, double x):
-    #     """@brief is constraint ranged row, i.
-
-    #     e., -inf < lhs < rhs < inf?
-
-    #     @returns whether val is ranged row
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def isPartialdecDuplicateofFinished(DetProbData self, PartialDecomposition partialdec):
-        """check if partialdec is a duplicate of an existing finished partialdec
+    def isPartialdecDuplicateofFinished(self, PartialDecomposition partialdec):
+        """checks if partialdec is a duplicate of an existing finished partialdec
 
         :param partialdec: partialdec to be checked
-        :return: True iff partialdec is a duplicate of an existing finished partialdec.
+        :type partialdec: :class:`PartialDecomposition`
+        :return: True iff partialdec is a duplicate of an existing finished partialdec
+        :rtype: bool
         """
-        cdef PARTIALDECOMP * cpp_partialdec = partialdec.thisptr
-        cdef unsigned int result = self.thisptr.isPartialdecDuplicateofFinished(cpp_partialdec)
-        return result
+        cdef PARTIALDECOMP* cpp_partialdec = partialdec.thisptr
+        return self.thisptr.isPartialdecDuplicateofFinished(cpp_partialdec)
 
-    def isAssignedToOrigProb(DetProbData self):
+    def isAssignedToOrigProb(self):
         """returns True if the matrix structure corresponds to the presolved problem
 
-        :return: True if the matrix structure corresponds to the presolved problem.
+        :return: True if the matrix structure corresponds to the presolved problem
+        :rtype: bool
         """
-        cdef unsigned int result = self.thisptr.isAssignedToOrigProb()
-        return result
+        return self.thisptr.isAssignedToOrigProb()
 
-    # def isRangedRow(DetProbData self, SCIP * scip, double lhs, double rhs):
-    #     """@brief is constraint ranged row, i.
-
-    #     e., -inf < lhs < rhs < inf?
-    #     @returns whether constraint is ranged row
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def partialdecIsNoDuplicateOfPartialdecs(DetProbData self, PartialDecomposition comppartialdec, object partialdecs, bool sort):
+    def partialdecIsNoDuplicateOfPartialdecs(self, PartialDecomposition comppartialdec, object partialdecs, sort):
         """check if partialdec is a duplicate of any given partialdecs
 
         :param comppartialdec: partialdec to be checked
+        :type comppartialdec: :class:`PartialDecomposition`
         :param partialdecs: partialdecs to compare with
+        :type partialdecs: object
         :param sort: sort the vars and conss data structures in the partialdecs by their indices
-        :return: True iff partialdec is no duplicate of any given partialdecs.
+        :type sort: bool
+        :return: True iff partialdec is no duplicate of any given partialdecs
+        :rtype: bool
         """
-        cdef PARTIALDECOMP * cpp_comppartialdec = comppartialdec.thisptr
-        # this seems to be possible only when we use C++11 (-std=c++11)
-        # maybe it will be fixed in a future version of Cython
-        cdef vector[PARTIALDECOMP *] cpp_partialdecs
-        cdef PARTIALDECOMP * partialdecs_ptr = NULL
+        cdef PARTIALDECOMP* cpp_comppartialdec = comppartialdec.thisptr
+        cdef vector[PARTIALDECOMP*] cpp_partialdecs
+        cdef PARTIALDECOMP* partialdecs_ptr = NULL
         cdef PartialDecomposition partialdecs_element
         for partialdecs_element in partialdecs:
             partialdecs_ptr = <PARTIALDECOMP*> partialdecs_element.thisptr
             cpp_partialdecs.push_back(partialdecs_ptr)
-        cdef bool cpp_sort = sort
-        cdef unsigned int result = self.thisptr.partialdecIsNoDuplicateOfPartialdecs(cpp_comppartialdec, cpp_partialdecs, cpp_sort)
-        return result
+        return self.thisptr.partialdecIsNoDuplicateOfPartialdecs(cpp_comppartialdec, cpp_partialdecs, sort)
 
-    # def printBlockcandidateInformation(DetProbData self, SCIP * scip, FILE * file):
-    #     """@brief output method for json file writer to write block candidate information
-    #     @param scip SCIP data structure
-    #     @param file  output file or NULL for standard output.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def printPartitionInformation(DetProbData self, FILE * file):
-    #     """@brief output method for json file writer to write partition candidate information
-    #     @param file output file or NULL for standard output.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def sortFinishedForScore(DetProbData self):
-        """sorts partialdecs in finished partialdecs data structure according to the current scoretype.
+    def sortFinishedForScore(self):
+        """sorts partialdecs in finished partialdecs data structure according to the current scoretype
         """
         self.thisptr.sortFinishedForScore()
 
-    def translatePartialdecs(DetProbData self, DetProbData otherdata, object otherpartialdecs):
+    def translatePartialdecs(self, DetProbData otherdata, object otherpartialdecs):
         """translates partialdecs if the index structure of the problem has changed, e.g. due to presolving
 
+        :param otherdata: old detprobdata
+        :type otherdata: :class:`DetProbData`
+        :param otherpartialdecs: partialdecs to be translated
+        :type otherpartialdecs: object
         :return: translated partialdecs
+        :rtype: list
         """
-        cdef DETPROBDATA * cpp_otherdata = otherdata.thisptr
-        # this seems to be possible only when we use C++11 (-std=c++11)
-        # maybe it will be fixed in a future version of Cython
-        cdef vector[PARTIALDECOMP *] cpp_otherpartialdecs
-        cdef PARTIALDECOMP * otherpartialdecs_ptr = NULL
+        cdef DETPROBDATA* cpp_otherdata = otherdata.thisptr
+        cdef vector[PARTIALDECOMP*] cpp_otherpartialdecs
+        cdef PARTIALDECOMP* otherpartialdecs_ptr = NULL
         cdef PartialDecomposition otherpartialdecs_element
         for otherpartialdecs_element in otherpartialdecs:
             otherpartialdecs_ptr = <PARTIALDECOMP*> otherpartialdecs_element.thisptr
             cpp_otherpartialdecs.push_back(otherpartialdecs_ptr)
-        cdef vector[PARTIALDECOMP *] result = self.thisptr.translatePartialdecs(cpp_otherdata, cpp_otherpartialdecs)
+        cdef vector[PARTIALDECOMP*] result = self.thisptr.translatePartialdecs(cpp_otherdata, cpp_otherpartialdecs)
         return [PartialDecomposition.create(r) for r in result]
