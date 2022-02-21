@@ -360,26 +360,27 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         double nblockscandidatescalctime
         double postprocessingtime
         double translatingtime
+        DETPROBDATA(SCIP* scip, SCIP_Bool _originalProblem)
         void addConsPartition(ConsPartition* partition) except +
         void addCandidatesNBlocksNVotes(int candidate, int nvotes) except +
-        void addPartialdecToAncestor(PARTIALDECOMP * partialdec) except +
-        bool addPartialdecToOpen(PARTIALDECOMP * partialdec) except +
-        bool addPartialdecToFinished(PARTIALDECOMP * partialdec) except +
-        void addPartialdecToFinishedUnchecked(PARTIALDECOMP * partialdec) except +
+        void addPartialdecToAncestor(PARTIALDECOMP* partialdec) except +
+        bool addPartialdecToOpen(PARTIALDECOMP* partialdec) except +
+        bool addPartialdecToFinished(PARTIALDECOMP* partialdec) except +
+        void addPartialdecToFinishedUnchecked(PARTIALDECOMP* partialdec) except +
         void addVarPartition(VarPartition* partition) except +
         void clearAncestorPartialdecs() except +
         void clearCurrentPartialdecs() except +
         void clearFinishedPartialdecs() except +
         void createConssAdjacency() except +
         void freeTemporaryData() except +
-        PARTIALDECOMP * getAncestorPartialdec(int partialdecindex) except +
+        PARTIALDECOMP* getAncestorPartialdec(int partialdecindex) except +
         ConsPartition* getConsPartition(int partitionIndex) except +
         SCIP_CONS* getCons(int consIndex) except +
         vector[int] getConssForCons(int consIndex) except +
         vector[int] getConssForVar(int varIndex) except +
-        vector[PARTIALDECOMP *] getOpenPartialdecs() except +
-        PARTIALDECOMP * getFinishedPartialdec(int partialdecindex) except +
-        vector[PARTIALDECOMP *] getFinishedPartialdecs() except +
+        vector[PARTIALDECOMP*] getOpenPartialdecs() except +
+        PARTIALDECOMP* getFinishedPartialdec(int partialdecindex) except +
+        vector[PARTIALDECOMP*] getFinishedPartialdecs() except +
         int getIndexForCons(SCIP_CONS* cons) except +
         int getIndexForVar(SCIP_VAR* var) except +
         int getNAncestorPartialdecs() except +
@@ -394,26 +395,26 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         int getNVarPartitions() except +
         int getNVars() except +
         int getNVarsForCons(int consIndex) except +
-        vector[SCIP_VAR *] getOrigVarsFixedZero() except +
-        vector[SCIP_CONS *] getRelevantConss() except +
-        vector[SCIP_VAR *] getRelevantVars() except +
+        vector[SCIP_VAR*] getOrigVarsFixedZero() except +
+        vector[SCIP_CONS*] getRelevantConss() except +
+        vector[SCIP_VAR*] getRelevantVars() except +
         SCIP* getScip()
         void getSortedCandidatesNBlocks(vector[int] candidates) except +
-        double getVal(int row, int col) except +
-        vector[double] getValsForCons(int consIndex) except +
+        SCIP_Real getVal(int row, int col) except +
+        vector[SCIP_Real] getValsForCons(int consIndex) except +
         VarPartition* getVarPartition(int partitionIndex) except +
-        vector[VarPartition *] getVarPartitions() except +
+        vector[VarPartition*] getVarPartitions() except +
+        SCIP_VAR* getVar(int varIndex) except +
         vector[int] getVarsForCons(int consIndex) except +
         bool isConsCardinalityCons(int consindexd) except +
-        unsigned int isConssAdjInitialized() except +
+        SCIP_Bool isConssAdjInitialized() except +
         bool isConsSetpp(int consindexd) except +
         bool isConsSetppc(int consindexd) except +
-        unsigned int isPartialdecDuplicateofFinished(PARTIALDECOMP * partialdec) except +
-        unsigned int isAssignedToOrigProb() except +
-        unsigned int partialdecIsNoDuplicateOfPartialdecs(PARTIALDECOMP * comppartialdec, vector[PARTIALDECOMP *] partialdecs, bool sort) except +
+        SCIP_Bool isPartialdecDuplicateofFinished(PARTIALDECOMP * partialdec) except +
+        SCIP_Bool isAssignedToOrigProb() except +
+        SCIP_Bool partialdecIsNoDuplicateOfPartialdecs(PARTIALDECOMP* comppartialdec, vector[PARTIALDECOMP*] partialdecs, bool sort) except +
         void sortFinishedForScore() except +
-        vector[PARTIALDECOMP *] translatePartialdecs(DETPROBDATA * otherdata, vector[PARTIALDECOMP *] otherpartialdecs) except +
-        SCIP_VAR* getVar(int varIndex) except +
+        vector[PARTIALDECOMP*] translatePartialdecs(DETPROBDATA* otherdata, vector[PARTIALDECOMP*] otherpartialdecs) except +
 
 
 cdef extern from "gcg/class_conspartition.h" namespace "gcg":
@@ -497,7 +498,6 @@ cdef extern from "scip/scip.h":
 
 cdef class DetProbData:
     cdef DETPROBDATA* thisptr
-    cdef object __weakref__
 
     @staticmethod
     cdef create(DETPROBDATA* thisptr)

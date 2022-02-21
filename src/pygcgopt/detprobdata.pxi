@@ -10,14 +10,6 @@ cdef class DetProbData:
         new_DetProbData.thisptr = thisptr
         return new_DetProbData
 
-    # def __init__(DetProbData self, SCIP * scip, unsigned int _originalProblem):
-    #     """@brief constructor
-    #     @param scip SCIP data structure
-    #     @param _originalProblem True iff the detprobdata is created for the presolved problem.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
     def createVarPart(self, name, nclasses, nvars):
         """returns a VarPartition
         """
@@ -34,26 +26,22 @@ cdef class DetProbData:
         cdef ConsPartition* conspatitionptr = new ConsPartition(scip, c_name, nclasses, ncons)
         return ConsPart.create(conspatitionptr, self)
 
-    @property
     def candidatesNBlocks(DetProbData self):
         """candidate for the number of blocks, second int indicates how often a candidate was added.
         """
         cdef vector[pair[int, int]] result = self.thisptr.candidatesNBlocks
         return result
 
-    @candidatesNBlocks.setter
     def candidatesNBlocks(DetProbData self, object candidatesNBlocks):
         cdef vector[pair[int, int]] cpp_candidatesNBlocks = candidatesNBlocks
         self.thisptr.candidatesNBlocks = cpp_candidatesNBlocks
 
-    @property
     def conspartitioncollection(DetProbData self):
         """collection of different constraint class distributions.
         """
         cdef vector[ConsPartition *] result = self.thisptr.conspartitioncollection
         return [ConsPart.create(r, <DetProbData>weakref.proxy(self)) for r in result]
 
-    @conspartitioncollection.setter
     def conspartitioncollection(DetProbData self, object conspartitioncollection):
         # this seems to be possible only when we use C++11 (-std=c++11)
         # maybe it will be fixed in a future version of Cython
@@ -65,14 +53,12 @@ cdef class DetProbData:
             cpp_conspartitioncollection.push_back(conspartitioncollection_ptr)
         self.thisptr.conspartitioncollection = cpp_conspartitioncollection
 
-    @property
     def varpartitioncollection(DetProbData self):
         """collection of different variable class distributions.
         """
         cdef vector[VarPartition *] result = self.thisptr.varpartitioncollection
         return [VarPart.create(r, self) for r in result]
 
-    @varpartitioncollection.setter
     def varpartitioncollection(DetProbData self, object varpartitioncollection):
         # this seems to be possible only when we use C++11 (-std=c++11)
         # maybe it will be fixed in a future version of Cython
@@ -84,50 +70,42 @@ cdef class DetProbData:
             cpp_varpartitioncollection.push_back(varpartitioncollection_ptr)
         self.thisptr.varpartitioncollection = cpp_varpartitioncollection
 
-    @property
     def classificationtime(DetProbData self):
         """time that was consumed by the classification of the constraint and variables classifiers.
         """
         cdef double result = self.thisptr.classificationtime
         return result
 
-    @classificationtime.setter
     def classificationtime(DetProbData self, double classificationtime):
         cdef double cpp_classificationtime = classificationtime
         self.thisptr.classificationtime = cpp_classificationtime
 
-    @property
     def nblockscandidatescalctime(DetProbData self):
         """time that was used to calulate the candidates of te block number.
         """
         cdef double result = self.thisptr.nblockscandidatescalctime
         return result
 
-    @nblockscandidatescalctime.setter
     def nblockscandidatescalctime(DetProbData self, double nblockscandidatescalctime):
         cdef double cpp_nblockscandidatescalctime = nblockscandidatescalctime
         self.thisptr.nblockscandidatescalctime = cpp_nblockscandidatescalctime
 
-    @property
     def postprocessingtime(DetProbData self):
         """time that was spent in postproceesing decomposigtions.
         """
         cdef double result = self.thisptr.postprocessingtime
         return result
 
-    @postprocessingtime.setter
     def postprocessingtime(DetProbData self, double postprocessingtime):
         cdef double cpp_postprocessingtime = postprocessingtime
         self.thisptr.postprocessingtime = cpp_postprocessingtime
 
-    @property
     def translatingtime(DetProbData self):
         """time that was spent by transforming partialdecs between presolved and orig problem.
         """
         cdef double result = self.thisptr.translatingtime
         return result
 
-    @translatingtime.setter
     def translatingtime(DetProbData self, double translatingtime):
         cdef double cpp_translatingtime = translatingtime
         self.thisptr.translatingtime = cpp_translatingtime
