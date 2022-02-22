@@ -108,7 +108,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/scipopt/PyGCGOpt',
     author='Lehrstuhl für Operations Research - RWTH Aachen University',
-    author_email='',
+    author_email='gcg-bugs@or.rwth-aachen.de',
     license='MIT',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
