@@ -41,5 +41,5 @@ from pyscipopt import SCIP_BENDERSENFOTYPE
 from pyscipopt import SCIP_ROWORIGINTYPE
 
 # export user-relevant objects
-from pygcgopt.gcg import Model, Detector, PricingSolver
+from pygcgopt.gcg import Model, Detector, PricingSolver, Score
 from pygcgopt.gcg import PY_GCG_PRICINGSTATUS as GCG_PRICINGSTATUS

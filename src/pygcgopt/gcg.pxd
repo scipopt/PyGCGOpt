@@ -57,6 +57,10 @@ cdef extern from "gcg/gcg.h":
 
     SCIP_RETCODE GCGincludeScore(SCIP* scip, const char* name, const char* shortname,const char* description, DEC_SCOREDATA* scoredata, SCIP_RETCODE (*scorefree) (SCIP* scip, DEC_SCORE* score), SCIP_RETCODE (*scorecalc) (SCIP* scip, DEC_SCORE* score, int partialdecid, SCIP_Real* scorevalue))
     DEC_SCOREDATA* GCGscoreGetData(DEC_SCORE* score)
+    int GCGgetNScores(SCIP* scip)
+    DEC_SCORE** GCGgetScores(SCIP* scip)
+    const char* GCGscoreGetName(DEC_SCORE* score)
+    DEC_SCORE* GCGfindScore(SCIP* scip, const char* name)
 
 
 cdef extern from "gcg/pub_gcgsepa.h":
@@ -311,6 +315,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         void buildDecChainString(char * buffer) except +
         bool fixConsToBlock(SCIP_CONS* cons, int block)
         bool fixConsToMaster(SCIP_CONS* cons)
+        SCIP_Real getScore(DEC_SCORE* score) except +
 
 
 cdef extern from "gcg/class_detprobdata.h" namespace "gcg":

@@ -298,6 +298,16 @@ cdef class Model(SCIPModel):
 
         return [DECdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
 
+    def listScores(self):
+        """Lists all scores that are currently included
+
+        :return: A list of strings of the score names
+        """
+        cdef int n_scores = GCGgetNScores(self._scip)
+        cdef DEC_SCORE** scores = GCGgetScores(self._scip)
+
+        return [GCGscoreGetName(scores[i]).decode('utf-8') for i in range(n_scores)]
+
     def setDetectorEnabled(self, detector_name, is_enabled=True):
         """Enables or disables a detector for detecting partial decompositions.
 

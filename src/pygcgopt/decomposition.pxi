@@ -1349,6 +1349,9 @@ cdef class PartialDecomposition:
         cdef bool cpp_fromorig = fromorig
         self.thisptr.setStemsFromOrig(cpp_fromorig)
 
+    def getScore(PartialDecomposition self, Score score):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion(score.scorename)))
+
     # def setUsergiven(PartialDecomposition self, cpp.USERGIVEN usergiven):
     #     """sets whether this partialdec is user given
 

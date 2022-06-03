@@ -12,8 +12,14 @@ def test_pyscore():
     m.includeScore(proxyScore, "pyscore", "python", "Python score test")
 
     m.readProblem("/Users/lentz/Desktop/BR7_56.lp.gz")
+    m.detect()
 
-    m.optimize()
+    partdecs = m.listDecompositions()
+
+    for i in partdecs:
+        print(str(i.getScore(proxyScore)))
+
+    return m.listScores()
 
 if __name__ == "__main__":
-   test_pyscore()
+   print(test_pyscore())
