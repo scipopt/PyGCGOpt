@@ -23,6 +23,7 @@ from collections.abc import Iterable
 
 include "detector.pxi"
 include "pricing_solver.pxi"
+include "score.pxi"
 include "partition.pxi"
 include "decomposition.pxi"
 include "detprobdata.pxi"
@@ -261,6 +262,25 @@ cdef class Model(SCIPModel):
         detector.model = <SCIPModel>weakref.proxy(self)
         detector.detectorname = detectorname
         Py_INCREF(detector)
+
+    def includeScore(self, Score score, scorename, shortname, desc):
+        """includes a score
+
+        :param detector: An object of a subclass of detector#Detector.
+        :param detectorname: name of the detector
+
+        For an explanation for all arguments, see :meth:`DECincludeDetector()`.
+        """
+        c_scorename = str_conversion(scorename)
+        c_shortname = str_conversion(shortname)
+        c_desc = str_conversion(desc)
+        PY_SCIP_CALL(GCGincludeScore(
+            self._scip, c_scorename, c_shortname, c_desc,
+            <DEC_SCOREDATA*>score, PyScoreFree, PyScoreCalculate))
+
+        score.model = <SCIPModel>weakref.proxy(self)
+        score.scorename = scorename
+        Py_INCREF(score)
 
     def listDetectors(self):
         """Lists all detectors that are currently included

@@ -27,6 +27,12 @@ cdef extern from "gcg/gcg.h":
     ctypedef struct DEC_DETECTOR:
         pass
 
+    ctypedef struct DEC_SCOREDATA:
+        pass
+
+    ctypedef struct DEC_SCORE:
+        pass
+
     ctypedef struct PARTIALDEC_DETECTION_DATA:
         DETPROBDATA* detprobdata
         PARTIALDECOMP* workonpartialdec
@@ -48,6 +54,9 @@ cdef extern from "gcg/gcg.h":
         GP_OUTPUT_FORMAT_PDF
         GP_OUTPUT_FORMAT_PNG
         GP_OUTPUT_FORMAT_SVG
+
+    SCIP_RETCODE GCGincludeScore(SCIP* scip, const char* name, const char* shortname,const char* description, DEC_SCOREDATA* scoredata, SCIP_RETCODE (*scorefree) (SCIP* scip, DEC_SCORE* score), SCIP_RETCODE (*scorecalc) (SCIP* scip, DEC_SCORE* score, int partialdecid, SCIP_Real* scorevalue))
+    DEC_SCOREDATA* GCGscoreGetData(DEC_SCORE* score)
 
 
 cdef extern from "gcg/pub_gcgsepa.h":
@@ -292,24 +301,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         void setPctVarsToBlockVector(vector[double] newvector) except +
         void setPctVarsFromFreeVector(vector[double] newvector) except +
         void setDetectorClockTimes(vector[double] newvector) except +
-        double getClassicScore() except +
-        void setClassicScore(double score) except +
-        double getBorderAreaScore() except +
-        void setBorderAreaScore(double score) except +
         double getMaxWhiteScore() except +
-        void setMaxWhiteScore(double score) except +
-        double getMaxForWhiteScore() except +
-        void setMaxForWhiteScore(double score) except +
-        double getSetPartForWhiteScore() except +
-        void setSetPartForWhiteScore(double score) except +
-        double getMaxForWhiteAggScore() except +
-        void setMaxForWhiteAggScore(double score) except +
-        double getSetPartForWhiteAggScore() except +
-        void setSetPartForWhiteAggScore(double score) except +
-        double getBendersScore() except +
-        void setBendersScore(double score) except +
-        double getStrongDecompScore() except +
-        void setStrongDecompScore(double score) except +
         void prepare() except +
         bool aggInfoCalculated() except +
         void calcAggregationInformation(bool ignoreDetectionLimits) except +
@@ -317,7 +309,6 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         int getTranslatedpartialdecid() except +
         void setTranslatedpartialdecid(int decid) except +
         void buildDecChainString(char * buffer) except +
-
         bool fixConsToBlock(SCIP_CONS* cons, int block)
         bool fixConsToMaster(SCIP_CONS* cons)
 
