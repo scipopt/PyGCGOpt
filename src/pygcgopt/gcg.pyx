@@ -126,6 +126,16 @@ cdef class Model(SCIPModel):
 
         return decomps
 
+    def getPartDecompFromID(self, id):
+        """returns a partial decomposition regarding to the given partialdecomp id
+
+        :param id: patial decomposition id as int
+        :return: PartialDecomposition object 
+        """
+        cdef PartialDecomposition pd = PartialDecomposition.create(GCGconshdlrDecompGetPartialdecFromID(self._scip, id))
+        
+        return pd
+
     def addDecompositionFromConss(self, master_conss, *block_conss):
         """Adds a user specified decomposition to GCG based on constraints.
 

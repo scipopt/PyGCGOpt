@@ -8,7 +8,7 @@ cdef class Score:
         '''calls destructor and frees memory of score'''
         pass
 
-    def scorecalculate(self, partialdecid):
+    def scorecalculate(self, partialdec):
         '''calls calculate method of score'''
         return {}
 
@@ -24,6 +24,7 @@ cdef SCIP_RETCODE PyScoreCalculate(SCIP* scip, DEC_SCORE* score, int partialdeci
     cdef DEC_SCOREDATA* scoredata
     scoredata = GCGscoreGetData(score)
     py_score = <Score>scoredata
-    result_dict = py_score.scorecalculate(partialdecid)
+    partialdec = py_score.model.getPartDecompFromID(partialdecid)
+    result_dict = py_score.scorecalculate(partialdec)
     scorevalue[0] = result_dict.get("scorevalue", scorevalue[0])
     return SCIP_OKAY

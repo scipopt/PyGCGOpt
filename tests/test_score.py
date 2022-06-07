@@ -1,8 +1,12 @@
 from pygcgopt import Model, Score
 
 class PyScore(Score):
-    def scorecalculate(self, partialdecid):
-        return {"scorevalue": 0.5}
+    def scorecalculate(self, partialdec):
+        nconss = float(partialdec.getNConss())
+        nmasterconss = float(partialdec.getNMasterconss())
+        score = 1 - nmasterconss/nconss
+
+        return {"scorevalue": score}
 
 def test_pyscore():
 
