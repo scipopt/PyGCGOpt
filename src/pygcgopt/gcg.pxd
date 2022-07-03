@@ -50,6 +50,33 @@ cdef extern from "gcg/gcg.h":
 
     SCIP* GCGgetMasterprob(SCIP* scip)
 
+    #ConsClassifier
+    ctypedef struct DEC_CLASSIFIERDATA:
+        pass
+
+    ctypedef struct DEC_CONSCLASSIFIER:
+        pass
+
+    SCIP_RETCODE DECincludeConsClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, DEC_CLASSIFIERDATA *classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, DEC_CONSCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, DEC_CONSCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+
+    DEC_CLASSIFIERDATA* DECconsClassifierGetData(DEC_CONSCLASSIFIER* classifier)
+
+    DEC_CONSCLASSIFIER** GCGconshdlrDecompGetConsClassifiers(SCIP* scip)
+    int GCGconshdlrDecompGetNConsClassifiers(SCIP* scip)
+    const char* DECconsClassifierGetName(DEC_CONSCLASSIFIER* classifier)
+
+    #VarClassifier
+    ctypedef struct DEC_VARCLASSIFIER:
+        pass
+
+    SCIP_RETCODE DECincludeVarClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, DEC_CLASSIFIERDATA* classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, DEC_VARCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, DEC_VARCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+
+    DEC_CLASSIFIERDATA* DECvarClassifierGetData(DEC_VARCLASSIFIER* classifier)
+
+    int GCGconshdlrDecompGetNVarClassifiers(SCIP* scip)
+    DEC_VARCLASSIFIER** GCGconshdlrDecompGetVarClassifiers(SCIP* scip)
+    const char* DECvarClassifierGetName(DEC_VARCLASSIFIER* classifier)
+
     ctypedef enum GP_OUTPUT_FORMAT:
         GP_OUTPUT_FORMAT_PDF
         GP_OUTPUT_FORMAT_PNG
@@ -135,6 +162,8 @@ cdef extern from "gcg/cons_decomp.h":
 cdef extern from "gcg/cons_decomp.hpp":
     PARTIALDECOMP* GCGconshdlrDecompGetPartialdecFromID(SCIP* scip, int partialdecid)
     SCIP_RETCODE GCGconshdlrDecompAddPreexisitingPartialDec(SCIP* scip, PARTIALDECOMP* partialdec)
+    DETPROBDATA* GCGconshdlrDecompGetDetprobdataPresolved(SCIP* scip)
+    DETPROBDATA* GCGconshdlrDecompGetDetprobdataOrig(SCIP* scip)
 
 
 cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
@@ -327,26 +356,27 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         double nblockscandidatescalctime
         double postprocessingtime
         double translatingtime
+        DETPROBDATA(SCIP* scip, SCIP_Bool _originalProblem)
         void addConsPartition(ConsPartition* partition) except +
         void addCandidatesNBlocksNVotes(int candidate, int nvotes) except +
-        void addPartialdecToAncestor(PARTIALDECOMP * partialdec) except +
-        bool addPartialdecToOpen(PARTIALDECOMP * partialdec) except +
-        bool addPartialdecToFinished(PARTIALDECOMP * partialdec) except +
-        void addPartialdecToFinishedUnchecked(PARTIALDECOMP * partialdec) except +
+        void addPartialdecToAncestor(PARTIALDECOMP* partialdec) except +
+        bool addPartialdecToOpen(PARTIALDECOMP* partialdec) except +
+        bool addPartialdecToFinished(PARTIALDECOMP* partialdec) except +
+        void addPartialdecToFinishedUnchecked(PARTIALDECOMP* partialdec) except +
         void addVarPartition(VarPartition* partition) except +
         void clearAncestorPartialdecs() except +
         void clearCurrentPartialdecs() except +
         void clearFinishedPartialdecs() except +
         void createConssAdjacency() except +
         void freeTemporaryData() except +
-        PARTIALDECOMP * getAncestorPartialdec(int partialdecindex) except +
+        PARTIALDECOMP* getAncestorPartialdec(int partialdecindex) except +
         ConsPartition* getConsPartition(int partitionIndex) except +
         SCIP_CONS* getCons(int consIndex) except +
         vector[int] getConssForCons(int consIndex) except +
         vector[int] getConssForVar(int varIndex) except +
-        vector[PARTIALDECOMP *] getOpenPartialdecs() except +
-        PARTIALDECOMP * getFinishedPartialdec(int partialdecindex) except +
-        vector[PARTIALDECOMP *] getFinishedPartialdecs() except +
+        vector[PARTIALDECOMP*] getOpenPartialdecs() except +
+        PARTIALDECOMP* getFinishedPartialdec(int partialdecindex) except +
+        vector[PARTIALDECOMP*] getFinishedPartialdecs() except +
         int getIndexForCons(SCIP_CONS* cons) except +
         int getIndexForVar(SCIP_VAR* var) except +
         int getNAncestorPartialdecs() except +
@@ -361,53 +391,94 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         int getNVarPartitions() except +
         int getNVars() except +
         int getNVarsForCons(int consIndex) except +
-        vector[SCIP_VAR *] getOrigVarsFixedZero() except +
-        vector[SCIP_CONS *] getRelevantConss() except +
-        vector[SCIP_VAR *] getRelevantVars() except +
+        vector[SCIP_VAR*] getOrigVarsFixedZero() except +
+        vector[SCIP_CONS*] getRelevantConss() except +
+        vector[SCIP_VAR*] getRelevantVars() except +
         SCIP* getScip()
         void getSortedCandidatesNBlocks(vector[int] candidates) except +
-        double getVal(int row, int col) except +
-        vector[double] getValsForCons(int consIndex) except +
+        SCIP_Real getVal(int row, int col) except +
+        vector[SCIP_Real] getValsForCons(int consIndex) except +
         VarPartition* getVarPartition(int partitionIndex) except +
-        vector[VarPartition *] getVarPartitions() except +
+        vector[VarPartition*] getVarPartitions() except +
+        SCIP_VAR* getVar(int varIndex) except +
         vector[int] getVarsForCons(int consIndex) except +
         bool isConsCardinalityCons(int consindexd) except +
-        unsigned int isConssAdjInitialized() except +
+        SCIP_Bool isConssAdjInitialized() except +
         bool isConsSetpp(int consindexd) except +
         bool isConsSetppc(int consindexd) except +
-        unsigned int isPartialdecDuplicateofFinished(PARTIALDECOMP * partialdec) except +
-        unsigned int isAssignedToOrigProb() except +
-        unsigned int partialdecIsNoDuplicateOfPartialdecs(PARTIALDECOMP * comppartialdec, vector[PARTIALDECOMP *] partialdecs, bool sort) except +
+        SCIP_Bool isPartialdecDuplicateofFinished(PARTIALDECOMP * partialdec) except +
+        SCIP_Bool isAssignedToOrigProb() except +
+        SCIP_Bool partialdecIsNoDuplicateOfPartialdecs(PARTIALDECOMP* comppartialdec, vector[PARTIALDECOMP*] partialdecs, bool sort) except +
         void sortFinishedForScore() except +
-        vector[PARTIALDECOMP *] translatePartialdecs(DETPROBDATA * otherdata, vector[PARTIALDECOMP *] otherpartialdecs) except +
+        vector[PARTIALDECOMP*] translatePartialdecs(DETPROBDATA* otherdata, vector[PARTIALDECOMP*] otherpartialdecs) except +
 
 
 cdef extern from "gcg/class_conspartition.h" namespace "gcg":
+    ctypedef enum CONS_DECOMPINFO:
+        BOTH         = 0
+        ONLY_MASTER  = 1
+        ONLY_PRICING = 2
+
     cdef cppclass ConsPartition:
-        ConsPartition(ConsPartition * toCopy)
+        # methods of superclass IndexPartition
+        const char* getClassDescription(int classindex) except +
+        const char* getClassName(int classindex) except +
+        const char* getName() except +
+        int getNClasses() except +
+        #vector[int] reduceClasses(int maxNumberOfClasses) except +
+        int removeEmptyClasses() except +
+        void setClassDescription(int classindex, const char* desc) except +
+        void setClassName(int classindex, const char* name) except +
+
+        # constructors and methods of class ConsPartition
+        ConsPartition(SCIP* scip, const char* name, int nClasses, int nConss) except +
+        ConsPartition(ConsPartition * toCopy) except +
+        int addClass(const char* name, const char* desc, CONS_DECOMPINFO decompInfo) except +
         void assignConsToClass(int consindex, int classindex) except +
         vector[vector[int]] getAllSubsets(bool both, bool only_master, bool only_pricing) except +
-        char * getClassNameOfCons(int consindex)
+        CONS_DECOMPINFO getClassDecompInfo(int classindex) except +
+        const char* getClassNameOfCons(int consindex) except +
         int getClassOfCons(int consindex) except +
+        #const int* getConssToClasses() except +
         int getNConss() except +
         vector[int] getNConssOfClasses() except +
         bool isConsClassified(int consindex) except +
-        ConsPartition * reduceClasses(int maxNumberOfClasses) except +
-        const char* getName() except +
-
+        ConsPartition* reduceClasses(int maxNumberOfClasses) except +
+        void setClassDecompInfo(int classindex, CONS_DECOMPINFO decompInfo) except +
 
 cdef extern from "gcg/class_varpartition.h" namespace "gcg":
+    ctypedef enum VAR_DECOMPINFO:
+        ALL     = 0
+        LINKING = 1
+        MASTER  = 2
+        BLOCK   = 3
+
     cdef cppclass VarPartition:
-        VarPartition(VarPartition * toCopy)
+        # methods of superclass IndexPartition
+        const char* getClassDescription(int classindex) except +
+        const char* getClassName(int classindex) except +
+        const char* getName() except +
+        int getNClasses() except +
+        #vector[int] reduceClasses(int maxNumberOfClasses) except +
+        int removeEmptyClasses() except +
+        void setClassDescription(int classindex, const char* desc) except +
+        void setClassName(int classindex, const char* name) except +
+
+        # constructors and methods of class VarPartition
+        VarPartition(SCIP* scip, const char* name, int nClasses, int nVars) except +
+        VarPartition(VarPartition * toCopy) except +
+        int addClass(const char* name, const char* desc, VAR_DECOMPINFO decompInfo) except +
         void assignVarToClass(int varindex, int classindex) except +
         vector[vector[int]] getAllSubsets(bool all, bool linking, bool master, bool block) except +
-        char * getClassNameOfVar(int varindex)
+        VAR_DECOMPINFO getClassDecompInfo(int classindex) except +
+        const char* getClassNameOfVar(int varindex) except +
         int getClassOfVar(int varindex) except +
+        #const int* getVarsToClasses() except +
         int getNVars() except +
         vector[int] getNVarsOfClasses() except +
         bool isVarClassified(int varindex) except +
-        VarPartition * reduceClasses(int maxNumberOfClasses) except +
-
+        VarPartition* reduceClasses(int maxNumberOfClasses) except +
+        void setClassDecompInfo(int classindex, VAR_DECOMPINFO decompInfo) except +
 
 cdef extern from "scip/scip.h":
     ctypedef struct SCIP_CLOCK:
@@ -421,6 +492,25 @@ cdef extern from "scip/scip.h":
     SCIP_RETCODE SCIPstopClock(SCIP* scip, SCIP_CLOCK* clck)
     SCIP_Real SCIPgetClockTime(SCIP* scip, SCIP_CLOCK* clck)
 
+cdef class DetProbData:
+    cdef DETPROBDATA* thisptr
+
+    @staticmethod
+    cdef create(DETPROBDATA* thisptr)
+
+cdef class ConsPart:
+    cdef ConsPartition* consPartition
+    cdef DetProbData detProbData
+
+    @staticmethod
+    cdef create(ConsPartition* thisptr, DetProbData detProbData)
+
+cdef class VarPart:
+    cdef VarPartition* varPartition
+    cdef DetProbData detProbData
+
+    @staticmethod
+    cdef create(VarPartition* thisptr, DetProbData detProbData)
 
 cdef class GCGColumn:
     cdef GCG_COL* gcg_col
