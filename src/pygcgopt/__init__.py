@@ -46,6 +46,7 @@ from pygcgopt.gcg import Detector
 from pygcgopt.gcg import PricingSolver
 from pygcgopt.gcg import ConsClassifier
 from pygcgopt.gcg import VarClassifier
+from pygcgopt.gcg import Score
 from pygcgopt.gcg import PY_GCG_PRICINGSTATUS as GCG_PRICINGSTATUS
 from pygcgopt.gcg import PY_CONS_DECOMPINFO as CONS_DECOMPINFO
 from pygcgopt.gcg import PY_VAR_DECOMPINFO as VAR_DECOMPINFO

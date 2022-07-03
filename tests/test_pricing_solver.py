@@ -27,7 +27,7 @@ class PyKnapsackSolver(PricingSolver):
         if pricingprob.getNBinVars() + pricingprob.getNIntVars() < len(vars):
             return {"status": GCG_PRICINGSTATUS.NOTAPPLICABLE}
         for var_name in vars:
-            if pricingprob.isNegative(vars[var_name].getLbLocal()):
+            if vars[var_name].getLbLocal() < 0:
                 return {"status": GCG_PRICINGSTATUS.NOTAPPLICABLE}
         conss = pricingprob.getConss()
         if len(conss) != 1:
@@ -35,13 +35,12 @@ class PyKnapsackSolver(PricingSolver):
         
         cons = conss[0]
 
-        conshdlr_name = cons.getConstraintHandlerName()
-        if conshdlr_name == "linear":
-            if not pricingprob.isIntegral(pricingprob.getRhs(cons)) or not pricingprob.isInfinity(-pricingprob.getLhs(cons)):
+        if cons.isLinear():
+            if not pricingprob.getRhs(cons).is_integer() or not pricingprob.isInfinity(-pricingprob.getLhs(cons)):
                 return {"status": GCG_PRICINGSTATUS.NOTAPPLICABLE}
 
             consvals = pricingprob.getValsLinear(cons)
-            if not all(pricingprob.isIntegral(v) for v in consvals.values()):
+            if not all(v.is_integer() for v in consvals.values()):
                 return {"status": GCG_PRICINGSTATUS.NOTAPPLICABLE}
             consvals = {k: floor(v) for k, v in consvals.items()}
             
@@ -64,8 +63,6 @@ class PyKnapsackSolver(PricingSolver):
                     ubs[var_name] = floor(abs(prelcapacity / consval))
                 else:
                     ubs[var_name] = vars[var_name].getUbLocal()
-        elif conshdlr_name == "knapsack":
-            raise NotImplementedError("knapsack constraints are not implemented")
         else:
             return {"status": GCG_PRICINGSTATUS.NOTAPPLICABLE}
 
@@ -117,12 +114,11 @@ class PyKnapsackSolver(PricingSolver):
         solvals = defaultdict(int)
         for idx in range(len(item_var_map)):
             var_name = item_var_map[idx]
-            assert(consvals[var_name] >= 0 or not vars[var_name].isNegated())
             if idx in solitems:
-                if consvals[var_name] >= 0 and not vars[var_name].isNegated():
+                if consvals[var_name] >= 0:
                     solvals[var_name] += 1.0
             else:
-                if consvals[var_name] < 0 or vars[var_name].isNegated():
+                if consvals[var_name] < 0:
                     solvals[var_name] += 1.0
         
         for var_name, var in vars.items():
@@ -155,7 +151,7 @@ def test_pypricer_fast(lp_file, dec_file):
 
     m.optimize()
 
-    assert(m.getStatus() == "optimal")
+    assert m.getStatus() == "optimal"
 
     gcg_pricer_sol_obj_val = m.getSolObjVal(m.getBestSol())
 
@@ -169,10 +165,13 @@ def test_pypricer_fast(lp_file, dec_file):
     proxyKnapsackSolver = PyKnapsackSolver()
     m.includePricingSolver(proxyKnapsackSolver, "pyknapsack", "Python ortools knapsack pricing solver", 300, False, True)
 
+    assert "pyknapsack" in m.listPricingSolvers()
+
     m.optimize()
 
-    assert(m.getStatus() == "optimal")
+    assert m.getStatus() == "optimal"
 
     py_pricer_sol_obj_val = m.getSolObjVal(m.getBestSol())
 
-    assert(gcg_pricer_sol_obj_val == py_pricer_sol_obj_val)
+    assert gcg_pricer_sol_obj_val == py_pricer_sol_obj_val
+

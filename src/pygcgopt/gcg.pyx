@@ -23,6 +23,7 @@ from collections.abc import Iterable
 
 include "detector.pxi"
 include "pricing_solver.pxi"
+include "score.pxi"
 include "partition.pxi"
 include "decomposition.pxi"
 include "detprobdata.pxi"
@@ -148,6 +149,16 @@ cdef class Model(SCIPModel):
         free(decids)
 
         return decomps
+
+    def getPartDecompFromID(self, id):
+        """returns a partial decomposition regarding to the given partialdecomp id
+
+        :param id: patial decomposition id as int
+        :return: PartialDecomposition object 
+        """
+        cdef PartialDecomposition pd = PartialDecomposition.create(GCGconshdlrDecompGetPartialdecFromID(self._scip, id))
+        
+        return pd
 
     def addDecompositionFromConss(self, master_conss, *block_conss):
         """Adds a user specified decomposition to GCG based on constraints.
@@ -370,6 +381,25 @@ cdef class Model(SCIPModel):
         detector.detectorname = detectorname
         Py_INCREF(detector)
 
+    def includeScore(self, Score score, scorename, shortname, desc):
+        """includes a score
+
+        :param detector: An object of a subclass of detector#Detector.
+        :param detectorname: name of the detector
+
+        For an explanation for all arguments, see :meth:`DECincludeDetector()`.
+        """
+        c_scorename = str_conversion(scorename)
+        c_shortname = str_conversion(shortname)
+        c_desc = str_conversion(desc)
+        PY_SCIP_CALL(GCGincludeScore(
+            self._scip, c_scorename, c_shortname, c_desc,
+            <DEC_SCOREDATA*>score, PyScoreFree, PyScoreCalculate))
+
+        score.model = <SCIPModel>weakref.proxy(self)
+        score.scorename = scorename
+        Py_INCREF(score)
+
     def listDetectors(self):
         """Lists all detectors that are currently included
 
@@ -385,6 +415,16 @@ cdef class Model(SCIPModel):
         cdef DEC_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
 
         return [DECdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
+
+    def listScores(self):
+        """Lists all scores that are currently included
+
+        :return: A list of strings of the score names
+        """
+        cdef int n_scores = GCGgetNScores(self._scip)
+        cdef DEC_SCORE** scores = GCGgetScores(self._scip)
+
+        return [GCGscoreGetName(scores[i]).decode('utf-8') for i in range(n_scores)]
 
     def setDetectorEnabled(self, detector_name, is_enabled=True):
         """Enables or disables a detector for detecting partial decompositions.
