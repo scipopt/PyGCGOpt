@@ -281,9 +281,9 @@ cdef class Model(SCIPModel):
         """
         c_consclassifiername = str_conversion(consclassifiername)
         c_desc = str_conversion(desc)
-        PY_SCIP_CALL(DECincludeConsClassifier(
+        PY_SCIP_CALL(GCGincludeConsClassifier(
             self._scip, c_consclassifiername, c_desc, priority, enabled,
-            <DEC_CLASSIFIERDATA*>consclassifier, PyConsClassifierFree, PyConsClassifierClassify))
+            <GCG_CLASSIFIERDATA*>consclassifier, PyConsClassifierFree, PyConsClassifierClassify))
 
         consclassifier.model = <Model>weakref.proxy(self)
         consclassifier.consclassifiername = consclassifiername
@@ -304,9 +304,9 @@ cdef class Model(SCIPModel):
         :return: list of strings of the constraint classifier names
         """
         cdef int n_consclassifiers = GCGconshdlrDecompGetNConsClassifiers(self._scip)
-        cdef DEC_CONSCLASSIFIER** consclassifiers = GCGconshdlrDecompGetConsClassifiers(self._scip)
+        cdef GCG_CONSCLASSIFIER** consclassifiers = GCGconshdlrDecompGetConsClassifiers(self._scip)
 
-        return [DECconsClassifierGetName(consclassifiers[i]).decode('utf-8') for i in range(n_consclassifiers)]
+        return [GCGconsClassifierGetName(consclassifiers[i]).decode('utf-8') for i in range(n_consclassifiers)]
 
     def includeVarClassifier(self, VarClassifier varclassifier, varclassifiername, desc, priority=0, enabled=True):
         """includes a variable classifier
@@ -317,9 +317,9 @@ cdef class Model(SCIPModel):
         """
         c_varclassifiername = str_conversion(varclassifiername)
         c_desc = str_conversion(desc)
-        PY_SCIP_CALL(DECincludeVarClassifier(
+        PY_SCIP_CALL(GCGincludeVarClassifier(
             self._scip, c_varclassifiername, c_desc, priority, enabled,
-            <DEC_CLASSIFIERDATA*>varclassifier, PyVarClassifierFree, PyVarClassifierClassify))
+            <GCG_CLASSIFIERDATA*>varclassifier, PyVarClassifierFree, PyVarClassifierClassify))
 
         varclassifier.model = <Model>weakref.proxy(self)
         varclassifier.varclassifiername = varclassifiername
@@ -340,9 +340,9 @@ cdef class Model(SCIPModel):
         :return: list of strings of the variable classifier names
         """
         cdef int n_varclassifiers = GCGconshdlrDecompGetNVarClassifiers(self._scip)
-        cdef DEC_VARCLASSIFIER** varclassifiers = GCGconshdlrDecompGetVarClassifiers(self._scip)
+        cdef GCG_VARCLASSIFIER** varclassifiers = GCGconshdlrDecompGetVarClassifiers(self._scip)
 
-        return [DECvarClassifierGetName(varclassifiers[i]).decode('utf-8') for i in range(n_varclassifiers)]
+        return [GCGvarClassifierGetName(varclassifiers[i]).decode('utf-8') for i in range(n_varclassifiers)]
 
     def setVarClassifierEnabled(self, varclassifier_name, is_enabled=True):
         """enables or disables a variable classifier
@@ -362,7 +362,7 @@ cdef class Model(SCIPModel):
         :param detectorname: name of detector
         :param desc: description of detector
 
-        For an explanation for all arguments, see :meth:`DECincludeDetector()`.
+        For an explanation for all arguments, see :meth:`GCGincludeDetector()`.
         """
         if len(decchar) != 1:
             raise ValueError("Length of value for 'decchar' must be 1")
@@ -370,10 +370,10 @@ cdef class Model(SCIPModel):
         c_detectorname = str_conversion(detectorname)
         c_decchar = ord(str_conversion(decchar))
         c_desc = str_conversion(desc)
-        PY_SCIP_CALL(DECincludeDetector(
+        PY_SCIP_CALL(GCGincludeDetector(
             self._scip, c_detectorname, c_decchar, c_desc, freqcallround, maxcallround, mincallround,
             freqcallroundoriginal, maxcallroundoriginal, mincallroundoriginal, priority, enabled, enabledfinishing,
-            enabledpostprocessing, skip, usefulrecall, <DEC_DETECTORDATA*>detector, PyDetectorFree, PyDetectorInit,
+            enabledpostprocessing, skip, usefulrecall, <GCG_DETECTORDATA*>detector, PyDetectorFree, PyDetectorInit,
             PyDetectorExit, PyDetectorPropagatePartialdec, PyDetectorFinishPartialdec, PyDetectorPostprocessPartialdec,
             PyDetectorSetParamAggressive, PyDetectorSetParamDefault, PyDetectorSetParamFast))
 
@@ -387,14 +387,14 @@ cdef class Model(SCIPModel):
         :param detector: An object of a subclass of detector#Detector.
         :param detectorname: name of the detector
 
-        For an explanation for all arguments, see :meth:`DECincludeDetector()`.
+        For an explanation for all arguments, see :meth:`GCGincludeDetector()`.
         """
         c_scorename = str_conversion(scorename)
         c_shortname = str_conversion(shortname)
         c_desc = str_conversion(desc)
         PY_SCIP_CALL(GCGincludeScore(
             self._scip, c_scorename, c_shortname, c_desc,
-            <DEC_SCOREDATA*>score, PyScoreFree, PyScoreCalculate))
+            <GCG_SCOREDATA*>score, PyScoreFree, PyScoreCalculate))
 
         score.model = <SCIPModel>weakref.proxy(self)
         score.scorename = scorename
@@ -412,9 +412,9 @@ cdef class Model(SCIPModel):
                      * :meth:`setDetectorPostprocessingEnabled`
         """
         cdef int n_detectors = GCGconshdlrDecompGetNDetectors(self._scip)
-        cdef DEC_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
+        cdef GCG_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
 
-        return [DECdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
+        return [GCGdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
 
     def listScores(self):
         """Lists all scores that are currently included
@@ -422,7 +422,7 @@ cdef class Model(SCIPModel):
         :return: A list of strings of the score names
         """
         cdef int n_scores = GCGgetNScores(self._scip)
-        cdef DEC_SCORE** scores = GCGgetScores(self._scip)
+        cdef GCG_SCORE** scores = GCGgetScores(self._scip)
 
         return [GCGscoreGetName(scores[i]).decode('utf-8') for i in range(n_scores)]
 
@@ -494,7 +494,7 @@ cdef class Model(SCIPModel):
             Path(directory).mkdir(exist_ok=True, parents=True)
         c_directory = str_conversion(directory)
         c_extension = str_conversion(extension)
-        PY_SCIP_CALL(DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
+        PY_SCIP_CALL(GCGwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
 
 
 cdef class GCGPricingModel(SCIPModel):

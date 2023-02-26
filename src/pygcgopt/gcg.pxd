@@ -21,16 +21,16 @@ cdef extern from "gcg/gcg.h":
 
     SCIP_Real GCGgetDualbound(SCIP* scip)
 
-    ctypedef struct DEC_DETECTORDATA:
+    ctypedef struct GCG_DETECTORDATA:
         pass
 
-    ctypedef struct DEC_DETECTOR:
+    ctypedef struct GCG_DETECTOR:
         pass
 
-    ctypedef struct DEC_SCOREDATA:
+    ctypedef struct GCG_SCOREDATA:
         pass
 
-    ctypedef struct DEC_SCORE:
+    ctypedef struct GCG_SCORE:
         pass
 
     ctypedef struct PARTIALDEC_DETECTION_DATA:
@@ -40,54 +40,54 @@ cdef extern from "gcg/gcg.h":
         int nnewpartialdecs
         double detectiontime
 
-    SCIP_RETCODE DECincludeDetector(SCIP* scip, const char* name, const char decchar, const char* description, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, int priority, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, DEC_DETECTORDATA *detectordata, SCIP_RETCODE (*freeDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*initDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*exitDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result))
+    SCIP_RETCODE GCGincludeDetector(SCIP* scip, const char* name, const char decchar, const char* description, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, int priority, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, GCG_DETECTORDATA *detectordata, SCIP_RETCODE (*freeDetector) (SCIP* scip, GCG_DETECTOR* detector), SCIP_RETCODE (*initDetector) (SCIP* scip, GCG_DETECTOR* detector), SCIP_RETCODE (*exitDetector) (SCIP* scip, GCG_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result))
 
-    DEC_DETECTORDATA* DECdetectorGetData(DEC_DETECTOR* detector)
+    GCG_DETECTORDATA* GCGdetectorGetData(GCG_DETECTOR* detector)
 
-    DEC_DETECTOR** GCGconshdlrDecompGetDetectors(SCIP* scip)
+    GCG_DETECTOR** GCGconshdlrDecompGetDetectors(SCIP* scip)
     int GCGconshdlrDecompGetNDetectors(SCIP* scip)
-    const char* DECdetectorGetName(DEC_DETECTOR* detector)
+    const char* GCGdetectorGetName(GCG_DETECTOR* detector)
 
     SCIP* GCGgetMasterprob(SCIP* scip)
 
     #ConsClassifier
-    ctypedef struct DEC_CLASSIFIERDATA:
+    ctypedef struct GCG_CLASSIFIERDATA:
         pass
 
-    ctypedef struct DEC_CONSCLASSIFIER:
+    ctypedef struct GCG_CONSCLASSIFIER:
         pass
 
-    SCIP_RETCODE DECincludeConsClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, DEC_CLASSIFIERDATA *classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, DEC_CONSCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, DEC_CONSCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+    SCIP_RETCODE GCGincludeConsClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, GCG_CLASSIFIERDATA *classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, GCG_CONSCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, GCG_CONSCLASSIFIER* classifierpointer, SCIP_Bool transformed))
 
-    DEC_CLASSIFIERDATA* DECconsClassifierGetData(DEC_CONSCLASSIFIER* classifier)
+    GCG_CLASSIFIERDATA* GCGconsClassifierGetData(GCG_CONSCLASSIFIER* classifier)
 
-    DEC_CONSCLASSIFIER** GCGconshdlrDecompGetConsClassifiers(SCIP* scip)
+    GCG_CONSCLASSIFIER** GCGconshdlrDecompGetConsClassifiers(SCIP* scip)
     int GCGconshdlrDecompGetNConsClassifiers(SCIP* scip)
-    const char* DECconsClassifierGetName(DEC_CONSCLASSIFIER* classifier)
+    const char* GCGconsClassifierGetName(GCG_CONSCLASSIFIER* classifier)
 
     #VarClassifier
-    ctypedef struct DEC_VARCLASSIFIER:
+    ctypedef struct GCG_VARCLASSIFIER:
         pass
 
-    SCIP_RETCODE DECincludeVarClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, DEC_CLASSIFIERDATA* classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, DEC_VARCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, DEC_VARCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+    SCIP_RETCODE GCGincludeVarClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, GCG_CLASSIFIERDATA* classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, GCG_VARCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, GCG_VARCLASSIFIER* classifierpointer, SCIP_Bool transformed))
 
-    DEC_CLASSIFIERDATA* DECvarClassifierGetData(DEC_VARCLASSIFIER* classifier)
+    GCG_CLASSIFIERDATA* GCGvarClassifierGetData(GCG_VARCLASSIFIER* classifier)
 
     int GCGconshdlrDecompGetNVarClassifiers(SCIP* scip)
-    DEC_VARCLASSIFIER** GCGconshdlrDecompGetVarClassifiers(SCIP* scip)
-    const char* DECvarClassifierGetName(DEC_VARCLASSIFIER* classifier)
+    GCG_VARCLASSIFIER** GCGconshdlrDecompGetVarClassifiers(SCIP* scip)
+    const char* GCGvarClassifierGetName(GCG_VARCLASSIFIER* classifier)
 
     ctypedef enum GP_OUTPUT_FORMAT:
         GP_OUTPUT_FORMAT_PDF
         GP_OUTPUT_FORMAT_PNG
         GP_OUTPUT_FORMAT_SVG
 
-    SCIP_RETCODE GCGincludeScore(SCIP* scip, const char* name, const char* shortname,const char* description, DEC_SCOREDATA* scoredata, SCIP_RETCODE (*scorefree) (SCIP* scip, DEC_SCORE* score), SCIP_RETCODE (*scorecalc) (SCIP* scip, DEC_SCORE* score, int partialdecid, SCIP_Real* scorevalue))
-    DEC_SCOREDATA* GCGscoreGetData(DEC_SCORE* score)
+    SCIP_RETCODE GCGincludeScore(SCIP* scip, const char* name, const char* shortname,const char* description, GCG_SCOREDATA* scoredata, SCIP_RETCODE (*scorefree) (SCIP* scip, GCG_SCORE* score), SCIP_RETCODE (*scorecalc) (SCIP* scip, GCG_SCORE* score, int partialdecid, SCIP_Real* scorevalue))
+    GCG_SCOREDATA* GCGscoreGetData(GCG_SCORE* score)
     int GCGgetNScores(SCIP* scip)
-    DEC_SCORE** GCGgetScores(SCIP* scip)
-    const char* GCGscoreGetName(DEC_SCORE* score)
-    DEC_SCORE* GCGfindScore(SCIP* scip, const char* name)
+    GCG_SCORE** GCGgetScores(SCIP* scip)
+    const char* GCGscoreGetName(GCG_SCORE* score)
+    GCG_SCORE* GCGfindScore(SCIP* scip, const char* name)
 
 
 cdef extern from "gcg/pub_gcgsepa.h":
@@ -156,7 +156,7 @@ cdef extern from "gcg/cons_decomp.h":
     SCIP_RETCODE GCGconshdlrDecompGetPartialdecsList(SCIP* scip, int** idlist, int* listlength)
     unsigned int GCGconshdlrDecompGetNDecomps(SCIP* scip)
     SCIP_RETCODE GCGconshdlrDecompGetFinishedPartialdecsList(SCIP* scip, int** idlist, int* listlength)
-    SCIP_RETCODE DECwriteAllDecomps(SCIP* scip, char* directory, char* extension, SCIP_Bool original, SCIP_Bool presolved)
+    SCIP_RETCODE GCGwriteAllDecomps(SCIP* scip, char* directory, char* extension, SCIP_Bool original, SCIP_Bool presolved)
 
 
 cdef extern from "gcg/cons_decomp.hpp":
@@ -221,7 +221,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         double getDetectorClockTime(int detectorchainindex) except +
         vector[double] getDetectorClockTimes() except +
         vector[int] getConssForBlock(int block) except +
-        vector[DEC_DETECTOR *] getDetectorchain() except +
+        vector[GCG_DETECTOR *] getDetectorchain() except +
         bool getFinishedByFinisher() except +
         unsigned long getHashValue() except +
         int getID() except +
@@ -282,7 +282,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         bool isAssignedToOrigProb() except +
         bool isSelected() except +
         SCIP_RETCODE isEqual(PARTIALDECOMP * otherpartialdec, unsigned int * isequal, bool sortpartialdecs) except +
-        bool isPropagatedBy(DEC_DETECTOR * detector) except +
+        bool isPropagatedBy(GCG_DETECTOR * detector) except +
         bool isTrivial() except +
         bool isVarBlockvarOfBlock(int var, int block) except +
         bool isVarLinkingvar(int var) except +
@@ -298,10 +298,10 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         # void fixConsToBlock(int cons, int block) except +
         void setConsToMaster(int consToMaster) except +
         # void fixConsToMaster(int cons) except +
-        void setDetectorchain(vector[DEC_DETECTOR *] givenDetectorChain) except +
-        void setDetectorPropagated(DEC_DETECTOR * detector) except +
-        void setDetectorFinished(DEC_DETECTOR * detector) except +
-        void setDetectorFinishedOrig(DEC_DETECTOR * detectorID) except +
+        void setDetectorchain(vector[GCG_DETECTOR *] givenDetectorChain) except +
+        void setDetectorPropagated(GCG_DETECTOR * detector) except +
+        void setDetectorFinished(GCG_DETECTOR * detector) except +
+        void setDetectorFinishedOrig(GCG_DETECTOR * detectorID) except +
         void setFinishedByFinisher(bool finished) except +
         void setFinishedByFinisherOrig(bool finished) except +
         void setNBlocks(int nblocks) except +
@@ -344,7 +344,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         void buildDecChainString(char * buffer) except +
         bool fixConsToBlock(SCIP_CONS* cons, int block)
         bool fixConsToMaster(SCIP_CONS* cons)
-        SCIP_Real getScore(DEC_SCORE* score) except +
+        SCIP_Real getScore(GCG_SCORE* score) except +
 
 
 cdef extern from "gcg/class_detprobdata.h" namespace "gcg":

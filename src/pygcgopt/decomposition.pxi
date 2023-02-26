@@ -53,7 +53,7 @@ cdef class PartialDecomposition:
     def copy(self):
         return copy(self)
 
-    def fixConsToMaster(PartialDecomposition self, Constraint cons):
+    def fixConsToMaster(self, Constraint cons):
         """Fixes a Constraint to the master constraints.
 
         :param cons: scip#Constraint to add
@@ -74,7 +74,7 @@ cdef class PartialDecomposition:
         for cons in conss:
             self.fixConsToMaster(<Constraint?>cons)
 
-    def fixConsToBlockId(PartialDecomposition self, Constraint cons, int block_id):
+    def fixConsToBlockId(self, Constraint cons, int block_id):
         """Adds a constraint to a block.
 
         :param cons: scip#Constraint to add
@@ -146,14 +146,50 @@ cdef class PartialDecomposition:
             block_id = self.fixConsToBlock(<Constraint?>cons, block)
         return block_id
 
-    def getOpenconss(PartialDecomposition self):
-        """Gets a vector containing constraint ids not assigned yet as vector
+    def getOpenconss(self):
+        """gets a list of constraints that are opened (not assigned yet)
 
-        :return: returns a vector containing constraint ids not assigned yet as vector.
+        :return: list of constraints
         """
         cdef vector[int] result = self.thisptr.getOpenconssVec()
-        cdef DETPROBDATA * det_prob_data = self.thisptr.getDetprobdata()
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
         return [Constraint.create(det_prob_data.getCons(consIndex)) for consIndex in result]
+
+    def getLinkingvars(self):
+        """gets a list of variables that are assigned to linking variables
+
+        :return: list of variables
+        """
+        cdef vector[int] result = self.thisptr.getLinkingvars()
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
+
+    def getMasterconss(self):
+        """gets a list of constraints that are assigned to master variables
+
+        :return: list of constraints
+        """
+        cdef vector[int] result = self.thisptr.getMasterconss()
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Constraint.create(det_prob_data.getCons(consIndex)) for consIndex in result]
+
+    def getMastervars(self):
+        """gets a list of variables that are assigned to master variables (static variables)
+
+        :return: list of variables
+        """
+        cdef vector[int] result = self.thisptr.getMastervars()
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
+
+    def getOpenvars(self):
+        """gets a list of variabless that are opened (not assigned yet)
+
+        :return: list of variables
+        """
+        cdef vector[int] result = self.thisptr.getOpenvarsVec()
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
 
     def setUsergiven(self, USERGIVEN value=COMPLETED_CONSTOMASTER):
         self.thisptr.setUsergiven(value)
@@ -590,7 +626,7 @@ cdef class PartialDecomposition:
 
     #     :return: detector chain as array of detector pointers.
     #     """
-    #     cdef vector[DEC_DETECTOR *] result = self.thisptr.getDetectorchain()
+    #     cdef vector[GCG_DETECTOR *] result = self.thisptr.getDetectorchain()
     #     return result
 
     def getFinishedByFinisher(PartialDecomposition self):
@@ -615,33 +651,6 @@ cdef class PartialDecomposition:
         :return: the unique id of the partialdec.
         """
         cdef int result = self.thisptr.getID()
-        return result
-
-    def getLinkingvars(PartialDecomposition self):
-        """returns array containing all linking vars indices
-
-        :return: vector containing all linking vars indices
-        .. note:: when accessed it is supposed to be sorted.
-        """
-        cdef vector[int] result = self.thisptr.getLinkingvars()
-        return result
-
-    def getMasterconss(PartialDecomposition self):
-        """Gets array containing all master conss indices
-
-        :return: array containing all master conss indices
-        .. note:: when accessed it is supposed to be sorted.
-        """
-        cdef vector[int] result = self.thisptr.getMasterconss()
-        return [self.getDetprobdata().getCons(c) for c in result]
-
-    def getMastervars(PartialDecomposition self):
-        """Gets array containing all master vars indices
-
-        master vars hit only constraints in the master, aka static variables
-        :return: array containing all master vars indices.
-        """
-        cdef vector[int] result = self.thisptr.getMastervars()
         return result
 
     def getNCoeffsForBlock(PartialDecomposition self, int blockid):
@@ -863,38 +872,6 @@ cdef class PartialDecomposition:
         :return: number of vars that are assigned to any block.
         """
         cdef int result = self.thisptr.getNVarsForBlocks()
-        return result
-
-    # def getOpenconss(PartialDecomposition self):
-    #     """Gets array containing constraints not assigned yet
-
-    #     :return: array containing constraints not assigned yet.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def getOpenconssVec(PartialDecomposition self):
-        """Gets a vector containing constraint ids not assigned yet as vector
-
-        :return: returns a vector containing constraint ids not assigned yet as vector.
-        """
-        cdef vector[int] result = self.thisptr.getOpenconssVec()
-        return result
-
-    def getOpenvars(PartialDecomposition self):
-        """Gets array containing variables not assigned yet
-
-        :return: returns array containing variables not assigned yet.
-        """
-        # TODO implement function
-        raise NotImplementedError()
-
-    def getOpenvarsVec(PartialDecomposition self):
-        """!Gets array containing variables not assigned yet as vector
-
-        :return: array containing variables not assigned yet as vector.
-        """
-        cdef vector[int] result = self.thisptr.getOpenvarsVec()
         return result
 
     def getPctVarsToBorder(PartialDecomposition self, int detectorchainindex):
@@ -1128,7 +1105,7 @@ cdef class PartialDecomposition:
     #     # TODO implement function
     #     raise NotImplementedError()
 
-    # def isPropagatedBy(PartialDecomposition self, DEC_DETECTOR * detector):
+    # def isPropagatedBy(PartialDecomposition self, GCG_DETECTOR * detector):
     #     """Gets whether this partialdec was propagated by specified detector
 
     #     :param detector: pointer to detector to check for
@@ -1289,10 +1266,10 @@ cdef class PartialDecomposition:
 
     #     :param givenDetectorChain: vector of detector pointers.
     #     """
-    #     cdef vector[DEC_DETECTOR *] cpp_givenDetectorChain = givenDetectorChain
+    #     cdef vector[GCG_DETECTOR *] cpp_givenDetectorChain = givenDetectorChain
     #     self.thisptr.setDetectorchain(cpp_givenDetectorChain)
 
-    # def setDetectorPropagated(PartialDecomposition self, DEC_DETECTOR * detector):
+    # def setDetectorPropagated(PartialDecomposition self, GCG_DETECTOR * detector):
     #     """sets partialdec to be propagated by a detector
 
     #     :param detector: pointer to detector that is registered for this partialdec.
@@ -1300,7 +1277,7 @@ cdef class PartialDecomposition:
     #     # TODO implement function
     #     raise NotImplementedError()
 
-    # def setDetectorFinished(PartialDecomposition self, DEC_DETECTOR * detector):
+    # def setDetectorFinished(PartialDecomposition self, GCG_DETECTOR * detector):
     #     """sets detector that finished the partialdec
 
     #     :param detector: pointer to detector that has finished this partialdecs.
@@ -1308,7 +1285,7 @@ cdef class PartialDecomposition:
     #     # TODO implement function
     #     raise NotImplementedError()
 
-    # def setDetectorFinishedOrig(PartialDecomposition self, DEC_DETECTOR * detectorID):
+    # def setDetectorFinishedOrig(PartialDecomposition self, GCG_DETECTOR * detectorID):
     #     """sets detector that finished the partialdec in the original problem
 
     #     :param detectorID: pointer to detector that has finished this partialdecs

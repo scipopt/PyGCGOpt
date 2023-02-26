@@ -12,16 +12,16 @@ cdef class Score:
         '''calls calculate method of score'''
         return {}
 
-cdef SCIP_RETCODE PyScoreFree(SCIP* scip, DEC_SCORE* score) with gil:
-    cdef DEC_SCOREDATA* scoredata
+cdef SCIP_RETCODE PyScoreFree(SCIP* scip, GCG_SCORE* score) with gil:
+    cdef GCG_SCOREDATA* scoredata
     scoredata = GCGscoreGetData(score)
     py_score = <Score>scoredata
     py_score.scorefree()
     Py_DECREF(py_score)
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyScoreCalculate(SCIP* scip, DEC_SCORE* score, int partialdecid, SCIP_Real* scorevalue) with gil:
-    cdef DEC_SCOREDATA* scoredata
+cdef SCIP_RETCODE PyScoreCalculate(SCIP* scip, GCG_SCORE* score, int partialdecid, SCIP_Real* scorevalue) with gil:
+    cdef GCG_SCOREDATA* scoredata
     scoredata = GCGscoreGetData(score)
     py_score = <Score>scoredata
     partialdec = py_score.model.getPartDecompFromID(partialdecid)
