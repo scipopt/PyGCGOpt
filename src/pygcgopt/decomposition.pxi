@@ -53,6 +53,25 @@ cdef class PartialDecomposition:
     def copy(self):
         return copy(self)
 
+    def isComplete(self):
+        """gets whether this partialdec is complete, i.e. it has no more open constraints and variables
+
+        :return: True iff this partialdec is complete
+        """
+        cdef bool result = self.thisptr.isComplete()
+        return result
+
+    def isTrivial(self):
+        """gets whether this partialdec is considered to be trivial
+
+        :return: True iff this partialdec is considered to be trivial
+
+        .. note:: PartialDecomposition is considered trivial if all constraints are in one block, all constraints are in border,
+        all variables linking or mastervariables, or all constraints and variables are open
+        """
+        cdef bool result = self.thisptr.isTrivial()
+        return result
+
     def fixConsToMaster(self, Constraint cons):
         """Fixes a Constraint to the master constraints.
 
@@ -93,7 +112,7 @@ cdef class PartialDecomposition:
         """Adds all constraints to a block.
 
         :param conss: An iterable of scip#Constraint objects
-        :param block_id: id of block to add.
+        :param block_id: id of block to add
         .. seealso:: * :meth:`fixConsToBlockId`
                      * :meth:`fixConssToBlock`
         """
@@ -183,13 +202,135 @@ cdef class PartialDecomposition:
         return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
 
     def getOpenvars(self):
-        """gets a list of variabless that are opened (not assigned yet)
+        """gets a list of variables that are opened (not assigned yet)
 
         :return: list of variables
         """
         cdef vector[int] result = self.thisptr.getOpenvarsVec()
         cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
         return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
+
+    def getStairlinkingvars(self, int block_id):
+        """gets a list of variables that are assigned to stairlinking variables of the specified block
+
+        :param block_id: id of the block the stairlinking variables is asked for
+        :return: list of variables
+
+        .. note:: if a stairlinking variable links block i and i+1 it is only stored in vector of block i
+        """
+        cdef vector[int] result = self.thisptr.getStairlinkingvarsVec(block_id)
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
+
+    def getConssOfBlock(self, int block_id):
+        """gets a list of constraints that are assigned to the specified block
+
+        :param block_id: id of the block the constraints is asked for
+        :return: list of constraints
+        """
+        cdef vector[int] result = self.thisptr.getConssForBlock(block_id)
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Constraint.create(det_prob_data.getCons(consIndex)) for consIndex in result]
+
+    def getVarsOfBlock(self, int block_id):
+        """gets a list of variables that are assigned to the specified block
+
+        :param block_id: id of the block the variables is asked for
+        :return: list of variables
+        """
+        cdef vector[int] result = self.thisptr.getVarsForBlock(block_id)
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
+
+    def isConsMastercons(self, Constraint cons):
+        """gets whether the constraint is a master constraint
+
+        :param cons: constraint to check if it is master constraint
+        :type cons: scip#Constraint
+        :return: True iff the constraint is a master constraint
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isConsMastercons(det_prob_data.getIndexForCons(cons.scip_cons))
+        return result
+
+    def isConsOpencons(self, Constraint cons):
+        """gets whether the constraint is an open constraint
+
+        :param cons: constraint to check if it is open constraint
+        :type cons: scip#Constraint
+        :return: True iff the constraint is an open constraint
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isConsOpencons(det_prob_data.getIndexForCons(cons.scip_cons))
+        return result
+
+    def isVarBlockvarOfBlock(self, Variable var, int block_id):
+        """gets whether the variable is assigned to the block
+
+        :param var: variable to check if it is in the specified block
+        :type var: scip#Variable
+        :param block_id: id of block to check
+        :return: True iff the variable is assigned to the specified block
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isVarBlockvarOfBlock(det_prob_data.getIndexForVar(var.scip_var), block_id)
+        return result
+
+    def isVarLinkingvar(self, Variable var):
+        """gets whether the variable is a linking variable
+
+        :param var: variable to check if it is in a linking variable
+        :type var: scip#Variable
+        :return: True iff the variable is a linking var
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isVarLinkingvar(det_prob_data.getIndexForVar(var.scip_var))
+        return result
+
+    def isVarMastervar(self, Variable var):
+        """gets whether the variable is a master variable
+
+        :param var: variable to check if it is a master variable
+        :type var: scip#Variable
+        :return: True iff the variable is a master variable
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isVarMastervar(det_prob_data.getIndexForVar(var.scip_var))
+        return result
+
+    def isVarOpenvar(self, Variable var):
+        """gets whether the variable is an open variable
+
+        :param var: variable to check if it is an open variable
+        :type var: scip#Variable
+        :return: True iff the variable is an open variable
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isVarOpenvar(det_prob_data.getIndexForVar(var.scip_var))
+        return result
+
+    def isVarStairlinkingvar(self, Variable var):
+        """gets whether the variable is a stairlinking variable
+
+        :param var: variable to check if it is a stairlinking variable
+        :type var: scip#Variable
+        :return: True iff the variable is a stairlinking variable
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isVarStairlinkingvar(det_prob_data.getIndexForVar(var.scip_var))
+        return result
+
+    def isVarStairlinkingvarOfBlock(self, Variable var, int block_id):
+        """Checks whether the var is a stairlinkingvar of a specified block
+
+        :param var: variable to check if it is a stairlinking variable hitting the specified block
+        :type var: scip#Variable
+        :param block_id: id of block to check
+        :return: True iff the variable is a stairlinking variable of the specified block
+        """
+        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+        cdef bool result = self.thisptr.isVarStairlinkingvarOfBlock(det_prob_data.getIndexForVar(var.scip_var), block_id)
+        return result
 
     def setUsergiven(self, USERGIVEN value=COMPLETED_CONSTOMASTER):
         self.thisptr.setUsergiven(value)
@@ -610,17 +751,6 @@ cdef class PartialDecomposition:
         cdef vector[double] result = self.thisptr.getDetectorClockTimes()
         return result
 
-    def getBlockConss(PartialDecomposition self, int block):
-        """returns array containing constraints assigned to a block
-
-        :param block: id of the block the constraint indices are returned
-        :return: array containing constraints assigned to a block.
-        .. note:: This calls the corresponding `getConssForBlock()` method. For consistancy, the method was renamed in the Python API.
-        """
-        cdef int cpp_block = block
-        cdef vector[int] result = self.thisptr.getConssForBlock(cpp_block)
-        return [self.getDetprobdata().getCons(c) for c in result]
-
     # def getDetectorchain(PartialDecomposition self):
     #     """returns detector chain as vector of detector pointers
 
@@ -1010,27 +1140,6 @@ cdef class PartialDecomposition:
         cdef DETPROBDATA * result = self.thisptr.getDetprobdata()
         return DetProbData.create(result)
 
-    def getStairlinkingvars(PartialDecomposition self, int block):
-        """Gets array containing stairlinking vars,
-
-        .. note:: if a stairlinking variable links block i and i+1 it is only stored in vector of block i
-        :param block: id of the block the stairlinking variable varctor is asked for
-        :return: array containing stairlinking vars,.
-        """
-        cdef int cpp_block = block
-        # TODO implement function
-        raise NotImplementedError()
-
-    def getVarsForBlock(PartialDecomposition self, int block):
-        """Gets array containing vars of a block
-
-        :param block: id of the block the vars are requested for
-        :return: returns array containing vars of a block.
-        """
-        cdef int cpp_block = block
-        cdef vector[int] result = self.thisptr.getVarsForBlock(cpp_block)
-        return result
-
     def getVarProbindexForBlock(PartialDecomposition self, int varid, int block):
         """ Gets index in variables array of a block for a variable
 
@@ -1041,34 +1150,6 @@ cdef class PartialDecomposition:
         cdef int cpp_varid = varid
         cdef int cpp_block = block
         cdef int result = self.thisptr.getVarProbindexForBlock(cpp_varid, cpp_block)
-        return result
-
-    def isComplete(PartialDecomposition self):
-        """Gets whether this partialdec is complete, i.e. it has no more open constraints and variables
-
-        :return: True iff this partialdec is complete
-        """
-        cdef bool result = self.thisptr.isComplete()
-        return result
-
-    def isConsMastercons(PartialDecomposition self, int cons):
-        """Gets whether the cons is a master cons
-
-        :param cons: id of ccons to check if it is master constraint
-        :return: True iff the cons is a master cons.
-        """
-        cdef int cpp_cons = cons
-        cdef bool result = self.thisptr.isConsMastercons(cpp_cons)
-        return result
-
-    def isConsOpencons(PartialDecomposition self, int cons):
-        """Gets whether the cons is an open cons
-
-        :param cons: id of cons to check
-        :return: True iff the cons is an open cons.
-        """
-        cdef int cpp_cons = cons
-        cdef bool result = self.thisptr.isConsOpencons(cpp_cons)
         return result
 
     def isAssignedToOrigProb(PartialDecomposition self):
@@ -1113,82 +1194,6 @@ cdef class PartialDecomposition:
     #     """
     #     # TODO implement function
     #     raise NotImplementedError()
-
-    def isTrivial(PartialDecomposition self):
-        """Gets whether this partialdec is considered to be trivial
-
-        PARTIALDECOMP is considered trivial if all conss are in one block, all conss are in border,
-        all variables linking or mastervars, or all constraints and variables are open
-        :return: True iff this partialdec is considered to be trivial.
-        """
-        cdef bool result = self.thisptr.isTrivial()
-        return result
-
-    def isVarBlockvarOfBlock(PartialDecomposition self, int var, int block):
-        """Checks whether the var is assigned to the block
-
-        :param var: id of var to check
-        :param block: id of block to check
-        :return: True iff the var is assigned to the block.
-        """
-        cdef int cpp_var = var
-        cdef int cpp_block = block
-        cdef bool result = self.thisptr.isVarBlockvarOfBlock(cpp_var, cpp_block)
-        return result
-
-    def isVarLinkingvar(PartialDecomposition self, int var):
-        """Checks whether the var is a linking var
-
-        :param var: id of var to check
-        :return: True iff the var is a linking var.
-        """
-        cdef int cpp_var = var
-        cdef bool result = self.thisptr.isVarLinkingvar(cpp_var)
-        return result
-
-    def isVarMastervar(PartialDecomposition self, int var):
-        """Checks whether the var is a master var
-
-        :param var: id of var to check
-        :return: True iff the var is a master var.
-        """
-        cdef int cpp_var = var
-        cdef bool result = self.thisptr.isVarMastervar(cpp_var)
-        return result
-
-    def isVarOpenvar(PartialDecomposition self, int var):
-        """Checks whether the var is an open var
-
-        :param var: id of var to check
-        :return: True iff the var is an open var
-        /
-        /**.
-        """
-        cdef int cpp_var = var
-        cdef bool result = self.thisptr.isVarOpenvar(cpp_var)
-        return result
-
-    def isVarStairlinkingvar(PartialDecomposition self, int var):
-        """Checks whether the var is a stairlinking var
-
-        :param var: id of var to check
-        :return: True iff the var is a stairlinking var.
-        """
-        cdef int cpp_var = var
-        cdef bool result = self.thisptr.isVarStairlinkingvar(cpp_var)
-        return result
-
-    def isVarStairlinkingvarOfBlock(PartialDecomposition self, int var, int block):
-        """Checks whether the var is a stairlinkingvar of a specified block
-
-        :param var: id of var to check if it is a stairlinking variable hitting specified block
-        :param block: id of block to check
-        :return: True iff the var is a stairlinkingvar of a specified block.
-        """
-        cdef int cpp_var = var
-        cdef int cpp_block = block
-        cdef bool result = self.thisptr.isVarStairlinkingvarOfBlock(cpp_var, cpp_block)
-        return result
 
     # def printPartitionInformation(PartialDecomposition self, SCIP * givenscip, FILE * file):
     #     """prints partition information as described in \see cls reader
@@ -1420,58 +1425,6 @@ cdef class PartialDecomposition:
         cdef int cpp_var = var
         cdef int cpp_firstblock = firstblock
         self.thisptr.fixVarToStairlinking(cpp_var, cpp_firstblock)
-
-    def fixConsToBlockByName(PartialDecomposition self, consname, int blockid):
-        """assigns a constraint by name to a block
-
-        .. seealso:: * :meth:`fixConsToBlock`
-        :return: True iff successful.
-        """
-        c_consname = str_conversion(consname)
-        cdef int cpp_blockid = blockid
-        cdef bool result = self.thisptr.fixConsToBlockByName(c_consname, cpp_blockid)
-        return result
-
-    def fixVarToBlockByName(PartialDecomposition self, varname, int blockid):
-        """assigns a variable by name to a block
-
-        .. seealso:: * :meth:`fixVarToBlock`
-        :return: True iff successful.
-        """
-        c_varname = str_conversion(varname)
-        cdef int cpp_blockid = blockid
-        cdef bool result = self.thisptr.fixVarToBlockByName(c_varname, cpp_blockid)
-        return result
-
-    def fixConsToMasterByName(PartialDecomposition self, consname):
-        """assgins a constraint by name as master
-
-        .. seealso:: * :meth:`fixConsToMaster`
-        :return: True iff successful.
-        """
-        c_consname = str_conversion(consname)
-        cdef bool result = self.thisptr.fixConsToMasterByName(c_consname)
-        return result
-
-    def fixVarToMasterByName(PartialDecomposition self, varname):
-        """assigns a variable with given name as master
-
-        .. seealso:: * :meth:`fixVarToMaster`
-        :return: True iff successful.
-        """
-        c_varname = str_conversion(varname)
-        cdef bool result = self.thisptr.fixVarToMasterByName(c_varname)
-        return result
-
-    def fixVarToLinkingByName(PartialDecomposition self, varname):
-        """assigns a variable by name to the linking variables
-
-        .. seealso:: * :meth:`fixVarToLinking`
-        :return: True iff successful.
-        """
-        c_varname = str_conversion(varname)
-        cdef bool result = self.thisptr.fixVarToLinkingByName(c_varname)
-        return result
 
     def showVisualization(PartialDecomposition self):
         """generates and opens a gp visualization of the partialdec

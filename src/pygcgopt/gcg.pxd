@@ -274,6 +274,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         vector[int] getRepVarmap(int repid, int blockrepid) except +
         DETPROBDATA * getDetprobdata() except +
         int * getStairlinkingvars(int block) except +
+        vector[int] getStairlinkingvarsVec(int block) except +
         vector[int] getVarsForBlock(int block) except +
         int getVarProbindexForBlock(int varid, int block) except +
         bool isComplete() except +

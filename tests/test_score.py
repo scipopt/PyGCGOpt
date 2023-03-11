@@ -2,6 +2,8 @@ from pygcgopt import Model, Score
 
 import pytest
 
+import os
+
 class PyScore(Score):
     def scorecalculate(self, partialdec):
         nmasterconss = float(partialdec.getNMasterconss())
@@ -14,6 +16,8 @@ class PyScore(Score):
     "instances_bpp/N1C1W4_M.BPP.lp", "instances_bpp/N1C2W2_O.BPP.lp"
 ])
 def test_score(lp_file):
+    dirname = os.path.dirname(__file__)
+    lp_file = os.path.join(dirname, lp_file)
 
     m = Model()
 
@@ -28,4 +32,3 @@ def test_score(lp_file):
 
     for partdec in partdecs:
         assert partdec.getScore(proxyScore) == 1 - float(partdec.getNMasterconss())/float(partdec.getNConss())
-
