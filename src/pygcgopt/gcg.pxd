@@ -230,7 +230,6 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         vector[int] getMastervars() except +
         int getNCoeffsForBlock(int blockid) except +
         int getNCoeffsForMaster() except +
-        # double getScore(SCORETYPE type) except +
         unsigned int hasSetppccardMaster() except +
         unsigned int hasSetppcMaster() except +
         unsigned int hasSetppMaster() except +
