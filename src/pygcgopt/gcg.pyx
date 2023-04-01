@@ -37,7 +37,6 @@ cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
     PY_SCIP_CALL(SCIPstartClock(scip, clock))
     return clock
 
-
 cdef double stop_and_free_clock(SCIP* scip, SCIP_CLOCK* clock):
     PY_SCIP_CALL(SCIPstopClock(scip, clock))
     cdef double detection_time = SCIPgetClockTime(scip, clock)
@@ -52,6 +51,12 @@ cdef class PY_GCG_PRICINGSTATUS:
     OPTIMAL       = GCG_PRICINGSTATUS_OPTIMAL
     INFEASIBLE    = GCG_PRICINGSTATUS_INFEASIBLE
     UNBOUNDED     = GCG_PRICINGSTATUS_UNBOUNDED
+
+cdef class PY_USERGIVEN:
+    PY_NOT                    = NOT
+    PY_PARTIAL                = PARTIAL
+    PY_COMPLETE               = COMPLETE
+    PY_COMPLETED_CONSTOMASTER = COMPLETED_CONSTOMASTER
 
 cdef class PY_VAR_DECOMPINFO:
     PY_ALL     = ALL
@@ -211,7 +216,7 @@ cdef class Model(SCIPModel):
                      * :meth:`PartialDecomposition.fixConssToBlockId`
         """
         cdef bool is_presolved = self.getStage() >= SCIP_STAGE_PRESOLVED
-        cdef PARTIALDECOMP *decomp = new PARTIALDECOMP(self._scip, not is_presolved)
+        cdef PARTIALDECOMP* decomp = new PARTIALDECOMP(self._scip, not is_presolved)
         return PartialDecomposition.create(decomp)
 
     def includePricingSolver(self, PricingSolver pricingSolver, solvername, desc, priority=0, heuristicEnabled=False, exactEnabled=False):
