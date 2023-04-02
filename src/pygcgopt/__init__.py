@@ -50,3 +50,4 @@ from pygcgopt.gcg import Score
 from pygcgopt.gcg import PY_GCG_PRICINGSTATUS as GCG_PRICINGSTATUS
 from pygcgopt.gcg import PY_CONS_DECOMPINFO as CONS_DECOMPINFO
 from pygcgopt.gcg import PY_VAR_DECOMPINFO as VAR_DECOMPINFO
+from pygcgopt.gcg import PY_USERGIVEN as USERGIVEN

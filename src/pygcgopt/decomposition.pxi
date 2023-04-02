@@ -32,21 +32,6 @@ cdef class PartialDecomposition:
         new_PartialDecomposition.delete_thisptr = False
         return new_PartialDecomposition
 
-    # def __init__(PartialDecomposition self, SCIP * scip, bool originalProblem):
-    #     """Standard constructor, creates empty partialdec with unique id
-
-    #     :note: initially, all conss and vars are open.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def __init__(PartialDecomposition self, PartialDecomposition partialdecToCopy):
-    #     """copy constructor.
-
-    #     """
-    #     cdef PARTIALDECOMP * cpp_partialdecToCopy = partialdecToCopy.thisptr
-    #     self.thisptr = new PARTIALDECOMP(cpp_partialdecToCopy)
-
     def __copy__(self):
         return PartialDecomposition.create(new PARTIALDECOMP(self.thisptr))
 
@@ -627,7 +612,7 @@ cdef class PartialDecomposition:
         cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
         self.thisptr.deleteOpenvar(det_prob_data.getIndexForVar(var.scip_var))
 
-    def setUsergiven(self, PY_USERGIVEN value=PY_USERGIVEN.PY_COMPLETED_CONSTOMASTER):
+    def setUsergiven(self, USERGIVEN value=COMPLETED_CONSTOMASTER):
         self.thisptr.setUsergiven(value)
 
     def getUsergiven(self):
@@ -1075,14 +1060,310 @@ cdef class PartialDecomposition:
         cdef int cpp_detailLevel = detailLevel
         self.thisptr.displayInfo(cpp_detailLevel)
 
+    def getAncestorList(self):
+        """gets ancestor ids as vector
 
+        :return: list of ids of all ancestors id
+        """
+        cdef vector[int] result = self.thisptr.getAncestorList()
+        return result
 
+    def assignSmallestComponentsButOneConssAdjacency(self):
+        """computes components by connectedness of constraints and variables
 
+        computes components corresponding to connectedness of constraints and variables
+        and assigns them accordingly (all but one of largest components)
 
+        strategy: assigns all conss same block if they are connected
+        two constraints are adjacent if there is a common variable
 
+        .. note:: this relies on the consadjacency structure of the detprobdata
+        hence it cannot be applied in presence of linking variables.
+        """
+        self.thisptr.assignSmallestComponentsButOneConssAdjacency()
 
+    def deleteEmptyBlocks(self, bool variables):
+        """deletes empty blocks and sets nblocks accordingly
 
+        A block is considered to be empty if no constraint is assigned to it,
+        variables in blocks with no constraints become open
 
+        :param variables: if True, then blocks with no constraints but at least one variable are considered to be nonempty
+        """
+        cdef bool cpp_variables = variables
+        self.thisptr.deleteEmptyBlocks(cpp_variables)
+
+    def getTranslatedpartialdecid(self):
+        cdef int result = self.thisptr.getTranslatedpartialdecid()
+        return result
+
+    def setTranslatedpartialdecid(self, int dec_id):
+        cdef int cpp_dec_id = dec_id
+        self.thisptr.setTranslatedpartialdecid(cpp_dec_id)
+
+    def buildDecChainString(self, buffer):
+        """creates a detector chain short string for this partialdec, is built from detector chain
+
+        """
+        c_buffer = str_conversion(buffer)
+        self.thisptr.buildDecChainString(c_buffer)
+
+    def addDecChangesFromAncestor(self, PartialDecomposition ancestor):
+        """adds the statistical differences to an ancestor
+
+        incorporates the changes from ancestor partialdec into the statistical data structures
+        """
+        cdef PARTIALDECOMP* cpp_ancestor = ancestor.thisptr
+        self.thisptr.addDecChangesFromAncestor(cpp_ancestor)
+
+    def addDetectorChainInfo(PartialDecomposition self, decinfo):
+        """adds information about the detector chain
+
+        adds a detectorchain information string to the corresponding vector
+        (that carries information for each detector call)
+        """
+        c_decinfo = str_conversion(decinfo)
+        self.thisptr.addDetectorChainInfo(c_decinfo)
+
+    def getAncestorID(self, int ancestor_id):
+        """gets partialdec id of given ancestor id
+
+        :return: partialdec id of given ancestor id
+        """
+        cdef int cpp_ancestor_id = ancestor_id
+        cdef int result = self.thisptr.getAncestorID(cpp_ancestor_id)
+        return result
+
+    def copyPartitionStatistics(PartialDecomposition self, PartialDecomposition otherpartialdec):
+        """copies the given partialdec's partition statistics
+
+        :param otherpartialdec: partialdec whose partition statistics are to be copied
+        """
+        cdef PARTIALDECOMP* cpp_otherpartialdec = otherpartialdec.thisptr
+        self.thisptr.copyPartitionStatistics(cpp_otherpartialdec)
+
+    def removeAncestorID(PartialDecomposition self, int ancestor_id):
+        """removes ancestor id from list
+        """
+        cdef int cpp_ancestor_id = ancestor_id
+        self.thisptr.removeAncestorID(cpp_ancestor_id)
+
+    def addAncestorID(self, int ancestor_id):
+        """adds ancestor id to back of list
+
+        :param ancestor: id of ancestor that is to be added
+        """
+        cdef int cpp_ancestor_id = ancestor_id
+        self.thisptr.addAncestorID(cpp_ancestor_id)
+
+    def getBlocksForRep(PartialDecomposition self, int rep_id):
+        """get a vector of block ids that are identical to block with id rep_id
+
+        :param rep_id: id of the representative block
+        :return: vector of block ids that are identical to block with id rep_id
+        """
+        cdef int cpp_rep_id = rep_id
+        cdef vector[int] result = self.thisptr.getBlocksForRep(cpp_rep_id)
+        return result
+
+    def getNNewBlocksVector(self):
+        """gets number of blocks the detectors in the detectorchain added
+
+        :return: number of blocks the detectors in the detectorchain added
+        """
+        cdef vector[int] result = self.thisptr.getNNewBlocksVector()
+        return result
+
+    def getNAncestors(self):
+        """gets number of ancestor partialdecs
+
+        :return: number of ancestor partialdecs
+        """
+        cdef int result = self.thisptr.getNAncestors()
+        return result
+
+    def getNNewBlocks(self, int detectorchain_id):
+        """gets number of blocks a detector added
+
+        :return: number of blocks a detector added
+        """
+        cdef int cpp_detectorchain_id = detectorchain_id
+        cdef int result = self.thisptr.getNNewBlocks(cpp_detectorchain_id)
+        return result
+
+    def getFinishedByFinisher(self):
+        """returns True iff this partialdec was finished by finishPartialdec() method of a detector
+
+        :return: True iff this partialdec was finished by finishPartialdec() method of a detector
+        """
+        cdef bool result = self.thisptr.getFinishedByFinisher()
+        return result
+
+    def getDetectorchainInfo(self):
+        """gets the detectorchain info vector
+
+        :return: detectorchain info vector
+        """
+        cdef vector[string] result = self.thisptr.getDetectorchainInfo()
+        return result
+
+    def shouldCompletedByConsToMaster(self):
+        """checks whether this partialdec is a userpartialdec that should be completed
+
+        the completion should be done by setting unspecified constraints to master
+        :return: True iff this partialdec is a userpartialdec that should be completed
+        """
+        cdef unsigned int result = self.thisptr.shouldCompletedByConsToMaster()
+        return result
+
+    def setFinishedByFinisher(self, bool finished):
+        """sets whether this partialdec was finished by a finishing detector
+
+        :param finished: is this partialdecs finished by a finishing detector
+        """
+        cdef bool cpp_finished = finished
+        self.thisptr.setFinishedByFinisher(cpp_finished)
+
+    def calcAggregationInformation(self, bool ignoreDetectionLimits):
+        """computes if aggregation of sub problems is possible
+
+        checks if aggregation of sub problems is possible and stores the corresponding aggregation information
+
+        :param ignoreDetectionLimits: Set to True if computation should ignore detection limits
+
+        This parameter is ignored if the patched bliss version is not present.
+        """
+        cdef bool cpp_ignoreDetectionLimits = ignoreDetectionLimits
+        self.thisptr.calcAggregationInformation(cpp_ignoreDetectionLimits)
+
+    def setDetectorPropagated(self, Detector detector):
+        """sets partialdec to be propagated by a detector
+
+        :param detector: detector that is registered for this partialdec
+        """
+        cdef GCG_DETECTOR* dec = <GCG_DETECTOR*>detector
+        self.thisptr.setDetectorPropagated(dec)
+
+    def setDetectorFinished(self, Detector detector):
+        """sets detector that finished the partialdec
+
+        :param detector: detector that has finished this partialdecs
+        """
+        cdef GCG_DETECTOR* dec = <GCG_DETECTOR*>detector
+        self.thisptr.setDetectorFinished(dec)
+
+    def setDetectorFinishedOrig(self, Detector detector):
+        """sets detector that finished the partialdec in the original problem
+
+        :param detector: detector that has finished this partialdecs
+        :note: does not add the detector to the detectorchain and does not modify partition statistics
+        """
+        cdef GCG_DETECTOR* dec = <GCG_DETECTOR*>detector
+        self.thisptr.setDetectorFinishedOrig(dec)
+
+    def setPctConssToBlockVector(self, object newvector):
+        """set statistical vector of fractions of constraints set to blocks per involved detector
+
+        :param newvector: vector of fractions of constraints set to blocks per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setPctConssToBlockVector(cpp_newvector)
+
+    def setPctConssFromFreeVector(self, object newvector):
+        """set statistical vector of fractions of constraints that are not longer open per involved detector
+
+        :param newvector: vector of fractions of constraints that are not longer open per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setPctConssFromFreeVector(cpp_newvector)
+
+    def setPctConssToBorderVector(self, object newvector):
+        """set statistical vector of fractions of constraints assigned to the border per involved detector
+
+        :param newvector: vector of fractions of constraints assigned to the border per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setPctConssToBorderVector(cpp_newvector)
+
+    def setPctVarsToBorderVector(self, object newvector):
+        """set statistical vector of fraction of variables assigned to the border per involved detector
+
+        :param newvector: vector of fractions of variables assigned to the border per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setPctVarsToBorderVector(cpp_newvector)
+
+    def setPctVarsToBlockVector(self, object newvector):
+        """set statistical vector of fractions of variables assigned to a block per involved detector
+
+        :param newvector: vector of fractions of variables assigned to a block per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setPctVarsToBlockVector(cpp_newvector)
+
+    def setPctVarsFromFreeVector(self, object newvector):
+        """set statistical vector of variables that are not longer open per involved detector
+
+        :param newvector: vector of fractions of variables that are not longer open per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setPctVarsFromFreeVector(cpp_newvector)
+
+    def setDetectorClockTimes(self, object newvector):
+        """set statistical vector of the times that the detectors needed for detecting per involved detector
+
+        :param newvector: vector of the times that the detectors needed for detecting per involved detector
+        """
+        cdef vector[double] cpp_newvector = newvector
+        self.thisptr.setDetectorClockTimes(cpp_newvector)
+
+    def showVisualization(self):
+        """generates and opens a gp visualization of the partialdec
+
+        .. note:: linux only
+        """
+        self.thisptr.showVisualization()
+
+    def _repr_svg_(self):
+        return self.__generate_visualization("svg")
+
+    def _repr_png_(self):
+        return self.__generate_visualization("png")
+
+    cdef __generate_visualization(self, format="svg"):
+        format = format.lower()
+        if format not in ["svg", "png"]:
+            raise ValueError(f"Format {format} is not supported. Only \"svg\" and \"png\" are supported.")
+
+        if format not in self._visualizations:
+            with tempfile.TemporaryDirectory() as td:
+                temp_path = Path(td)
+
+                gp_filename = temp_path.joinpath("vis.gp")
+                outfile = temp_path.joinpath("vis").with_suffix(f".{format}")
+
+                c_gp_filename = str_conversion(str(gp_filename))
+                c_outfile = str_conversion(str(outfile))
+
+                if format == "svg":
+                    c_output_format = GP_OUTPUT_FORMAT_SVG
+                elif format == "png":
+                    c_output_format = GP_OUTPUT_FORMAT_PNG
+                else:
+                    c_output_format = GP_OUTPUT_FORMAT_SVG #as default output format
+
+                self.thisptr.generateVisualization(c_gp_filename, c_outfile, c_output_format)
+
+                if format == "svg":
+                    data = outfile.read_text()
+                elif format == "png":
+                    data = outfile.read_bytes()
+                self._visualizations[format] = data
+
+        return self._visualizations[format]
+
+    def __repr__(self):
+        return f"<PartialDecomposition: nBlocks={self.getNBlocks()}, nMasterConss={self.getNMasterconss()}, nMasterVars={self.getNMastervars()}, nLinkingVars={self.getNLinkingvars()}, maxForWhiteScore={self.maxForWhiteScore}>"
 
 
 
@@ -1101,47 +1382,7 @@ cdef class PartialDecomposition:
     # BEGIN AUTOGENERATED BLOCK
 
 
-    def addDecChangesFromAncestor(PartialDecomposition self, PartialDecomposition ancestor):
-        """Adds the statistical differences to an ancestor
 
-        incorporates the changes from ancestor partialdec into the statistical data structures.
-        """
-        cdef PARTIALDECOMP* cpp_ancestor = ancestor.thisptr
-        self.thisptr.addDecChangesFromAncestor(cpp_ancestor)
-
-    def addDetectorChainInfo(PartialDecomposition self, decinfo):
-        """Add information about the detector chain
-
-        adds a detectorchain information string to the corresponding vector
-        (that carries information for each detector call)
-        """
-        c_decinfo = str_conversion(decinfo)
-        self.thisptr.addDetectorChainInfo(c_decinfo)
-
-    # def assignBorderFromConstoblock(PartialDecomposition self, SCIP_HASHMAP * constoblock, int givenNBlocks):
-    #     """assigns open conss to master
-
-    #     assigns open constraints to master according to the cons assignment information given in constoblock hashmap
-    #     :return: scip return code
-    #     :note: for conss assigned to blocks according to constoblock there is no assignment \see assignPartialdecFromConstoblock
-    #     :note: master assignment is indicated by assigning cons to index additionalNBlocks
-    #     .
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def assignPartialdecFromConstoblock(PartialDecomposition self, SCIP_HASHMAP * constoblock, int additionalNBlocks):
-    #     """assigns conss structure according to given hashmap
-
-    #     adds blocks and assigns open conss to a new block or to master
-    #     according to the cons assignment information given in constoblock hashmap
-    #     :return: scip return code
-    #     \see assignPartialdecFromConstoblockVector()
-    #     :note: master assignment is indicated by assigning cons to index additionalNBlocks
-    #     .
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
 
     def assignPartialdecFromConstoblockVector(PartialDecomposition self, object constoblock, int additionalNBlocks):
         """assigns conss structure according to given vector
@@ -1158,78 +1399,6 @@ cdef class PartialDecomposition:
         # TODO implement function
         raise NotImplementedError()
 
-    def assignSmallestComponentsButOneConssAdjacency(PartialDecomposition self):
-        """computes components by connectedness of conss and vars
-
-        computes components corresponding to connectedness of conss and vars
-        and assigns them accordingly (all but one of largest components)
-
-        strategy: assigns all conss same block if they are connected
-        two constraints are adjacent if there is a common variable
-
-        .. note:: this relies on the consadjacency structure of the detprobdata
-        hence it cannot be applied in presence of linking variables.
-        """
-        self.thisptr.assignSmallestComponentsButOneConssAdjacency()
-
-    def copyPartitionStatistics(PartialDecomposition self, PartialDecomposition otherpartialdec):
-        """Copies the given partialdec's partition statistics
-
-        :param otherpartialdec: partialdec whose partition statistics are to be copied.
-        """
-        cdef PARTIALDECOMP * cpp_otherpartialdec = otherpartialdec.thisptr
-        self.thisptr.copyPartitionStatistics(cpp_otherpartialdec)
-
-    def deleteEmptyBlocks(PartialDecomposition self, bool variables):
-        """Deletes empty blocks and sets nblocks accordingly
-
-        A block is considered to be empty if no constraint is assigned to it,
-        variables in blocks with no constraints become open
-
-        :param variables: if True, then blocks with no constraints but at least one variable are considered to be nonempty.
-        """
-        cdef bool cpp_variables = variables
-        self.thisptr.deleteEmptyBlocks(cpp_variables)
-
-    # def filloutBorderFromConstoblock(PartialDecomposition self, SCIP_HASHMAP * constoblock, int givenNBlocks):
-    #     """every constraint is either assigned to master or open
-
-    #     Assignment happens according to the cons assignment information given in constoblock hashmap,
-    #     variables are set accordingly
-    #     :note: precondition: no constraint or variable is already assigned to a block
-    #     :return: scip return code.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def filloutPartialdecFromConstoblock(PartialDecomposition self, SCIP_HASHMAP * constoblock, int givenNBlocks):
-    #     """assigns all conss to master or a block
-
-    #     Assignment happens according to the cons assignment information given in constoblock hashmap
-
-    #     :return: scip return code
-    #     calculates implicit variable assignment through cons assignment
-    #     :note: precondition: no cons or var is already assigned to a block and constoblock contains information for every cons.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def getAncestorID(PartialDecomposition self, int ancestorindex):
-        """gets partialdec id of given ancestor id
-
-        :return: partialdec id of given ancestor id.
-        """
-        cdef int cpp_ancestorindex = ancestorindex
-        cdef int result = self.thisptr.getAncestorID(cpp_ancestorindex)
-        return result
-
-    def getAncestorList(PartialDecomposition self):
-        """get ancestor ids as vector
-
-        :return: vector of ids of all ancestors id.
-        """
-        cdef vector[int] result = self.thisptr.getAncestorList()
-        return result
 
     def setAncestorList(PartialDecomposition self, object newlist):
         """set ancestor list directly
@@ -1239,29 +1408,6 @@ cdef class PartialDecomposition:
         cdef vector[int] cpp_newlist = newlist
         self.thisptr.setAncestorList(cpp_newlist)
 
-    def removeAncestorID(PartialDecomposition self, int ancestorid):
-        """removes ancestor id from list.
-        """
-        cdef int cpp_ancestorid = ancestorid
-        self.thisptr.removeAncestorID(cpp_ancestorid)
-
-    def addAncestorID(PartialDecomposition self, int ancestor):
-        """adds ancestor id to back of list
-
-        :param ancestor: id of ancestor that is to be added.
-        """
-        cdef int cpp_ancestor = ancestor
-        self.thisptr.addAncestorID(cpp_ancestor)
-
-    def getBlocksForRep(PartialDecomposition self, int repid):
-        """get a vector of block ids that are identical to block with id repid
-
-        :param repid: id of the representative block
-        :return: vector of block ids that are identical to block with id repid.
-        """
-        cdef int cpp_repid = repid
-        cdef vector[int] result = self.thisptr.getBlocksForRep(cpp_repid)
-        return result
 
     def getDetectorClockTime(PartialDecomposition self, int detectorchainindex):
         """returns the time that the detector related to the given detectorchainindex needed for detecting
@@ -1288,46 +1434,6 @@ cdef class PartialDecomposition:
     #     cdef vector[GCG_DETECTOR *] result = self.thisptr.getDetectorchain()
     #     return result
 
-    def getFinishedByFinisher(PartialDecomposition self):
-        """returns True iff this partialdec was finished by finishPartialdec() method of a detector
-
-        :return: True iff this partialdec was finished by finishPartialdec() method of a detector.
-        """
-        cdef bool result = self.thisptr.getFinishedByFinisher()
-        return result
-
-    def getNAncestors(PartialDecomposition self):
-        """Gets number of ancestor partialdecs
-
-        :return: number of ancestor partialdecs.
-        """
-        cdef int result = self.thisptr.getNAncestors()
-        return result
-
-    def getDetectorchainInfo(PartialDecomposition self):
-        """Gets the detectorchain info vector
-
-        :return: detectorchain info vector.
-        """
-        cdef vector[string] result = self.thisptr.getDetectorchainInfo()
-        return result
-
-    def getNNewBlocks(PartialDecomposition self, int detectorchainindex):
-        """Gets number of blocks a detector added
-
-        :return: number of blocks a detector added.
-        """
-        cdef int cpp_detectorchainindex = detectorchainindex
-        cdef int result = self.thisptr.getNNewBlocks(cpp_detectorchainindex)
-        return result
-
-    def getNNewBlocksVector(PartialDecomposition self):
-        """gets number of blocks the detectors in the detectorchain added
-
-        :return: number of blocks the detectors in the detectorchain added.
-        """
-        cdef vector[int] result = self.thisptr.getNNewBlocksVector()
-        return result
 
     def getRepForBlock(PartialDecomposition self, int blockid):
         """Gets index of the representative block for a block, this might be blockid itself
@@ -1399,46 +1505,13 @@ cdef class PartialDecomposition:
         cdef vector[int] cpp_consclassesmaster = consclassesmaster
         self.thisptr.setConsPartitionStatistics(cpp_detectorchainindex, cpp_partition, cpp_consclassesmaster)
 
-    # def setDetectorchain(PartialDecomposition self, object givenDetectorChain):
+    #def setDetectorchain(PartialDecomposition self, object givenDetectorChain):
     #     """sets the detectorchain with the given vector of detector pointers
 
     #     :param givenDetectorChain: vector of detector pointers.
     #     """
     #     cdef vector[GCG_DETECTOR *] cpp_givenDetectorChain = givenDetectorChain
     #     self.thisptr.setDetectorchain(cpp_givenDetectorChain)
-
-    # def setDetectorPropagated(PartialDecomposition self, GCG_DETECTOR * detector):
-    #     """sets partialdec to be propagated by a detector
-
-    #     :param detector: pointer to detector that is registered for this partialdec.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def setDetectorFinished(PartialDecomposition self, GCG_DETECTOR * detector):
-    #     """sets detector that finished the partialdec
-
-    #     :param detector: pointer to detector that has finished this partialdecs.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def setDetectorFinishedOrig(PartialDecomposition self, GCG_DETECTOR * detectorID):
-    #     """sets detector that finished the partialdec in the original problem
-
-    #     :param detectorID: pointer to detector that has finished this partialdecs
-    #     :note: does not add the detector to the detectorchain and does not modify partition statistics.
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def setFinishedByFinisher(PartialDecomposition self, bool finished):
-        """sets whether this partialdec was finished by a finishing detector
-
-        :param finished: is this partialdecs finished by a finishing detector.
-        """
-        cdef bool cpp_finished = finished
-        self.thisptr.setFinishedByFinisher(cpp_finished)
 
     def setFinishedByFinisherOrig(PartialDecomposition self, bool finished):
         """sets whether this partialdec was finished by a finishing detector in the original problem (in case this partialdec was translated)
@@ -1471,175 +1544,3 @@ cdef class PartialDecomposition:
         cdef vector[int] cpp_varclasseslinking = varclasseslinking
         cdef vector[int] cpp_varclassesmaster = varclassesmaster
         self.thisptr.setVarPartitionStatistics(cpp_detectorchainindex, cpp_partition, cpp_varclasseslinking, cpp_varclassesmaster)
-
-
-
-    def showVisualization(PartialDecomposition self):
-        """generates and opens a gp visualization of the partialdec
-
-        .. note:: linux only.
-        """
-        self.thisptr.showVisualization()
-
-    # def generateVisualization(PartialDecomposition self, filename, outname, GP_OUTPUT_FORMAT outputformat):
-    #     """generates a visualization of the partialdec using gnuplot
-
-    #     :param filename: Path where to store the gp file
-    #     :param outname: Path at which gnuplot will output its result
-    #     :param outputformat: The format of the gnuplot output.
-
-    #     Should match the file extension of outname
-    #     :note: linux only, requires gnuplot
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    # def writeVisualizationFile(PartialDecomposition self, filename, outname, GP_OUTPUT_FORMAT outputformat):
-    #     """writes a gp visualization of the partialdec to a file
-
-    #     :param filename: Path where to store the gp file
-    #     :param outname: Path at which gnuplot will output its result
-    #     :param outputformat: The format of the gnuplot output.
-
-    #     Should match the file extension of outname
-    #     """
-    #     # TODO implement function
-    #     raise NotImplementedError()
-
-    def shouldCompletedByConsToMaster(PartialDecomposition self):
-        """Checks whether this partialdec is a userpartialdec that should be completed
-
-        the completion should be done by setting unspecified constraints to master
-        :return: True iff this partialdec is a userpartialdec that should be completed.
-        """
-        cdef unsigned int result = self.thisptr.shouldCompletedByConsToMaster()
-        return result
-
-    def setPctConssToBlockVector(self, object newvector):
-        """set statistical vector of fractions of constraints set to blocks per involved detector
-
-        :param newvector: vector of fractions of constraints set to blocks per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setPctConssToBlockVector(cpp_newvector)
-
-    def setPctConssFromFreeVector(self, object newvector):
-        """set statistical vector of fractions of constraints that are not longer open per involved detector
-
-        :param newvector: vector of fractions of constraints that are not longer open per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setPctConssFromFreeVector(cpp_newvector)
-
-    def setPctConssToBorderVector(self, object newvector):
-        """set statistical vector of fractions of constraints assigned to the border per involved detector
-
-        :param newvector: vector of fractions of constraints assigned to the border per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setPctConssToBorderVector(cpp_newvector)
-
-    def setPctVarsToBorderVector(self, object newvector):
-        """set statistical vector of fraction of variables assigned to the border per involved detector
-
-        :param newvector: vector of fractions of variables assigned to the border per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setPctVarsToBorderVector(cpp_newvector)
-
-    def setPctVarsToBlockVector(self, object newvector):
-        """set statistical vector of fractions of variables assigned to a block per involved detector
-
-        :param newvector: vector of fractions of variables assigned to a block per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setPctVarsToBlockVector(cpp_newvector)
-
-    def setPctVarsFromFreeVector(self, object newvector):
-        """set statistical vector of variables that are not longer open per involved detector
-
-        :param newvector: vector of fractions of variables that are not longer open per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setPctVarsFromFreeVector(cpp_newvector)
-
-    def setDetectorClockTimes(self, object newvector):
-        """set statistical vector of the times that the detectors needed for detecting per involved detector
-
-        :param newvector: vector of the times that the detectors needed for detecting per involved detector.
-        """
-        cdef vector[double] cpp_newvector = newvector
-        self.thisptr.setDetectorClockTimes(cpp_newvector)
-
-
-
-
-    def calcAggregationInformation(self, bool ignoreDetectionLimits):
-        """computes if aggregation of sub problems is possible
-
-        checks if aggregation of sub problems is possible and stores the corresponding aggregation information
-
-        :param ignoreDetectionLimits: Set to True if computation should ignore detection limits.
-
-        This parameter is ignored if the patched bliss version is not present.
-        """
-        cdef bool cpp_ignoreDetectionLimits = ignoreDetectionLimits
-        self.thisptr.calcAggregationInformation(cpp_ignoreDetectionLimits)
-
-    def getTranslatedpartialdecid(self):
-        cdef int result = self.thisptr.getTranslatedpartialdecid()
-        return result
-
-    def setTranslatedpartialdecid(self, int decid):
-        cdef int cpp_decid = decid
-        self.thisptr.setTranslatedpartialdecid(cpp_decid)
-
-    def buildDecChainString(self, buffer):
-        """creates a detector chain short string for this partialdec, is built from detector chain
-
-        """
-        c_buffer = str_conversion(buffer)
-        self.thisptr.buildDecChainString(c_buffer)
-
-    # END AUTOGENERATED BLOCK
-
-    def _repr_svg_(self):
-        return self.__generate_visualization("svg")
-
-    def _repr_png_(self):
-        return self.__generate_visualization("png")
-
-    cdef __generate_visualization(self, format="svg"):
-        format = format.lower()
-        if format not in ["svg", "png"]:
-            raise ValueError(f"Format {format} is not supported. Only \"svg\" and \"png\" are supported.")
-
-        if format not in self._visualizations:
-            with tempfile.TemporaryDirectory() as td:
-                temp_path = Path(td)
-
-                gp_filename = temp_path.joinpath("vis.gp")
-                outfile = temp_path.joinpath("vis").with_suffix(f".{format}")
-
-                c_gp_filename = str_conversion(str(gp_filename))
-                c_outfile = str_conversion(str(outfile))
-
-                if format == "svg":
-                    c_output_format = GP_OUTPUT_FORMAT_SVG
-                elif format == "png":
-                    c_output_format = GP_OUTPUT_FORMAT_PNG
-                else:
-                    c_output_format = GP_OUTPUT_FORMAT_SVG #as default output format
-
-                self.thisptr.generateVisualization(c_gp_filename, c_outfile, c_output_format)
-
-                if format == "svg":
-                    data = outfile.read_text()
-                elif format == "png":
-                    data = outfile.read_bytes()
-                self._visualizations[format] = data
-
-        return self._visualizations[format]
-
-    def __repr__(self):
-        return f"<PartialDecomposition: nBlocks={self.getNBlocks()}, nMasterConss={self.getNMasterconss()}, nMasterVars={self.getNMastervars()}, nLinkingVars={self.getNLinkingvars()}, maxForWhiteScore={self.maxForWhiteScore}>"

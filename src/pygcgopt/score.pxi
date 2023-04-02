@@ -1,7 +1,7 @@
 cdef class Score:
     """Base class of the Score Plugin"""
 
-    cdef public SCIPModel model
+    cdef public Model model
     cdef public str scorename
 
     def scorefree(self):

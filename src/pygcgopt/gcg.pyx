@@ -228,7 +228,7 @@ cdef class Model(SCIPModel):
             PyPricingSolverSolve, PyPricingSolverSolveHeur, PyPricingSolverFree, PyPricingSolverInit, PyPricingSolverExit,
             PyPricingSolverInitSol, PyPricingSolverExitSol, <GCG_SOLVERDATA*>pricingSolver))
 
-        pricingSolver.model = <SCIPModel>weakref.proxy(self)
+        pricingSolver.model = <Model>weakref.proxy(self)
         pricingSolver.solvername = solvername
         Py_INCREF(pricingSolver)
 
@@ -382,7 +382,7 @@ cdef class Model(SCIPModel):
             PyDetectorExit, PyDetectorPropagatePartialdec, PyDetectorFinishPartialdec, PyDetectorPostprocessPartialdec,
             PyDetectorSetParamAggressive, PyDetectorSetParamDefault, PyDetectorSetParamFast))
 
-        detector.model = <SCIPModel>weakref.proxy(self)
+        detector.model = <Model>weakref.proxy(self)
         detector.detectorname = detectorname
         Py_INCREF(detector)
 
@@ -401,7 +401,7 @@ cdef class Model(SCIPModel):
             self._scip, c_scorename, c_shortname, c_desc,
             <GCG_SCOREDATA*>score, PyScoreFree, PyScoreCalculate))
 
-        score.model = <SCIPModel>weakref.proxy(self)
+        score.model = <Model>weakref.proxy(self)
         score.scorename = scorename
         Py_INCREF(score)
 
