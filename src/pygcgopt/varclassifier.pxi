@@ -7,7 +7,7 @@ cdef class VarClassifier:
         '''calls destructor and frees memory of variable classifier'''
         pass
 
-    def classify(self, transformed):
+    def classify(self, detprobdata):
         return {}
 
 cdef SCIP_RETCODE PyVarClassifierFree(SCIP* scip, GCG_VARCLASSIFIER* varclassifier) with gil:
@@ -22,5 +22,9 @@ cdef SCIP_RETCODE PyVarClassifierClassify(SCIP* scip, GCG_VARCLASSIFIER* varclas
     cdef GCG_CLASSIFIERDATA* varclassifierdata
     varclassifierdata = GCGvarClassifierGetData(varclassifier)
     py_varclassifier = <VarClassifier>varclassifierdata
-    py_varclassifier.classify(transformed)
+    if transformed:
+        detprobdata = py_varclassifier.model.getDetprobdataPresolved()
+    else:
+        detprobdata = py_varclassifier.model.getDetprobdataOrig()
+    py_varclassifier.classify(detprobdata)
     return SCIP_OKAY

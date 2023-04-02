@@ -133,16 +133,16 @@ cdef class Model(SCIPModel):
     def getDetprobdataOrig(self):
         """returns the detprobdata for unpresolved problem
         """
-        cdef DETPROBDATA *detprobdata = GCGconshdlrDecompGetDetprobdataOrig(self._scip)
+        cdef DETPROBDATA* detprobdata = GCGconshdlrDecompGetDetprobdataOrig(self._scip)
         return DetProbData.create(detprobdata)
 
     def getDetprobdataPresolved(self):
         """returns the detprobdata for presolved problem
         """
-        cdef DETPROBDATA *detprobdata = GCGconshdlrDecompGetDetprobdataPresolved(self._scip)
+        cdef DETPROBDATA* detprobdata = GCGconshdlrDecompGetDetprobdataPresolved(self._scip)
         return DetProbData.create(detprobdata)
 
-    def listDecompositions(self) -> List[PartialDecomposition]:
+    def listDecompositions(self):
         """Lists all finnished decompositions found during the detection loop or provided by the user."""
         cdef int npartialdecs = GCGconshdlrDecompGetNPartialdecs(self._scip)
         cdef int* decids = <int*>malloc(npartialdecs * sizeof(int))
@@ -198,9 +198,6 @@ cdef class Model(SCIPModel):
         partialdec.prepare()
         partialdec.setUsergiven()
         GCGconshdlrDecompAddPreexisitingPartialDec(self._scip, partialdec.thisptr)
-
-    def createPartialDecomposition(self):
-        return self.createDecomposition()
 
     def createDecomposition(self):
         """Creates a new empty PartialDecomposition.
