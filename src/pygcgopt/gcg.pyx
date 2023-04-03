@@ -324,7 +324,7 @@ cdef class Model(SCIPModel):
             <GCG_CLASSIFIERDATA*>varclassifier, PyVarClassifierFree, PyVarClassifierClassify))
 
         varclassifier.model = <Model>weakref.proxy(self)
-        varclassifier.varclassifiername = varclassifiername
+        varclassifier.name = varclassifiername
         Py_INCREF(varclassifier)
 
     def getNVarClassifiers(self):

@@ -127,7 +127,6 @@ cdef class DetProbData:
         cdef double cpp_translatingtime = translatingtime
         self.thisptr.translatingtime = cpp_translatingtime
 
-
     def addConsPartition(self, ConsPart partition):
         """adds a constraint partition if it is no duplicate of an existing constraint partition
 
@@ -252,6 +251,15 @@ cdef class DetProbData:
         """
         cdef ConsPartition* result = self.thisptr.getConsPartition(partitionIndex)
         return ConsPart.create(result, <DetProbData>weakref.proxy(self))
+
+    def getConsPartitions(self):
+        """returns list to stored constraint partitions
+
+        :return: list to stored constraint partitions
+        :rtype: list
+        """
+        cdef vector[ConsPartition*] result = self.thisptr.getConsPartitions()
+        return [ConsPart.create(r, self) for r in result]
 
     def getCons(self, consIndex):
         """returns constraint related to a constraint index
