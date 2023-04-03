@@ -23,12 +23,12 @@ cdef SCIP_RETCODE PyConsClassifierClassify(SCIP* scip, GCG_CONSCLASSIFIER* consc
     consclassifierdata = GCGconsClassifierGetData(consclassifier)
     py_consclassifier = <ConsClassifier>consclassifierdata
     if transformed:
-        detprobdata = py_varclassifier.model.getDetprobdataPresolved()
+        detprobdata = py_consclassifier.model.getDetprobdataPresolved()
     else:
-        detprobdata = py_varclassifier.model.getDetprobdataOrig()
+        detprobdata = py_consclassifier.model.getDetprobdataOrig()
     conss = detprobdata.getRelevantConss()
     partition = detprobdata.createConsPart(py_consclassifier.name, 0, len(conss))
     py_consclassifier.classify(conss, partition)
     print("Consclassifier {0} yields a classification with {1} different constraint classes".format(partition.getName(), partition.getNClasses()))
-    detprobdata.addVarPartition(partition)
+    detprobdata.addConsPartition(partition)
     return SCIP_OKAY
