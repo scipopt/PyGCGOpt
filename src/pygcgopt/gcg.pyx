@@ -288,7 +288,7 @@ cdef class Model(SCIPModel):
             <GCG_CLASSIFIERDATA*>consclassifier, PyConsClassifierFree, PyConsClassifierClassify))
 
         consclassifier.model = <Model>weakref.proxy(self)
-        consclassifier.consclassifiername = consclassifiername
+        consclassifier.name = consclassifiername
         Py_INCREF(consclassifier)
 
     def getNConsClassifiers(self):
