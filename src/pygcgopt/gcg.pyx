@@ -420,8 +420,8 @@ cdef class GCGMasterModel(SCIPModel):
         :param var: Variable of master problem
         :return: List of original variables
         """
-        cdef int n_vars = GCGmasterVarGetOrigvars((<Variable>var).scip_var)
-        cdef SCIP_VAR** originalvars = GCGmasterVarGetNOrigvars((<Variable>var).scip_var)
+        cdef int n_vars = GCGmasterVarGetNOrigvars((<Variable>var).scip_var)
+        cdef SCIP_VAR** originalvars = GCGmasterVarGetOrigvars((<Variable>var).scip_var)
         return [Variable.create(originalvars[i]) for i in range(n_vars)]
 
 
