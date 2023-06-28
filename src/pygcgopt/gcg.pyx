@@ -414,6 +414,16 @@ cdef class GCGMasterModel(SCIPModel):
     def addCol(self, GCGColumn col):
         PY_SCIP_CALL(GCGpricerAddCol(self._scip, col.gcg_col))
 
+    def getOrigvars(self, var):
+        """Returns the original variables corresponding to the variable of master problem
+
+        :param var: Variable of master problem
+        :return: List of original variables
+        """
+        cdef int n_vars = GCGmasterVarGetOrigvars((<Variable>var).scip_var)
+        cdef SCIP_VAR** originalvars = GCGmasterVarGetNOrigvars((<Variable>var).scip_var)
+        return [Variable.create(originalvars[i]) for i in range(n_vars)]
+
 
 cdef class GCGColumn:
     """Base class holding a pointer to corresponding GCG_COL"""
