@@ -348,6 +348,16 @@ cdef class Model(SCIPModel):
         c_extension = str_conversion(extension)
         PY_SCIP_CALL(DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
 
+    def getMastervars(self, var):
+        """Returns the master variables corresponding to the variable of original problem
+
+        :param var: Variable of original problem
+        :return: List of master variables
+        """
+        cdef int n_vars = GCGoriginalVarGetNMastervars(var.scip_var)
+        cdef SCIP_VAR** mastervars = GCGoriginalVarGetMastervars(var.scip_var)
+        return [Variable.create(mastervars[i]) for i in range(n_vars)]
+
 
 cdef class GCGPricingModel(SCIPModel):
     @staticmethod

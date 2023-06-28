@@ -49,6 +49,11 @@ cdef extern from "gcg/gcg.h":
         GP_OUTPUT_FORMAT_PNG
         GP_OUTPUT_FORMAT_SVG
 
+    SCIP_VAR** GCGoriginalVarGetMastervars(SCIP_VAR* var)
+    int GCGoriginalVarGetNMastervars(SCIP_VAR* var)
+    SCIP_VAR** GCGmasterVarGetOrigvars(SCIP_VAR* var)
+    int GCGmasterVarGetNOrigvars(SCIP_VAR* var)
+
 
 cdef extern from "gcg/pub_gcgsepa.h":
     SCIP_RETCODE GCGsetSeparators(SCIP* scip, SCIP_PARAMSETTING paramsetting)
