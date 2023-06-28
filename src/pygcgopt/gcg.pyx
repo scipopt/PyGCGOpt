@@ -354,8 +354,8 @@ cdef class Model(SCIPModel):
         :param var: Variable of original problem
         :return: List of master variables
         """
-        cdef int n_vars = GCGoriginalVarGetNMastervars(var.scip_var)
-        cdef SCIP_VAR** mastervars = GCGoriginalVarGetMastervars(var.scip_var)
+        cdef int n_vars = GCGoriginalVarGetNMastervars((<Variable>var).scip_var)
+        cdef SCIP_VAR** mastervars = GCGoriginalVarGetMastervars((<Variable>var).scip_var)
         return [Variable.create(mastervars[i]) for i in range(n_vars)]
 
 
