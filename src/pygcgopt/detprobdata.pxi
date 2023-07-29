@@ -252,14 +252,14 @@ cdef class DetProbData:
         cdef ConsPartition* result = self.thisptr.getConsPartition(partitionIndex)
         return ConsPart.create(result, <DetProbData>weakref.proxy(self))
 
-    #def getConsPartitions(self):
+    def getConsPartitions(self):
         """returns list to stored constraint partitions
 
         :return: list to stored constraint partitions
         :rtype: list
         """
-    #    cdef vector[ConsPartition*] result = self.thisptr.getConsPartitions()
-    #    return [ConsPart.create(r, self) for r in result]
+        cdef nconsparts = self.thisptr.getNConsPartitions()
+        return [ConsPart.create(self.thisptr.getConsPartition(r), self) for r in range(nconsparts)]
 
     def getCons(self, consIndex):
         """returns constraint related to a constraint index

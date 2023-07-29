@@ -371,7 +371,6 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         void freeTemporaryData() except +
         PARTIALDECOMP* getAncestorPartialdec(int partialdecindex) except +
         ConsPartition* getConsPartition(int partitionIndex) except +
-        #vector[ConsPartition*] getConsPartitions() except +
         SCIP_CONS* getCons(int consIndex) except +
         vector[int] getConssForCons(int consIndex) except +
         vector[int] getConssForVar(int varIndex) except +
