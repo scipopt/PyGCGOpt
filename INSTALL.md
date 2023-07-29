@@ -26,7 +26,7 @@ Note that the latest PyGCGOpt version is usually only compatible with the latest
 4.0 | 1.2, 1.1 | - | - |
 3.2 | 1.0 | - | - |
 
-We recommend installing PyGCGOpt and its Python dependencies in a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html). In short, you can create a virtual environment and activate it with the following commands on Linux and macOS:
+We recommend installing PyGCGOpt and its Python dependencies in a [Python virtual environment](https://docs.python.org/3/tutorial/venv.html). In short, you can create a virtual environment and activate it with the following commands on Linux, macOS and Windows:
 ```
 python3.9 -m venv venv
 source venv/bin/activate
@@ -47,14 +47,18 @@ To install the SCIPOptSuite from source, you need to [install SCIP and GCG using
 As an example, from the root directory of the source distribution of the SCIPOptSuite, you can run the following commands to build and install locally:
 ```
 mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DSHARED=on -DCMAKE_INSTALL_PREFIX=./install -DGCG_DEV_BUILD=on -DZIMPL=OFF -DIPOPT=OFF -DPAPILO=OFF
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DSHARED=on -DCMAKE_INSTALL_PREFIX=./install -DGCG_DEV_BUILD=ON -DZIMPL=OFF -DIPOPT=OFF -DPAPILO=OFF
 make -j4 && make install
 ```
 
 If SCIP and GCG are not installed in the global path, you need to specify the install location using the environment variable `SCIPOPTDIR` before you can install PySCIPOpt and PyGCGOpt:
 
-`export SCIPOPTDIR=<path_to_install_dir>`
-
+ - On Linux and macOS:\
+   `export SCIPOPTDIR=<path_to_install_dir>`
+ - On Windows:\
+   `set SCIPOPTDIR=<path_to_install_dir>` (**cmd**, **Cmder**, **WSL**)\
+   `$Env:SCIPOPTDIR = "<path_to_install_dir>"` (**powershell**)
+  
 `SCIPOPTDIR` needs to have a subdirectory `lib` that contains the
 library, e.g. `libscip.so` and `libgcg.so` (for Linux) and a subdirectory `include` that
 contains the corresponding header files:
@@ -77,6 +81,8 @@ To make the shared libraries available at runtime for PySCIPOpt and PyGCGOpt, yo
    `export LD_LIBRARY_PATH=<path_to_install_dir>/lib`
  - On macOS:
    `export DYLD_FALLBACK_LIBRARY_PATH=<path_to_install_dir>/lib`
+ - On Windows: 
+   `set PATH=%PATH%;<path_to_install_dir>\bin`
 
 
 ## Installing PySCIPOpt from PyPI
