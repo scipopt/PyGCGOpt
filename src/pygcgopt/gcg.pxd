@@ -273,7 +273,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         vector[int] getRepVarmap(int repid, int blockrepid) except +
         DETPROBDATA * getDetprobdata() except +
         int * getStairlinkingvars(int block) except +
-        vector[int] getStairlinkingvarsVec(int block) except +
+        #vector[int] getStairlinkingvarsVec(int block) except +
         vector[int] getVarsForBlock(int block) except +
         int getVarProbindexForBlock(int varid, int block) except +
         bool isComplete() except +
@@ -371,7 +371,7 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         void freeTemporaryData() except +
         PARTIALDECOMP* getAncestorPartialdec(int partialdecindex) except +
         ConsPartition* getConsPartition(int partitionIndex) except +
-        vector[ConsPartition*] getConsPartitions() except +
+        #vector[ConsPartition*] getConsPartitions() except +
         SCIP_CONS* getCons(int consIndex) except +
         vector[int] getConssForCons(int consIndex) except +
         vector[int] getConssForVar(int varIndex) except +

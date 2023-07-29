@@ -368,7 +368,7 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNStairlinkingvars(block_id)
         return result
 
-    def getStairlinkingvars(self, int block_id):
+    #def getStairlinkingvars(self, int block_id):
         """gets a list of variables that are assigned to stairlinking variables of the specified block
 
         :param block_id: id of the block the stairlinking variables is asked for
@@ -376,9 +376,9 @@ cdef class PartialDecomposition:
 
         .. note:: if a stairlinking variable links block i and i+1 it is only stored in vector of block i
         """
-        cdef vector[int] result = self.thisptr.getStairlinkingvarsVec(block_id)
-        cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
-        return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
+    #    cdef vector[int] result = self.thisptr.getStairlinkingvarsVec(block_id)
+    #    cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
+    #    return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
 
     def getConssForBlock(self, int block_id):
         """gets a list of constraints that are assigned to the specified block
