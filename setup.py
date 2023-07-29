@@ -19,9 +19,6 @@ for optdir in set([scipoptdir, gcgoptdir]):
         # assume that SCIP is installed on the system
         includedirs.append(os.path.abspath(os.path.join(optdir, 'include')))
 
-# Current release of GCG has broken folder structure when installed. All GCG sources *should* be in a `gcg` subfolder in the sources. Until this is fixed, we need to include the `gcg` folder so that imports work.
-if os.path.exists(os.path.join(gcgoptdir, 'include')) and not os.path.exists(os.path.join(gcgoptdir, 'include', 'graph')):
-    includedirs.append(os.path.abspath(os.path.join(gcgoptdir, 'include', 'gcg')))
 if not gcgoptdir:
     if platform.system() == 'Linux':
         includedirs.append("/usr/include/gcg")
@@ -32,21 +29,27 @@ print('Using include path <%s>.' % ", ".join(includedirs))
 
 
 # determine scip library
-if os.path.exists(os.path.join(scipoptdir, 'lib/shared/libscipsolver.so')):
+if os.path.exists(os.path.join(scipoptdir, "lib", "shared", "libscip.so")):
     # SCIP seems to be created with make
-    sciplibdir = os.path.abspath(os.path.join(scipoptdir, 'lib/shared'))
-    sciplibname = 'scipsolver'
-    extra_compile_args.append('-DNO_CONFIG_HEADER')
+    sciplibdir = os.path.abspath(os.path.join(scipoptdir, "lib", "shared"))
+    sciplibname = "scip"
+    extra_compile_args.append("-DNO_CONFIG_HEADER")
+    # the following is a temporary hack to make it compile with SCIP/make:
+    extra_compile_args.append("-DTPI_NONE")  # if other TPIs are used, please modify
 else:
     # assume that SCIP is installed on the system
-    sciplibdir = os.path.abspath(os.path.join(scipoptdir, 'lib'))
-    sciplibname = 'scip'
-    if platform.system() in ['Windows']:
-        sciplibname = 'libscip'
+    sciplibdir = os.path.abspath(os.path.join(scipoptdir, "lib"))
+    sciplibname = "libscip" if platform.system() in ["Windows"] else "scip"
 
-# setup gcg library
-gcglibdir = os.path.abspath(os.path.join(gcgoptdir, "lib"))
-gcglibname = "gcg"
+# determine gcg library
+if os.path.exists(os.path.join(gcgoptdir, "lib", "shared", "libgcg.so")):
+    # SCIP seems to be created with make
+    gcglibdir = os.path.abspath(os.path.join(gcgoptdir, "lib", "shared"))
+    gcglibname = "gcg"
+else:
+    # assume that SCIP is installed on the system
+    gcglibdir = os.path.abspath(os.path.join(gcgoptdir, "lib"))
+    gcglibname = "libgcg" if platform.system() in ["Windows"] else "gcg"
 
 print('Using SCIP library <%s> at <%s>.' % (sciplibname, sciplibdir))
 print('Using GCG library <%s> at <%s>.' % (gcglibname, gcglibdir))
