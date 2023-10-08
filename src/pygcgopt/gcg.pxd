@@ -11,15 +11,20 @@ cdef extern from "limits.h":
 
 
 cdef extern from "gcg/gcg.h":
-    void GCGprintVersion(SCIP* scip, FILE* file)
-    SCIP_RETCODE GCGprintStatistics(SCIP* scip, FILE* file)
+    void GCGprintVersion(GCG* gcg, FILE* file)
+    SCIP* GCGgetOrigProb(GCG* gcg)
+    SCIP_RETCODE GCGprintStatistics(GCG* gcg, FILE* file)
     SCIP_RETCODE GCGtransformProb(SCIP* scip)
-    SCIP_RETCODE GCGpresolve(SCIP* scip)
-    SCIP_RETCODE GCGdetect(SCIP* scip)
-    SCIP_RETCODE GCGsolve(SCIP* scip)
+    SCIP_RETCODE GCGpresolve(GCG* gcg)
+    SCIP_RETCODE GCGdetect(GCG* gcg)
+    SCIP_RETCODE GCGsolve(GCG* gcg)
     SCIP_Bool GCGdetectionTookPlace(SCIP* scip, SCIP_Bool original)
-
+    SCIP_RETCODE GCGcreate(GCG** gcg)
     SCIP_Real GCGgetDualbound(SCIP* scip)
+    SCIP* GCGgetMasterProb(GCG* gcg)
+
+    ctypedef struct GCG:
+        pass
 
     ctypedef struct GCG_DETECTORDATA:
         pass
@@ -40,54 +45,49 @@ cdef extern from "gcg/gcg.h":
         int nnewpartialdecs
         double detectiontime
 
-    SCIP_RETCODE GCGincludeDetector(SCIP* scip, const char* name, const char decchar, const char* description, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, int priority, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, GCG_DETECTORDATA *detectordata, SCIP_RETCODE (*freeDetector) (SCIP* scip, GCG_DETECTOR* detector), SCIP_RETCODE (*initDetector) (SCIP* scip, GCG_DETECTOR* detector), SCIP_RETCODE (*exitDetector) (SCIP* scip, GCG_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result))
-
+    SCIP_RETCODE GCGincludeDetector(GCG* gcg, const char* name, char decchar, const char* desc, int priority, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, SCIP_Bool overruleemphasis, SCIP_RETCODE (*detectorfree) (GCG* gcg, GCG_DETECTOR* detector), SCIP_RETCODE (*detectorinit) (GCG* gcg, GCG_DETECTOR* detector), SCIP_RETCODE (*detectorexit) (GCG* gcg, GCG_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdec) (GCG* gcg, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdec) (GCG* gcg, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdec) (GCG* gcg, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressive) (GCG* gcg, GCG_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefault) (GCG* gcg, GCG_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFast) (GCG* gcg, GCG_DETECTOR* detector, SCIP_RESULT* result), GCG_DETECTORDATA* detectordata)
     GCG_DETECTORDATA* GCGdetectorGetData(GCG_DETECTOR* detector)
-
-    GCG_DETECTOR** GCGconshdlrDecompGetDetectors(SCIP* scip)
-    int GCGconshdlrDecompGetNDetectors(SCIP* scip)
+    GCG_DETECTOR** GCGgetDetectors(GCG* gcg)
+    int GCGgetNDetectors(GCG* gcg)
     const char* GCGdetectorGetName(GCG_DETECTOR* detector)
 
-    SCIP* GCGgetMasterprob(SCIP* scip)
-
     #ConsClassifier
-    ctypedef struct GCG_CLASSIFIERDATA:
+    ctypedef struct GCG_CLSCONSDATA:
         pass
 
-    ctypedef struct GCG_CONSCLASSIFIER:
+    ctypedef struct GCG_CLSCONS:
         pass
 
-    SCIP_RETCODE GCGincludeConsClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, GCG_CLASSIFIERDATA *classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, GCG_CONSCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, GCG_CONSCLASSIFIER* classifierpointer, SCIP_Bool transformed))
-
-    GCG_CLASSIFIERDATA* GCGconsClassifierGetData(GCG_CONSCLASSIFIER* classifier)
-
-    GCG_CONSCLASSIFIER** GCGconshdlrDecompGetConsClassifiers(SCIP* scip)
-    int GCGconshdlrDecompGetNConsClassifiers(SCIP* scip)
-    const char* GCGconsClassifierGetName(GCG_CONSCLASSIFIER* classifier)
+    SCIP_RETCODE GCGincludeClscons(GCG* gcg, const char* name, const char* desc, int priority, SCIP_Bool enabled, SCIP_RETCODE (*clsconsfree) (GCG* gcg, GCG_CLSCONS* clscons), SCIP_RETCODE (*clsconsclassify) (GCG* gcg, GCG_CLSCONS* clscons, SCIP_Bool transformed), GCG_CLSCONSDATA* clsdata)
+    GCG_CLSCONSDATA* GCGclsconsGetData(GCG_CLSCONS* classifier)
+    GCG_CLSCONS** GCGgetClsconss(GCG* gcg)
+    int GCGgetNClsconss(GCG* gcg)
+    const char* GCGclsconsGetName(GCG_CLSCONS* classifier)
 
     #VarClassifier
-    ctypedef struct GCG_VARCLASSIFIER:
+    ctypedef struct GCG_CLSVARDATA:
         pass
 
-    SCIP_RETCODE GCGincludeVarClassifier(SCIP* scip, const char* name, const char* description, int priority, SCIP_Bool enabled, GCG_CLASSIFIERDATA* classifierdata, SCIP_RETCODE (*freeClassifier) (SCIP* scip, GCG_VARCLASSIFIER* classifier), SCIP_RETCODE (*classify) (SCIP* scip, GCG_VARCLASSIFIER* classifierpointer, SCIP_Bool transformed))
+    ctypedef struct GCG_CLSVAR:
+        pass
 
-    GCG_CLASSIFIERDATA* GCGvarClassifierGetData(GCG_VARCLASSIFIER* classifier)
-
-    int GCGconshdlrDecompGetNVarClassifiers(SCIP* scip)
-    GCG_VARCLASSIFIER** GCGconshdlrDecompGetVarClassifiers(SCIP* scip)
-    const char* GCGvarClassifierGetName(GCG_VARCLASSIFIER* classifier)
+    SCIP_RETCODE GCGincludeClsvar(GCG* gcg, const char* name, const char* desc, int priority, SCIP_Bool enabled, SCIP_RETCODE (*clsvarfree) (GCG* gcg, GCG_CLSVAR* clsvar), SCIP_RETCODE (*clsvarclassify) (GCG* gcg, GCG_CLSVAR* clsvar, SCIP_Bool transformed), GCG_CLSVARDATA* clsdata)
+    GCG_CLSVARDATA* GCGclsvarGetData(GCG_CLSVAR* classifier)
+    GCG_CLSVAR** GCGgetClsvars(GCG* gcg)
+    int GCGgetNClsvars(GCG* gcg)
+    const char* GCGclsvarGetName(GCG_CLSVAR* classifier)
 
     ctypedef enum GP_OUTPUT_FORMAT:
         GP_OUTPUT_FORMAT_PDF
         GP_OUTPUT_FORMAT_PNG
         GP_OUTPUT_FORMAT_SVG
 
-    SCIP_RETCODE GCGincludeScore(SCIP* scip, const char* name, const char* shortname,const char* description, GCG_SCOREDATA* scoredata, SCIP_RETCODE (*scorefree) (SCIP* scip, GCG_SCORE* score), SCIP_RETCODE (*scorecalc) (SCIP* scip, GCG_SCORE* score, int partialdecid, SCIP_Real* scorevalue))
+    SCIP_RETCODE GCGincludeScore(GCG* gcg, const char* name, const char* shortname, const char* description, SCIP_RETCODE (*scorefree) (GCG* gcg, GCG_SCORE* score), SCIP_RETCODE (*scorecalc) (GCG* gcg, GCG_SCORE* score, int partialdecid, SCIP_Real* scorevalue), GCG_SCOREDATA* scoredata)
     GCG_SCOREDATA* GCGscoreGetData(GCG_SCORE* score)
-    int GCGgetNScores(SCIP* scip)
-    GCG_SCORE** GCGgetScores(SCIP* scip)
+    int GCGgetNScores(GCG* gcg)
+    GCG_SCORE** GCGgetScores(GCG* gcg)
     const char* GCGscoreGetName(GCG_SCORE* score)
-    GCG_SCORE* GCGfindScore(SCIP* scip, const char* name)
+    GCG_SCORE* GCGfindScore(GCG* gcg, const char* name)
 
 
 cdef extern from "gcg/pub_gcgsepa.h":
@@ -95,7 +95,7 @@ cdef extern from "gcg/pub_gcgsepa.h":
 
 
 cdef extern from "gcg/gcgplugins.h":
-    SCIP_RETCODE SCIPincludeGcgPlugins(SCIP* scip)
+    SCIP_RETCODE GCGincludeDefaultPlugins(GCG* gcg)
 
 cdef extern from "gcg/pricer_gcg.h":
     ctypedef struct GCG_SOLVER:
@@ -112,25 +112,9 @@ cdef extern from "gcg/pricer_gcg.h":
         GCG_PRICINGSTATUS_INFEASIBLE     = 4
         GCG_PRICINGSTATUS_UNBOUNDED      = 5
 
-    SCIP_RETCODE GCGpricerIncludeSolver(
-        SCIP* scip,
-        const char* name,
-        const char* desc,
-        int priority,
-        SCIP_Bool heurenabled,
-        SCIP_Bool exactenabled,
-        SCIP_RETCODE (*solverupdate) (SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged),
-        SCIP_RETCODE (*solversolve) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status),
-        SCIP_RETCODE (*solveheur) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status),
-        SCIP_RETCODE (*solverfree) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverinit) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverexit) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverinitsol) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverexitsol) (SCIP* scip, GCG_SOLVER* solver),
-        GCG_SOLVERDATA*       solverdata
-    )
-    GCG_SOLVER** GCGpricerGetSolvers(SCIP* scip)
-    int GCGpricerGetNSolvers(SCIP* scip)
+    SCIP_RETCODE GCGincludeSolver(GCG* gcg, const char* name, const char* desc, int priority, SCIP_Bool heurenabled, SCIP_Bool exactenabled, SCIP_RETCODE (*solverupdate) (GCG* gcg, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged), SCIP_RETCODE (*solversolve) (GCG* gcg, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status), SCIP_RETCODE (*solveheur) (GCG* gcg, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status), SCIP_RETCODE (*solverfree) (GCG* gcg, GCG_SOLVER* solver), SCIP_RETCODE (*solverinit) (GCG* gcg, GCG_SOLVER* solver), SCIP_RETCODE (*solverexit) (GCG* gcg, GCG_SOLVER* solver), SCIP_RETCODE (*solverinitsol) (GCG* gcg, GCG_SOLVER* solver), SCIP_RETCODE (*solverexitsol) (GCG* gcg, GCG_SOLVER* solver), GCG_SOLVERDATA* solverdata)
+    GCG_SOLVER** GCGgetSolvers(GCG* gcg)
+    int GCGgetNSolvers(GCG* gcg)
     SCIP_RETCODE GCGpricerAddCol(SCIP* scip, GCG_COL* col)
     const char* GCGsolverGetName(GCG_SOLVER* solver)
 
@@ -174,7 +158,7 @@ cdef extern from "gcg/class_partialdecomp.h" namespace "gcg":
         COMPLETED_CONSTOMASTER
 
     cdef cppclass PARTIALDECOMP:
-        PARTIALDECOMP(SCIP * scip, bool originalProblem)
+        PARTIALDECOMP(GCG* gcg, bool originalProblem)
         PARTIALDECOMP(PARTIALDECOMP * partialdecToCopy)
         int addBlock() except +
         void addClockTime(double clocktime) except +
@@ -356,7 +340,8 @@ cdef extern from "gcg/class_detprobdata.h" namespace "gcg":
         double nblockscandidatescalctime
         double postprocessingtime
         double translatingtime
-        DETPROBDATA(SCIP* scip, SCIP_Bool _originalProblem)
+        DETPROBDATA(GCG* gcg, SCIP_Bool _originalProblem)
+        GCG* getGCG() except +
         void addConsPartition(ConsPartition* partition) except +
         void addCandidatesNBlocksNVotes(int candidate, int nvotes) except +
         void addPartialdecToAncestor(PARTIALDECOMP* partialdec) except +
@@ -431,7 +416,7 @@ cdef extern from "gcg/class_conspartition.h" namespace "gcg":
         void setClassName(int classindex, const char* name) except +
 
         # constructors and methods of class ConsPartition
-        ConsPartition(SCIP* scip, const char* name, int nClasses, int nConss) except +
+        ConsPartition(GCG* gcg, const char* name, int nClasses, int nConss) except +
         ConsPartition(ConsPartition * toCopy) except +
         int addClass(const char* name, const char* desc, CONS_DECOMPINFO decompInfo) except +
         void assignConsToClass(int consindex, int classindex) except +
@@ -465,7 +450,7 @@ cdef extern from "gcg/class_varpartition.h" namespace "gcg":
         void setClassName(int classindex, const char* name) except +
 
         # constructors and methods of class VarPartition
-        VarPartition(SCIP* scip, const char* name, int nClasses, int nVars) except +
+        VarPartition(GCG* gcg, const char* name, int nClasses, int nVars) except +
         VarPartition(VarPartition * toCopy) except +
         int addClass(const char* name, const char* desc, VAR_DECOMPINFO decompInfo) except +
         void assignVarToClass(int varindex, int classindex) except +

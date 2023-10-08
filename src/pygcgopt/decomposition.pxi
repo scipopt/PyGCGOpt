@@ -797,7 +797,7 @@ cdef class PartialDecomposition:
         :param score: score for which the value should be returned
         :return: value of score
         """
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion(score.scorename)))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGCG(), str_conversion(score.scorename)))
 
     def calcStairlinkingVars(self):
         """reassigns linking variables to stairlinkingvars if possible

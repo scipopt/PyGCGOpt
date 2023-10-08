@@ -21,9 +21,9 @@ cdef class DetProbData:
         :return: constraint partition object
         :rtype: :class:`ConsPart`
         """
-        cdef SCIP* scip = self.thisptr.getScip()
+        cdef GCG* gcg = self.thisptr.getGCG()
         c_name = str_conversion(name)
-        cdef ConsPartition* conspatitionptr = new ConsPartition(scip, c_name, nclasses, ncons)
+        cdef ConsPartition* conspatitionptr = new ConsPartition(gcg, c_name, nclasses, ncons)
         return ConsPart.create(conspatitionptr, self)
 
     def createVarPart(self, name, nclasses, nvars):
@@ -38,9 +38,9 @@ cdef class DetProbData:
         :return: variable partition object
         :rtype: :class:`VarPart`
         """
-        cdef SCIP* scip = self.thisptr.getScip()
+        cdef GCG* gcg = self.thisptr.getGCG()
         c_name = str_conversion(name)
-        cdef VarPartition* varpatitionptr = new VarPartition(scip, c_name, nclasses, nvars)
+        cdef VarPartition* varpatitionptr = new VarPartition(gcg, c_name, nclasses, nvars)
         return VarPart.create(varpatitionptr, self)
         
     def candidatesNBlocks(self):
