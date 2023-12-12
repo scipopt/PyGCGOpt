@@ -1,3 +1,4 @@
 build==0.7.0
 Cython==0.29.35
 wheel==0.40.0
+pyscipopt==4.4.0

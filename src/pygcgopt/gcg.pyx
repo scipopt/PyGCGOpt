@@ -2,7 +2,7 @@
 
 from pyscipopt.scip import PY_SCIP_CALL
 from pyscipopt.scip cimport Model as SCIPModel
-from pyscipopt.scip cimport Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData, SCIPgetBestSol
+from pyscipopt.scip cimport Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIPvarSetData, SCIPgetBestSol
 
 from cpython cimport Py_INCREF, Py_DECREF
 

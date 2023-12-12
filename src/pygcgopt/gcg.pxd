@@ -1,16 +1,35 @@
-from pyscipopt.scip cimport SCIP, SCIP_RETCODE, SCIP_RESULT, SCIP_Bool, SCIP_Real, FILE, SCIP_CONS, SCIP_VAR, SCIP_PARAMSETTING, SCIP_SOL
+from pyscipopt.scip cimport SCIP, SCIP_RESULT, SCIP_Bool, SCIP_Real, FILE, SCIP_CONS, SCIP_VAR, SCIP_PARAMSETTING, SCIP_SOL
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.pair cimport pair
 
-
 cdef extern from "limits.h":
     cdef int INT_MAX
 
 
 cdef extern from "gcg/gcg.h":
+    ctypedef enum SCIP_RETCODE:
+        SCIP_OKAY               =   1
+        SCIP_ERROR              =   0
+        SCIP_NOMEMORY           =  -1
+        SCIP_READERROR          =  -2
+        SCIP_WRITEERROR         =  -3
+        SCIP_NOFILE             =  -4
+        SCIP_FILECREATEERROR    =  -5
+        SCIP_LPERROR            =  -6
+        SCIP_NOPROBLEM          =  -7
+        SCIP_INVALIDCALL        =  -8
+        SCIP_INVALIDDATA        =  -9
+        SCIP_INVALIDRESULT      = -10
+        SCIP_PLUGINNOTFOUND     = -11
+        SCIP_PARAMETERUNKNOWN   = -12
+        SCIP_PARAMETERWRONGTYPE = -13
+        SCIP_PARAMETERWRONGVAL  = -14
+        SCIP_KEYALREADYEXISTING = -15
+        SCIP_MAXDEPTHLEVEL      = -16
+
     void GCGprintVersion(SCIP* scip, FILE* file)
     SCIP_RETCODE GCGprintStatistics(SCIP* scip, FILE* file)
     SCIP_RETCODE GCGtransformProb(SCIP* scip)
