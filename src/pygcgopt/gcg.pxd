@@ -53,7 +53,33 @@ cdef extern from "gcg/gcg.h":
         int nnewpartialdecs
         double detectiontime
 
-    SCIP_RETCODE DECincludeDetector(SCIP* scip, const char* name, const char decchar, const char* description, int freqCallRound, int maxCallRound, int minCallRound, int freqCallRoundOriginal, int maxCallRoundOriginal, int minCallRoundOriginal, int priority, SCIP_Bool enabled, SCIP_Bool enabledFinishing, SCIP_Bool enabledPostprocessing, SCIP_Bool skip, SCIP_Bool usefulRecall, DEC_DETECTORDATA *detectordata, SCIP_RETCODE (*freeDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*initDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*exitDetector) (SCIP* scip, DEC_DETECTOR* detector), SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result), SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result), SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result))
+    SCIP_RETCODE DECincludeDetector(
+        SCIP* scip, const char* name, 
+        const char decchar, 
+        const char* description, 
+        int freqCallRound, 
+        int maxCallRound, 
+        int minCallRound, 
+        int freqCallRoundOriginal, 
+        int maxCallRoundOriginal, 
+        int minCallRoundOriginal, 
+        int priority, 
+        SCIP_Bool enabled, 
+        SCIP_Bool enabledFinishing, 
+        SCIP_Bool enabledPostprocessing, 
+        SCIP_Bool skip, 
+        SCIP_Bool usefulRecall, 
+        DEC_DETECTORDATA *detectordata, 
+        SCIP_RETCODE (*freeDetector) (SCIP* scip, DEC_DETECTOR* detector) noexcept, 
+        SCIP_RETCODE (*initDetector) (SCIP* scip, DEC_DETECTOR* detector) noexcept, 
+        SCIP_RETCODE (*exitDetector) (SCIP* scip, DEC_DETECTOR* detector) noexcept, 
+        SCIP_RETCODE (*propagatePartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) noexcept, 
+        SCIP_RETCODE (*finishPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) noexcept, 
+        SCIP_RETCODE (*postprocessPartialdecDetector) (SCIP* scip, DEC_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) noexcept, 
+        SCIP_RETCODE (*setParamAggressiveDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result) noexcept, 
+        SCIP_RETCODE (*setParamDefaultDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result) noexcept, 
+        SCIP_RETCODE (*setParamFastDetector) (SCIP* scip, DEC_DETECTOR* detector, SCIP_RESULT* result) noexcept
+    )
 
     DEC_DETECTORDATA* DECdetectorGetData(DEC_DETECTOR* detector)
 
@@ -103,14 +129,14 @@ cdef extern from "gcg/pricer_gcg.h":
         int priority,
         SCIP_Bool heurenabled,
         SCIP_Bool exactenabled,
-        SCIP_RETCODE (*solverupdate) (SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged),
-        SCIP_RETCODE (*solversolve) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status),
-        SCIP_RETCODE (*solveheur) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status),
-        SCIP_RETCODE (*solverfree) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverinit) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverexit) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverinitsol) (SCIP* scip, GCG_SOLVER* solver),
-        SCIP_RETCODE (*solverexitsol) (SCIP* scip, GCG_SOLVER* solver),
+        SCIP_RETCODE (*solverupdate) (SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged) noexcept,
+        SCIP_RETCODE (*solversolve) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) noexcept,
+        SCIP_RETCODE (*solveheur) (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) noexcept,
+        SCIP_RETCODE (*solverfree) (SCIP* scip, GCG_SOLVER* solver) noexcept,
+        SCIP_RETCODE (*solverinit) (SCIP* scip, GCG_SOLVER* solver) noexcept,
+        SCIP_RETCODE (*solverexit) (SCIP* scip, GCG_SOLVER* solver) noexcept,
+        SCIP_RETCODE (*solverinitsol) (SCIP* scip, GCG_SOLVER* solver) noexcept,
+        SCIP_RETCODE (*solverexitsol) (SCIP* scip, GCG_SOLVER* solver) noexcept,
         GCG_SOLVERDATA*       solverdata
     )
     GCG_SOLVER** GCGpricerGetSolvers(SCIP* scip)
