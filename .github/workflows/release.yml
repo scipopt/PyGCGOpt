@@ -32,11 +32,6 @@ jobs:
       - name: Prepare Python Environment
         run: |
           pip install -r requirements.txt
-
-      - name: Setup PySCIPOpt
-        uses: ./.github/actions/setup-pyscipopt-action
-        with:
-          ref: master
       
       - name: Build PyGCGOpt
         run: |
