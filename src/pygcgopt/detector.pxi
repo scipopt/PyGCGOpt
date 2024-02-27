@@ -75,23 +75,23 @@ cdef wrap_detector_callback_result(Detector detector, PARTIALDEC_DETECTION_DATA*
     result[0] = result_dict.get("result", <SCIP_RESULT>result[0])
 
 
-cdef SCIP_RETCODE PyDetectorFree (SCIP* scip, GCG_DETECTOR* detector) with gil:
+cdef SCIP_RETCODE PyDetectorFree (SCIP* scip, GCG_DETECTOR* detector) noexcept with gil:
     py_detector = get_py_detector(detector)
     py_detector.freeDetector()
     Py_DECREF(py_detector)
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorInit (SCIP* scip, GCG_DETECTOR* detector) with gil:
+cdef SCIP_RETCODE PyDetectorInit (SCIP* scip, GCG_DETECTOR* detector) noexcept with gil:
     py_detector = get_py_detector(detector)
     py_detector.initDetector()
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorExit (SCIP* scip, GCG_DETECTOR* detector) with gil:
+cdef SCIP_RETCODE PyDetectorExit (SCIP* scip, GCG_DETECTOR* detector) noexcept with gil:
     py_detector = get_py_detector(detector)
     py_detector.exitDetector()
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorPropagatePartialdec (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) with gil:
+cdef SCIP_RETCODE PyDetectorPropagatePartialdec (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) noexcept with gil:
     cdef SCIP_CLOCK* clock = start_new_clock(scip)
 
     py_detector = get_py_detector(detector)
@@ -104,7 +104,7 @@ cdef SCIP_RETCODE PyDetectorPropagatePartialdec (SCIP* scip, GCG_DETECTOR* detec
 
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorFinishPartialdec (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) with gil:
+cdef SCIP_RETCODE PyDetectorFinishPartialdec (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) noexcept with gil:
     cdef SCIP_CLOCK* clock = start_new_clock(scip)
 
     py_detector = get_py_detector(detector)
@@ -117,7 +117,7 @@ cdef SCIP_RETCODE PyDetectorFinishPartialdec (SCIP* scip, GCG_DETECTOR* detector
 
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorPostprocessPartialdec (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) with gil:
+cdef SCIP_RETCODE PyDetectorPostprocessPartialdec (SCIP* scip, GCG_DETECTOR* detector, PARTIALDEC_DETECTION_DATA* partialdecdetectiondata, SCIP_RESULT* result) noexcept with gil:
     cdef SCIP_CLOCK* clock = start_new_clock(scip)
 
     py_detector = get_py_detector(detector)
@@ -130,19 +130,19 @@ cdef SCIP_RETCODE PyDetectorPostprocessPartialdec (SCIP* scip, GCG_DETECTOR* det
 
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorSetParamAggressive (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result) with gil:
+cdef SCIP_RETCODE PyDetectorSetParamAggressive (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result) noexcept with gil:
     py_detector = get_py_detector(detector)
     result_dict = py_detector.setParamAggressive() or {}
     result[0] = result_dict.get("result", <SCIP_RESULT>result[0])
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorSetParamDefault (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result) with gil:
+cdef SCIP_RETCODE PyDetectorSetParamDefault (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result) noexcept with gil:
     py_detector = get_py_detector(detector)
     result_dict = py_detector.setParamDefault() or {}
     result[0] = result_dict.get("result", <SCIP_RESULT>result[0])
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyDetectorSetParamFast (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result) with gil:
+cdef SCIP_RETCODE PyDetectorSetParamFast (SCIP* scip, GCG_DETECTOR* detector, SCIP_RESULT* result) noexcept with gil:
     py_detector = get_py_detector(detector)
     result_dict = py_detector.setParamFast() or {}
     result[0] = result_dict.get("result", <SCIP_RESULT>result[0])

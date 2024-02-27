@@ -6,6 +6,9 @@
 ### Changed
 ### Removed
 
+## v0.5.0
+### Added
+
 ## v0.3.1
 ### Update
 * support cython 3.0.0

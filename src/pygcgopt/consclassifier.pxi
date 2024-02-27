@@ -10,7 +10,7 @@ cdef class ConsClassifier:
     def classify(self, conss, partition):
         pass
 
-cdef SCIP_RETCODE PyConsClassifierFree(SCIP* scip, GCG_CONSCLASSIFIER* consclassifier) with gil:
+cdef SCIP_RETCODE PyConsClassifierFree(SCIP* scip, GCG_CONSCLASSIFIER* consclassifier) noexcept with gil:
     cdef GCG_CLASSIFIERDATA* consclassifierdata
     consclassifierdata = GCGconsClassifierGetData(consclassifier)
     py_consclassifier = <ConsClassifier>consclassifierdata
@@ -18,7 +18,7 @@ cdef SCIP_RETCODE PyConsClassifierFree(SCIP* scip, GCG_CONSCLASSIFIER* consclass
     Py_DECREF(py_consclassifier)
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyConsClassifierClassify(SCIP* scip, GCG_CONSCLASSIFIER* consclassifier, SCIP_Bool transformed) with gil:
+cdef SCIP_RETCODE PyConsClassifierClassify(SCIP* scip, GCG_CONSCLASSIFIER* consclassifier, SCIP_Bool transformed) noexcept with gil:
     cdef GCG_CLASSIFIERDATA* consclassifierdata
     consclassifierdata = GCGconsClassifierGetData(consclassifier)
     py_consclassifier = <ConsClassifier>consclassifierdata
