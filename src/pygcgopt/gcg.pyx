@@ -2,7 +2,7 @@
 
 from pyscipopt.scip import PY_SCIP_CALL
 from pyscipopt.scip cimport Model as SCIPModel
-from pyscipopt.scip cimport Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIP_OKAY, SCIPvarSetData, SCIPgetBestSol
+from pyscipopt.scip cimport Variable, Constraint, Solution, SCIP_RESULT, SCIP_DIDNOTRUN, SCIPgetStage, SCIP_STAGE, SCIP_STAGE_PRESOLVED, SCIPvarSetData, SCIPgetBestSol
 
 from cpython cimport Py_INCREF, Py_DECREF
 
@@ -498,6 +498,16 @@ cdef class Model(SCIPModel):
         c_extension = str_conversion(extension)
         PY_SCIP_CALL(GCGwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
 
+    def getMastervars(self, var):
+        """Returns the master variables corresponding to the variable of original problem
+
+        :param var: Variable of original problem
+        :return: List of master variables
+        """
+        cdef int n_vars = GCGoriginalVarGetNMastervars((<Variable>var).scip_var)
+        cdef SCIP_VAR** mastervars = GCGoriginalVarGetMastervars((<Variable>var).scip_var)
+        return [Variable.create(mastervars[i]) for i in range(n_vars)]
+
 
 cdef class GCGPricingModel(SCIPModel):
     @staticmethod
@@ -553,6 +563,16 @@ cdef class GCGMasterModel(SCIPModel):
 
     def addCol(self, GCGColumn col):
         PY_SCIP_CALL(GCGpricerAddCol(self._scip, col.gcg_col))
+
+    def getOrigvars(self, var):
+        """Returns the original variables corresponding to the variable of master problem
+
+        :param var: Variable of master problem
+        :return: List of original variables
+        """
+        cdef int n_vars = GCGmasterVarGetNOrigvars((<Variable>var).scip_var)
+        cdef SCIP_VAR** originalvars = GCGmasterVarGetOrigvars((<Variable>var).scip_var)
+        return [Variable.create(originalvars[i]) for i in range(n_vars)]
 
 
 cdef class GCGColumn:

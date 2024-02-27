@@ -174,4 +174,3 @@ def test_pypricer_fast(lp_file, dec_file):
     py_pricer_sol_obj_val = m.getSolObjVal(m.getBestSol())
 
     assert gcg_pricer_sol_obj_val == py_pricer_sol_obj_val
-

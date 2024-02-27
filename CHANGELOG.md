@@ -6,6 +6,19 @@
 ### Changed
 ### Removed
 
+## v0.3.1
+### Update
+* support cython 3.0.0
+
+## v0.3.0
+### Update
+* update to PySCIPOpt 4.4.0, SCIP 8.1.0 and GCG 3.5.5
+
+## v0.2.0
+### Added
+* method getMastervars in class Model
+* method getOrigvars in class GCGMasterModel
+
 ## v0.1.4
 ### Changed
 * rename GCGModel to Model

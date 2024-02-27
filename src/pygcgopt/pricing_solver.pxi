@@ -35,44 +35,37 @@ cdef PricingSolver get_py_pricing_solver(GCG_SOLVER* pricingSolver) with gil:
     py_pricing_solver = <PricingSolver>solverdata
     return py_pricing_solver
 
-
 cdef SCIP_RETCODE PyPricingSolverFree (SCIP* scip, GCG_SOLVER* solver) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.freeSolver()
     Py_DECREF(py_pricing_solver)
     return SCIP_OKAY
 
-
 cdef SCIP_RETCODE PyPricingSolverInit (SCIP* scip, GCG_SOLVER* solver) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.initSolver()
     return SCIP_OKAY
-
 
 cdef SCIP_RETCODE PyPricingSolverExit (SCIP* scip, GCG_SOLVER* solver) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.exitSolver()
     return SCIP_OKAY
 
-
 cdef SCIP_RETCODE PyPricingSolverInitSol (SCIP* scip, GCG_SOLVER* solver) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.initSolution()
     return SCIP_OKAY
-
 
 cdef SCIP_RETCODE PyPricingSolverExitSol (SCIP* scip, GCG_SOLVER* solver) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.exitSolution()
     return SCIP_OKAY
 
-
 cdef SCIP_RETCODE PyPricingSolverUpdate (SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricingprob = GCGPricingModel.create(pricingprob)
     py_pricing_solver.updateSolver(py_pricingprob, probnr, varobjschanged, varbndschanged, consschanged)
     return SCIP_OKAY
-
 
 cdef SCIP_RETCODE PyPricingSolverSolve (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
@@ -81,7 +74,6 @@ cdef SCIP_RETCODE PyPricingSolverSolve (SCIP* scip, SCIP* pricingprob, GCG_SOLVE
     lowerbound[0] = result_dict.get("lowerbound", 0)
     status[0] = result_dict.get("status", <GCG_PRICINGSTATUS>status[0])
     return SCIP_OKAY
-
 
 cdef SCIP_RETCODE PyPricingSolverSolveHeur (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
