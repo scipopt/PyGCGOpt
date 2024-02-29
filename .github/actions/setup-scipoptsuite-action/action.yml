@@ -4,7 +4,7 @@ inputs:
   version:
     description: "SCIPOptSuite version to install"
     required: true
-    default: "8.1.0"
+    default: "9.0.0"
 
 runs:
   using: "composite"
@@ -17,6 +17,6 @@ runs:
 
     - name: Install dependencies (SCIPOptSuite)
       run: |
-        wget --quiet --timestamping --directory-prefix=$HOME https://scipopt.org/download/release/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
-        sudo apt-get install -y ~/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu.deb
+        wget --quiet --no-check-certificate https://github.com/scipopt/scip/releases/download/$(echo "v${{inputs.version}}" | tr -d '.')/SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu20.deb
+        sudo apt-get update && sudo apt install -y ./SCIPOptSuite-${{ inputs.version }}-Linux-ubuntu20.deb
       shell: bash

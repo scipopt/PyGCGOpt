@@ -23,9 +23,12 @@ from collections.abc import Iterable
 
 include "detector.pxi"
 include "pricing_solver.pxi"
+include "score.pxi"
 include "partition.pxi"
 include "decomposition.pxi"
 include "detprobdata.pxi"
+include "consclassifier.pxi"
+include "varclassifier.pxi"
 
 
 cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
@@ -33,7 +36,6 @@ cdef SCIP_CLOCK* start_new_clock(SCIP* scip):
     PY_SCIP_CALL(SCIPcreateClock(scip, &clock))
     PY_SCIP_CALL(SCIPstartClock(scip, clock))
     return clock
-
 
 cdef double stop_and_free_clock(SCIP* scip, SCIP_CLOCK* clock):
     PY_SCIP_CALL(SCIPstopClock(scip, clock))
@@ -43,13 +45,29 @@ cdef double stop_and_free_clock(SCIP* scip, SCIP_CLOCK* clock):
 
 
 cdef class PY_GCG_PRICINGSTATUS:
-    UNKNOWN = GCG_PRICINGSTATUS_UNKNOWN
+    UNKNOWN       = GCG_PRICINGSTATUS_UNKNOWN
     NOTAPPLICABLE = GCG_PRICINGSTATUS_NOTAPPLICABLE
-    SOLVERLIMIT = GCG_PRICINGSTATUS_SOLVERLIMIT
-    OPTIMAL = GCG_PRICINGSTATUS_OPTIMAL
-    INFEASIBLE = GCG_PRICINGSTATUS_INFEASIBLE
-    UNBOUNDED = GCG_PRICINGSTATUS_UNBOUNDED
+    SOLVERLIMIT   = GCG_PRICINGSTATUS_SOLVERLIMIT
+    OPTIMAL       = GCG_PRICINGSTATUS_OPTIMAL
+    INFEASIBLE    = GCG_PRICINGSTATUS_INFEASIBLE
+    UNBOUNDED     = GCG_PRICINGSTATUS_UNBOUNDED
 
+cdef class PY_USERGIVEN:
+    PY_NOT                    = NOT
+    PY_PARTIAL                = PARTIAL
+    PY_COMPLETE               = COMPLETE
+    PY_COMPLETED_CONSTOMASTER = COMPLETED_CONSTOMASTER
+
+cdef class PY_VAR_DECOMPINFO:
+    PY_ALL     = ALL
+    PY_LINKING = LINKING
+    PY_MASTER  = MASTER
+    PY_BLOCK   = BLOCK
+
+cdef class PY_CONS_DECOMPINFO:
+    PY_BOTH         = BOTH
+    PY_ONLY_MASTER  = ONLY_MASTER
+    PY_ONLY_PRICING = ONLY_PRICING
 
 cdef class Model(SCIPModel):
     """Main class for interaction with the GCG solver."""
@@ -112,7 +130,19 @@ cdef class Model(SCIPModel):
         """
         return GCGgetDualbound(self._scip)
 
-    def listDecompositions(self) -> List[PartialDecomposition]:
+    def getDetprobdataOrig(self):
+        """returns the detprobdata for unpresolved problem
+        """
+        cdef DETPROBDATA* detprobdata = GCGconshdlrDecompGetDetprobdataOrig(self._scip)
+        return DetProbData.create(detprobdata)
+
+    def getDetprobdataPresolved(self):
+        """returns the detprobdata for presolved problem
+        """
+        cdef DETPROBDATA* detprobdata = GCGconshdlrDecompGetDetprobdataPresolved(self._scip)
+        return DetProbData.create(detprobdata)
+
+    def listDecompositions(self):
         """Lists all finnished decompositions found during the detection loop or provided by the user."""
         cdef int npartialdecs = GCGconshdlrDecompGetNPartialdecs(self._scip)
         cdef int* decids = <int*>malloc(npartialdecs * sizeof(int))
@@ -124,6 +154,16 @@ cdef class Model(SCIPModel):
         free(decids)
 
         return decomps
+
+    def getPartDecompFromID(self, id):
+        """returns a partial decomposition regarding to the given partialdecomp id
+
+        :param id: patial decomposition id as int
+        :return: PartialDecomposition object 
+        """
+        cdef PartialDecomposition pd = PartialDecomposition.create(GCGconshdlrDecompGetPartialdecFromID(self._scip, id))
+        
+        return pd
 
     def addDecompositionFromConss(self, master_conss, *block_conss):
         """Adds a user specified decomposition to GCG based on constraints.
@@ -159,9 +199,6 @@ cdef class Model(SCIPModel):
         partialdec.setUsergiven()
         GCGconshdlrDecompAddPreexisitingPartialDec(self._scip, partialdec.thisptr)
 
-    def createPartialDecomposition(self):
-        return self.createDecomposition()
-
     def createDecomposition(self):
         """Creates a new empty PartialDecomposition.
 
@@ -176,7 +213,7 @@ cdef class Model(SCIPModel):
                      * :meth:`PartialDecomposition.fixConssToBlockId`
         """
         cdef bool is_presolved = self.getStage() >= SCIP_STAGE_PRESOLVED
-        cdef PARTIALDECOMP *decomp = new PARTIALDECOMP(self._scip, not is_presolved)
+        cdef PARTIALDECOMP* decomp = new PARTIALDECOMP(self._scip, not is_presolved)
         return PartialDecomposition.create(decomp)
 
     def includePricingSolver(self, PricingSolver pricingSolver, solvername, desc, priority=0, heuristicEnabled=False, exactEnabled=False):
@@ -188,7 +225,7 @@ cdef class Model(SCIPModel):
             PyPricingSolverSolve, PyPricingSolverSolveHeur, PyPricingSolverFree, PyPricingSolverInit, PyPricingSolverExit,
             PyPricingSolverInitSol, PyPricingSolverExitSol, <GCG_SOLVERDATA*>pricingSolver))
 
-        pricingSolver.model = <SCIPModel>weakref.proxy(self)
+        pricingSolver.model = <Model>weakref.proxy(self)
         pricingSolver.solvername = solvername
         Py_INCREF(pricingSolver)
 
@@ -237,13 +274,97 @@ cdef class Model(SCIPModel):
         """
         self.setBoolParam("pricingsolver/{}/heurenabled".format(pricing_solver_name), is_enabled)
 
+    def includeConsClassifier(self, ConsClassifier consclassifier, consclassifiername, desc, priority=0, enabled=True):
+        """includes a constraint classifier
+
+        :param consclassifier: an object of a subclass of consclassifier#ConsClassifier.
+        :param consclassifiername: name of constraint classifier
+        :param desc: description of constraint classifier
+        """
+        c_consclassifiername = str_conversion(consclassifiername)
+        c_desc = str_conversion(desc)
+        PY_SCIP_CALL(GCGincludeConsClassifier(
+            self._scip, c_consclassifiername, c_desc, priority, enabled,
+            <GCG_CLASSIFIERDATA*>consclassifier, PyConsClassifierFree, PyConsClassifierClassify))
+
+        consclassifier.model = <Model>weakref.proxy(self)
+        consclassifier.name = consclassifiername
+        Py_INCREF(consclassifier)
+
+    def getNConsClassifiers(self):
+        """returns the number of all constraint classifiers
+
+        :return: number of constraint classifiers
+        :rtype: int
+        """
+        cdef int n_consclassifiers = GCGconshdlrDecompGetNConsClassifiers(self._scip)
+        return n_consclassifiers
+
+    def listConsClassifiers(self):
+        """lists all constraint classifiers that are currently included
+
+        :return: list of strings of the constraint classifier names
+        """
+        cdef int n_consclassifiers = GCGconshdlrDecompGetNConsClassifiers(self._scip)
+        cdef GCG_CONSCLASSIFIER** consclassifiers = GCGconshdlrDecompGetConsClassifiers(self._scip)
+
+        return [GCGconsClassifierGetName(consclassifiers[i]).decode('utf-8') for i in range(n_consclassifiers)]
+
+    def includeVarClassifier(self, VarClassifier varclassifier, varclassifiername, desc, priority=0, enabled=True):
+        """includes a variable classifier
+
+        :param varclassifier: an object of a subclass of varclassifier#VarClassifier.
+        :param varclassifiername: name of variable classifier
+        :param desc: description of variable classifier
+        """
+        c_varclassifiername = str_conversion(varclassifiername)
+        c_desc = str_conversion(desc)
+        PY_SCIP_CALL(GCGincludeVarClassifier(
+            self._scip, c_varclassifiername, c_desc, priority, enabled,
+            <GCG_CLASSIFIERDATA*>varclassifier, PyVarClassifierFree, PyVarClassifierClassify))
+
+        varclassifier.model = <Model>weakref.proxy(self)
+        varclassifier.name = varclassifiername
+        Py_INCREF(varclassifier)
+
+    def getNVarClassifiers(self):
+        """returns the number of all variable classifiers
+
+        :return: number of variable classifiers
+        :rtype: int
+        """
+        cdef int n_varclassifiers = GCGconshdlrDecompGetNVarClassifiers(self._scip)
+        return n_varclassifiers
+
+    def listVarClassifiers(self):
+        """lists all variable classifiers that are currently included
+
+        :return: list of strings of the variable classifier names
+        """
+        cdef int n_varclassifiers = GCGconshdlrDecompGetNVarClassifiers(self._scip)
+        cdef GCG_VARCLASSIFIER** varclassifiers = GCGconshdlrDecompGetVarClassifiers(self._scip)
+
+        return [GCGvarClassifierGetName(varclassifiers[i]).decode('utf-8') for i in range(n_varclassifiers)]
+
+    def setVarClassifierEnabled(self, varclassifier_name, is_enabled=True):
+        """enables or disables a variable classifier
+
+        :param varclassifier_name: the name of the variable classifier
+        :param is_enabled: decides weather the variable classifier should be enabled or diabled.
+
+        This is a convenience method to access the boolean parameter "detection/classification/varclassifier/<name>/enabled".
+        """
+        # TODO test if varclassifier_name exists
+        self.setBoolParam("detection/classification/varclassifier/{}/enabled".format(varclassifier_name), is_enabled)
+
     def includeDetector(self, Detector detector, detectorname, decchar, desc, freqcallround=1, maxcallround=INT_MAX, mincallround=0, freqcallroundoriginal=1, maxcallroundoriginal=INT_MAX, mincallroundoriginal=0, priority=0, enabled=True, enabledfinishing=False, enabledpostprocessing=False, skip=False, usefulrecall=False):
         """includes a detector
 
         :param detector: An object of a subclass of detector#Detector.
-        :param detectorname: name of the detector
+        :param detectorname: name of detector
+        :param desc: description of detector
 
-        For an explanation for all arguments, see :meth:`DECincludeDetector()`.
+        For an explanation for all arguments, see :meth:`GCGincludeDetector()`.
         """
         if len(decchar) != 1:
             raise ValueError("Length of value for 'decchar' must be 1")
@@ -251,16 +372,35 @@ cdef class Model(SCIPModel):
         c_detectorname = str_conversion(detectorname)
         c_decchar = ord(str_conversion(decchar))
         c_desc = str_conversion(desc)
-        PY_SCIP_CALL(DECincludeDetector(
+        PY_SCIP_CALL(GCGincludeDetector(
             self._scip, c_detectorname, c_decchar, c_desc, freqcallround, maxcallround, mincallround,
             freqcallroundoriginal, maxcallroundoriginal, mincallroundoriginal, priority, enabled, enabledfinishing,
-            enabledpostprocessing, skip, usefulrecall, <DEC_DETECTORDATA*>detector, PyDetectorFree, PyDetectorInit,
+            enabledpostprocessing, skip, usefulrecall, <GCG_DETECTORDATA*>detector, PyDetectorFree, PyDetectorInit,
             PyDetectorExit, PyDetectorPropagatePartialdec, PyDetectorFinishPartialdec, PyDetectorPostprocessPartialdec,
             PyDetectorSetParamAggressive, PyDetectorSetParamDefault, PyDetectorSetParamFast))
 
-        detector.model = <SCIPModel>weakref.proxy(self)
+        detector.model = <Model>weakref.proxy(self)
         detector.detectorname = detectorname
         Py_INCREF(detector)
+
+    def includeScore(self, Score score, scorename, shortname, desc):
+        """includes a score
+
+        :param detector: An object of a subclass of detector#Detector.
+        :param detectorname: name of the detector
+
+        For an explanation for all arguments, see :meth:`GCGincludeDetector()`.
+        """
+        c_scorename = str_conversion(scorename)
+        c_shortname = str_conversion(shortname)
+        c_desc = str_conversion(desc)
+        PY_SCIP_CALL(GCGincludeScore(
+            self._scip, c_scorename, c_shortname, c_desc,
+            <GCG_SCOREDATA*>score, PyScoreFree, PyScoreCalculate))
+
+        score.model = <Model>weakref.proxy(self)
+        score.scorename = scorename
+        Py_INCREF(score)
 
     def listDetectors(self):
         """Lists all detectors that are currently included
@@ -274,9 +414,19 @@ cdef class Model(SCIPModel):
                      * :meth:`setDetectorPostprocessingEnabled`
         """
         cdef int n_detectors = GCGconshdlrDecompGetNDetectors(self._scip)
-        cdef DEC_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
+        cdef GCG_DETECTOR** detectors = GCGconshdlrDecompGetDetectors(self._scip)
 
-        return [DECdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
+        return [GCGdetectorGetName(detectors[i]).decode('utf-8') for i in range(n_detectors)]
+
+    def listScores(self):
+        """Lists all scores that are currently included
+
+        :return: A list of strings of the score names
+        """
+        cdef int n_scores = GCGgetNScores(self._scip)
+        cdef GCG_SCORE** scores = GCGgetScores(self._scip)
+
+        return [GCGscoreGetName(scores[i]).decode('utf-8') for i in range(n_scores)]
 
     def setDetectorEnabled(self, detector_name, is_enabled=True):
         """Enables or disables a detector for detecting partial decompositions.
@@ -346,7 +496,7 @@ cdef class Model(SCIPModel):
             Path(directory).mkdir(exist_ok=True, parents=True)
         c_directory = str_conversion(directory)
         c_extension = str_conversion(extension)
-        PY_SCIP_CALL(DECwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
+        PY_SCIP_CALL(GCGwriteAllDecomps(self._scip, c_directory, c_extension, original, presolved))
 
     def getMastervars(self, var):
         """Returns the master variables corresponding to the variable of original problem

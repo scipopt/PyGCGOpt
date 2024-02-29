@@ -6,6 +6,16 @@
 ### Changed
 ### Removed
 
+## v0.4.0
+### Added
+* added support for Windows
+* added score plugin type
+* added constraint classifier plugin type
+* added variable classifier plugin type
+* added class ConsPart
+* added class VarPart
+* added tests for score and classifier
+
 ## v0.3.1
 ### Update
 * support cython 3.0.0
