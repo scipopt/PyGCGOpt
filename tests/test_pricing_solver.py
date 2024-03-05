@@ -5,7 +5,7 @@ from collections import defaultdict
 
 from pygcgopt import Model, PricingSolver, GCG_PRICINGSTATUS
 
-from ortools.algorithms import pywrapknapsack_solver
+from ortools.algorithms.python import knapsack_solver
 
 import pytest
 
@@ -104,7 +104,7 @@ class PyKnapsackSolver(PricingSolver):
         elif capacity == 0:
             solitems = []
         else:
-            knapsackSolver = pywrapknapsack_solver.KnapsackSolver(
+            knapsackSolver = knapsack_solver.KnapsackSolver(
                 pywrapknapsack_solver.KnapsackSolver.KNAPSACK_DYNAMIC_PROGRAMMING_SOLVER, "KnapsackExample"
             )
             knapsackSolver.Init(profits, [weights], [int(capacity)])
