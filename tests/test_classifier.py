@@ -37,7 +37,7 @@ def cuttingStockExample2():
     return w, q, B
 
 def createCuttingStockModel(width, widths, quantities, ndemands, nrolls):
-    model = Model("cutting-stock")
+    model = Model()
 
     x = {}
     y = {}
