@@ -2,3 +2,4 @@ build==0.7.0
 Cython>=3.0.0
 wheel==0.40.0
 pyscipopt>=4.4.0
+pytest
