@@ -27,3 +27,7 @@ jobs:
       - name: Build & Install PyGCGOpt
         run: |
           pip install .
+          
+      - name: Run PyGCGOpt tests
+        run: |
+          pytest .
