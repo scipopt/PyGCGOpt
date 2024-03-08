@@ -26,5 +26,6 @@ runs:
 
     - name: Build & Install PySCIPOpt
       run: |
+        cd PySCIPOpt
         python -m pip install --no-deps .
       shell: bash
