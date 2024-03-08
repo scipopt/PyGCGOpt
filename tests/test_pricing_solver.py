@@ -160,7 +160,8 @@ def test_pypricer_fast(lp_file, dec_file):
     m.readProblem(dec_file)
 
     for p in m.listPricingSolvers():
-        print(p)
+        if p == "cliquer":
+            continue
         m.setPricingSolverEnabled(p, False)
 
     proxyKnapsackSolver = PyKnapsackSolver()
