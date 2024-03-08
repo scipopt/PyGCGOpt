@@ -105,11 +105,11 @@ class PyKnapsackSolver(PricingSolver):
             solitems = []
         else:
             knapsackSolver = knapsack_solver.KnapsackSolver(
-                pywrapknapsack_solver.KnapsackSolver.KNAPSACK_DYNAMIC_PROGRAMMING_SOLVER, "KnapsackExample"
+                knapsack_solver.KNAPSACK_DYNAMIC_PROGRAMMING_SOLVER, "KnapsackExample"
             )
-            knapsackSolver.Init(profits, [weights], [int(capacity)])
-            knapsackSolver.Solve()
-            solitems = [idx for idx in range(len(item_var_map)) if knapsackSolver.BestSolutionContains(idx)]
+            knapsackSolver.init(profits, [weights], [int(capacity)])
+            knapsackSolver.solve()
+            solitems = [idx for idx in range(len(item_var_map)) if knapsackSolver.best_solution_contains(idx)]
 
         solvals = defaultdict(int)
         for idx in range(len(item_var_map)):
@@ -160,6 +160,7 @@ def test_pypricer_fast(lp_file, dec_file):
     m.readProblem(dec_file)
 
     for p in m.listPricingSolvers():
+        print(p)
         m.setPricingSolverEnabled(p, False)
 
     proxyKnapsackSolver = PyKnapsackSolver()
