@@ -1,0 +1,25 @@
+[build-system]
+requires = ['setuptools', 'cython >=0.21', 'pyscipopt >=5.0.0']
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel.linux]
+skip="pp* cp36* cp37* *musllinux*"
+before-all = [
+    "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
+    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.1.0/libscip-linux.zip -O scip.zip",
+    "unzip scip.zip",
+    "mv scip_install scip",
+
+    "wget http://www.tcs.hut.fi/Software/bliss/bliss-0.73.zip -O bliss.zip",
+    "unzip bliss.zip",
+    "mkdir bliss_build",
+    "mkdir bliss_build/lib",
+    "mkdir bliss_build/include",
+    "cd bliss-* && make && mv *.hh ../bliss_build/include && mv libbliss.a ../bliss_build/lib && cd ..",
+
+    "wget https://github.com/scipopt/gcg/archive/refs/tags/v360.zip -O gcg.zip",
+    "unzip gcg.zip",
+    "mkdir gcg_build",
+    "cd gcg_build && cmake ../gcg-* -DSCIPOPTDIR=../scip -DBLISS_DIR=../bliss_build && make && cd ..",
+    ]
+environment = { SCIPOPTDIR="$(pwd)/scip", GCGOPTDIR="$(pwd)/gcg_build", LD_LIBRARY_PATH="$(pwd)/scip/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip/lib/pkgconfig:$PKG_CONFIG_PATH"}
