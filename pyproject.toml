@@ -1,0 +1,85 @@
+[build-system]
+requires = ['setuptools', 'cython >=3.0.0']
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyGCGOpt"
+description = "Python interface and modeling environment for GCG"
+authors = [
+    {name = "Lehrstuhl für Operations Research - RWTH Aachen University", email = "gcg-bugs@or.rwth-aachen.de"},
+]
+dependencies = ["pyscipopt>=5.1.0"]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Cython",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/SCIP-Interfaces/PyGCGOpt"
+
+[tool.pytest.ini_options]
+norecursedirs = ["check"]
+testpaths = ["tests"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.dynamic]
+version = {attr = "pygcgopt._version.__version__"}
+
+[tool.cibuildwheel]
+skip="pp*" # currently doesn't work with PyPy
+
+
+[tool.cibuildwheel.linux]
+skip="pp* cp36* cp37* *musllinux*"
+before-all = [
+    "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
+    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-linux.zip -O gcg.zip",
+    "unzip gcg.zip",
+    "mv scip_install gcg"
+    ]
+environment = { GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+
+
+[tool.cibuildwheel.macos]
+skip="pp* cp36* cp37*"
+before-all = '''
+#!/bin/bash
+brew install wget zlib gcc
+if [[ $CIBW_ARCHS == *"arm"* ]]; then
+    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-macos-arm.zip -O gcg.zip
+else
+    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-macos.zip -O gcg.zip
+fi
+unzip gcg.zip
+mv scip_install src/gcg
+'''
+environment = {GCGOPTDIR="$(pwd)/src/gcg", LD_LIBRARY_PATH="$(pwd)/src/gcg/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/src/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/src/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/src/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+repair-wheel-command = [
+  "delocate-listdeps {wheel}",
+  "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}",
+]
+
+
+[tool.cibuildwheel.windows]
+skip="pp* cp36* cp37*"
+before-all = [
+    "choco install 7zip wget",
+    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-windows.zip -O gcg.zip",
+    "\"C:\\Program Files\\7-Zip\\7z.exe\" x \"gcg.zip\" -o\"gcg-test\"",
+    "mv .\\gcg-test\\scip_install .\\test",
+    "mv .\\test .\\gcg"
+]
+before-build = "pip install delvewheel"
+environment = { GCGOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', RELEASE="true" }
+repair-wheel-command = "delvewheel repair --add-path c:/bin;c:/lib;c:/bin/src;c:/lib/src;D:/a/PyGCGOpt/PyGCGOpt/gcg/;D:/a/PyGCGOpt/PyGCGOpt/gcg/lib/;D:/a/PyGCGOpt/PyGCGOpt/gcg/bin/ -w {dest_dir} {wheel}"

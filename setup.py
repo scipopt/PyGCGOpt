@@ -123,9 +123,9 @@ setup(
     ext_modules=extensions,
     install_requires=[
         'wheel',
-        'pyscipopt>=5.0.0'
+        'pyscipopt>=5.1.0'
     ],
     packages=['pygcgopt'],
     package_dir={'pygcgopt': packagedir},
-    package_data = {'pygcgopt': ['gcg.pyx', 'gcg.pxd', '*.pxi']}
+    package_data = {'pygcgopt': ['gcg.pyx', 'gcg.pxd', '*.pxi', 'gcg/lib/*']}
 )
