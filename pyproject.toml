@@ -8,7 +8,7 @@ description = "Python interface and modeling environment for GCG"
 authors = [
     {name = "Lehrstuhl für Operations Research - RWTH Aachen University", email = "gcg-bugs@or.rwth-aachen.de"},
 ]
-dependencies = ["pyscipopt>=5.1.0", ortools]
+dependencies = ["pyscipopt>=5.1.0", "ortools"]
 requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
