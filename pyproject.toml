@@ -48,7 +48,7 @@ before-all = [
     "unzip gcg.zip",
     "mv scip_install gcg"
     ]
-environment = { GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+environment = { SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 
 
 [tool.cibuildwheel.macos]
@@ -64,7 +64,7 @@ fi
 unzip gcg.zip
 mv scip_install src/gcg
 '''
-environment = {GCGOPTDIR="$(pwd)/src/gcg", LD_LIBRARY_PATH="$(pwd)/src/gcg/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/src/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/src/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/src/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+environment = {SCIPOPTDIR="$(pwd)/src/gcg", GCGOPTDIR="$(pwd)/src/gcg", LD_LIBRARY_PATH="$(pwd)/src/gcg/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/src/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/src/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/src/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 repair-wheel-command = [
   "delocate-listdeps {wheel}",
   "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}",
@@ -81,5 +81,5 @@ before-all = [
     "mv .\\test .\\gcg"
 ]
 before-build = "pip install delvewheel"
-environment = { GCGOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', RELEASE="true" }
+environment = { SCIPOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', GCGOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', RELEASE="true" }
 repair-wheel-command = "delvewheel repair --add-path c:/bin;c:/lib;c:/bin/src;c:/lib/src;D:/a/PyGCGOpt/PyGCGOpt/gcg/;D:/a/PyGCGOpt/PyGCGOpt/gcg/lib/;D:/a/PyGCGOpt/PyGCGOpt/gcg/bin/ -w {dest_dir} {wheel}"
