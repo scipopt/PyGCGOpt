@@ -66,9 +66,10 @@ if "--debug" in sys.argv:
 
 use_cython = True
 
-packagedir = os.path.join('src', 'pygcgopt')
+packagedirscip = os.path.join('src', 'pyscipopt')
+packagedirgcg = os.path.join('src', 'pygcgopt')
 
-with open(os.path.join(packagedir, '__init__.py'), 'r') as initfile:
+with open(os.path.join(packagedirgcg, '__init__.py'), 'r') as initfile:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         initfile.read(), re.MULTILINE).group(1)
 
@@ -80,14 +81,25 @@ except ImportError:
         quit(1)
     use_cython = False
 
-if not os.path.exists(os.path.join(packagedir, 'gcg.pyx')):
+if not os.path.exists(os.path.join(packagedirgcg, 'gcg.pyx')):
     use_cython = False
 
 ext = '.pyx' if use_cython else '.cpp'
 
 extra_compile_args.append("-std=c++11")
 
-extensions = [Extension('pygcgopt.gcg', [os.path.join(packagedir, 'gcg'+ext)],
+on_github_actions = os.getenv('GITHUB_ACTIONS') == 'true'
+release_mode = os.getenv('RELEASE') == 'true'
+compile_with_line_tracing = on_github_actions and not release_mode
+
+extensions = [Extension("pyscipopt.scip", [os.path.join(packagedirscip, f"scip{ext}")],
+        		include_dirs=includedirs,
+        		library_dirs=[sciplibdir],
+       			libraries=[sciplibname],
+        		extra_compile_args=extra_compile_args,
+       			 extra_link_args=extra_link_args,
+        		define_macros= [("CYTHON_TRACE_NOGIL", 1), ("CYTHON_TRACE", 1)] if compile_with_line_tracing else []),
+              Extension('pygcgopt.gcg', [os.path.join(packagedirgcg, 'gcg'+ext)],
                           include_dirs=includedirs,
                           library_dirs=list(set([sciplibdir, gcglibdir])),
                           libraries=[sciplibname, gcglibname],
@@ -126,6 +138,6 @@ setup(
         'pyscipopt>=5.1.0'
     ],
     packages=['pygcgopt'],
-    package_dir={'pygcgopt': packagedir},
+    package_dir={'pygcgopt': packagedirgcg},
     package_data = {'pygcgopt': ['gcg.pyx', 'gcg.pxd', '*.pxi', 'gcg/lib/*']}
 )

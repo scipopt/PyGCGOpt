@@ -48,13 +48,6 @@ before-all = [
     "unzip gcg.zip",
     "mv scip_install gcg"
     ]
-before-build = [
-    "pip install cython",
-    "wget https://github.com/scipopt/pyscipopt/archive/refs/tags/v5.1.1.zip -O pyscipopt.zip",
-    "unzip pyscipopt.zip",
-    "cd PySCIPOpt-5.1.1",
-    "python setup.py install"
-]
 environment = { SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 
 
