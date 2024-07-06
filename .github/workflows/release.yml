@@ -27,8 +27,8 @@ jobs:
           #  arch: arm64
           #- os: macos-13
           #  arch: x86_64
-          - os: windows-latest
-            arch: AMD64
+          #- os: windows-latest
+          #  arch: AMD64
 
 
 
@@ -46,19 +46,19 @@ jobs:
         with:
           path: ./wheelhouse/*.whl
 
-  build_sdist:
-    name: Build source distribution
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+  #build_sdist:
+  #  name: Build source distribution
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    - uses: actions/checkout@v3
 
-      - name: Build sdist
-        shell: bash -l {0}
-        run: pipx run build --sdist
+  #    - name: Build sdist
+  #      shell: bash -l {0}
+  #      run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
-        with:
-          path: dist/*.tar.gz
+  #    - uses: actions/upload-artifact@v3
+  #      with:
+  #        path: dist/*.tar.gz
 
   upload_pypi:
     needs: [build_wheels, build_sdist]
