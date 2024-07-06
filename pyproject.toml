@@ -49,6 +49,7 @@ before-all = [
     "mv scip_install gcg"
     ]
 before-build = [
+    "pip install cython",
     "wget https://github.com/scipopt/pyscipopt/archive/refs/tags/v5.1.1.zip -O pyscipopt.zip",
     "unzip pyscipopt.zip",
     "cd PySCIPOpt-5.1.1",
