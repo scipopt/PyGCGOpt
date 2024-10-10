@@ -1,5 +1,5 @@
 [build-system]
-requires = ['setuptools', 'cython >=3.0.0']
+requires = ['setuptools', 'pyscipopt', 'cython >=3.0.0']
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -38,15 +38,19 @@ version = {attr = "pygcgopt.__version__"}
 
 [tool.cibuildwheel]
 skip="pp*" # currently doesn't work with PyPy
+test-command = "pytest tests"
+test-requires = ["pytest"]
 
 
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
+    "pip install pyscipopt",
+    "pip show pyscipopt",
     "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-linux.zip -O gcg.zip",
     "unzip gcg.zip",
-    "mv scip_install gcg"
+    "mv scip_install gcg",
     ]
 environment = { SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 

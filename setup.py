@@ -66,7 +66,6 @@ if "--debug" in sys.argv:
 
 use_cython = True
 
-packagedirscip = os.path.join('src', 'pyscipopt')
 packagedirgcg = os.path.join('src', 'pygcgopt')
 
 with open(os.path.join(packagedirgcg, '__init__.py'), 'r') as initfile:
@@ -92,14 +91,7 @@ on_github_actions = os.getenv('GITHUB_ACTIONS') == 'true'
 release_mode = os.getenv('RELEASE') == 'true'
 compile_with_line_tracing = on_github_actions and not release_mode
 
-extensions = [Extension("pyscipopt.scip", [os.path.join(packagedirscip, f"scip{ext}")],
-        		include_dirs=includedirs,
-        		library_dirs=[sciplibdir],
-       			libraries=[sciplibname],
-        		extra_compile_args=extra_compile_args,
-       			 extra_link_args=extra_link_args,
-        		define_macros= [("CYTHON_TRACE_NOGIL", 1), ("CYTHON_TRACE", 1)] if compile_with_line_tracing else []),
-              Extension('pygcgopt.gcg', [os.path.join(packagedirgcg, 'gcg'+ext)],
+extensions = [Extension('pygcgopt.gcg', [os.path.join(packagedirgcg, 'gcg'+ext)],
                           include_dirs=includedirs,
                           library_dirs=list(set([sciplibdir, gcglibdir])),
                           libraries=[sciplibname, gcglibname],
