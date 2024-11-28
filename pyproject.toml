@@ -45,12 +45,11 @@ test-requires = ["pytest"]
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
-    "pip install pyscipopt",
-    "pip show pyscipopt",
     "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-linux.zip -O gcg.zip",
     "unzip gcg.zip",
     "mv scip_install gcg",
+    "pip install pyscipopt --no-binary=:all:"
     ]
 environment = { SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 
@@ -67,6 +66,7 @@ else
 fi
 unzip gcg.zip
 mv scip_install src/gcg
+pip install pyscipopt --no-binary=:all:
 '''
 environment = {SCIPOPTDIR="$(pwd)/src/gcg", GCGOPTDIR="$(pwd)/src/gcg", LD_LIBRARY_PATH="$(pwd)/src/gcg/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/src/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/src/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/src/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 repair-wheel-command = [
@@ -82,7 +82,8 @@ before-all = [
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.4.0/libscip-gcg-windows.zip -O gcg.zip",
     "\"C:\\Program Files\\7-Zip\\7z.exe\" x \"gcg.zip\" -o\"gcg-test\"",
     "mv .\\gcg-test\\scip_install .\\test",
-    "mv .\\test .\\gcg"
+    "mv .\\test .\\gcg",
+    "pip install pyscipopt --no-binary=:all:"
 ]
 before-build = "pip install delvewheel"
 environment = { SCIPOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', GCGOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', RELEASE="true" }
