@@ -1,5 +1,5 @@
 [build-system]
-requires = ['setuptools', 'cython >=3.0.0']
+requires = ['setuptools', 'pyscipopt', 'cython >=3.0.0']
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,7 @@ description = "Python interface and modeling environment for GCG"
 authors = [
     {name = "Lehrstuhl für Operations Research - RWTH Aachen University", email = "gcg-bugs@or.rwth-aachen.de"},
 ]
-dependencies = ["ortools"]
+dependencies = ["pyscipopt"]
 requires-python = ">=3.8"
 readme = "README.md"
 license = {text = "MIT"}
@@ -38,9 +38,6 @@ version = {attr = "pygcgopt.__version__"}
 
 [tool.cibuildwheel]
 skip="pp*" # currently doesn't work with PyPy
-test-command = "pytest tests"
-test-requires = ["pytest"]
-
 
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
@@ -48,31 +45,40 @@ before-all = [
     "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip",
     "unzip gcg.zip",
-    "mv scip_install gcg",
     ]
-before-build = "pip install pyscipopt --no-binary=:all:"
-environment = { SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+#before-build = "pip install pyscipopt --no-binary=:all:"
+environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 
 
 [tool.cibuildwheel.macos]
-skip="pp* cp36* cp37*"
+skip="pp* cp36* cp37* cp38* cp39* cp310* cp311* cp312*" #delete cp38*
 before-all = '''
 #!/bin/bash
 brew install wget zlib gcc
 if [[ $CIBW_ARCHS == *"arm"* ]]; then
     wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-macos-arm.zip -O gcg.zip
+    export MACOSX_DEPLOYMENT_TARGET=14.0
 else
     wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-macos.zip -O gcg.zip
+    export MACOSX_DEPLOYMENT_TARGET=13.0
 fi
 unzip gcg.zip
-mv scip_install src/gcg
-pip install pyscipopt --no-binary=:all:
 '''
-environment = {SCIPOPTDIR="$(pwd)/src/gcg", GCGOPTDIR="$(pwd)/src/gcg", LD_LIBRARY_PATH="$(pwd)/src/gcg/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/src/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/src/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/src/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
-repair-wheel-command = [
-  "delocate-listdeps {wheel}",
-  "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}",
-]
+#before-build = ["pip install setuptools wheel", "pip install pyscipopt --no-binary=:all: --no-cache-dir"]
+environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+repair-wheel-command = '''
+    bash -c '
+    if [[ $CIBW_ARCHS == *"arm"* ]]; then
+        export MACOSX_DEPLOYMENT_TARGET=14.0
+        delocate-listdeps {wheel}
+        delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}
+    else
+        export MACOSX_DEPLOYMENT_TARGET=13.0
+        delocate-listdeps {wheel}
+        delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}
+    fi
+    '
+'''
 
 
 [tool.cibuildwheel.windows]
