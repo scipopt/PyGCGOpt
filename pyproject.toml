@@ -49,8 +49,8 @@ before-all = [
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip",
     "unzip gcg.zip",
     "mv scip_install gcg",
-    "pip install pyscipopt --no-binary=:all:"
     ]
+before-build = "pip install pyscipopt --no-binary=:all:"
 environment = { SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 
 
