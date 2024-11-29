@@ -51,7 +51,7 @@ environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGO
 
 
 [tool.cibuildwheel.macos]
-skip="pp* cp36* cp37* cp38* cp39* cp310* cp311* cp312*" #delete cp38*
+skip="pp* cp36* cp37*"
 before-all = '''
 #!/bin/bash
 brew install wget zlib gcc
