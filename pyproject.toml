@@ -89,9 +89,8 @@ before-all = [
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-windows.zip -O gcg.zip",
     "\"C:\\Program Files\\7-Zip\\7z.exe\" x \"gcg.zip\" -o\"gcg-test\"",
     "mv .\\gcg-test\\scip_install .\\test",
-    "mv .\\test .\\gcg",
-    "pip install pyscipopt --no-binary=:all:"
+    "mv .\\test .\\gcg"
 ]
 before-build = "pip install delvewheel"
-environment = { SCIPOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', GCGOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', RELEASE="true" }
+environment = {PIP_NO_BINARY="pyscipopt",SCIPOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', GCGOPTDIR='D:\\a\\PyGCGOpt\\PyGCGOpt\\gcg', RELEASE="true" }
 repair-wheel-command = "delvewheel repair --add-path c:/bin;c:/lib;c:/bin/src;c:/lib/src;D:/a/PyGCGOpt/PyGCGOpt/gcg/;D:/a/PyGCGOpt/PyGCGOpt/gcg/lib/;D:/a/PyGCGOpt/PyGCGOpt/gcg/bin/ -w {dest_dir} {wheel}"
