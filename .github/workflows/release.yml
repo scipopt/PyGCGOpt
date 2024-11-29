@@ -39,7 +39,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.1
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
-          CIBW_TEST_REQUIRES: pytest ortools
+          CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "pytest {project}/tests"
         
       - uses: actions/upload-artifact@v4
