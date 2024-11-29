@@ -44,7 +44,7 @@ manylinux-x86_64-image = "manylinux_2_28"
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
     "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
-    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip",
+    "wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip",
     "unzip gcg.zip",
     ]
 #before-build = "pip install pyscipopt --no-binary=:all:"
@@ -57,10 +57,10 @@ before-all = '''
 #!/bin/bash
 brew install wget zlib gcc
 if [[ $CIBW_ARCHS == *"arm"* ]]; then
-    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-macos-arm.zip -O gcg.zip
+    wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-macos-arm.zip -O gcg.zip
     export MACOSX_DEPLOYMENT_TARGET=14.0
 else
-    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-macos.zip -O gcg.zip
+    wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-macos.zip -O gcg.zip
     export MACOSX_DEPLOYMENT_TARGET=13.0
 fi
 unzip gcg.zip
@@ -86,7 +86,7 @@ repair-wheel-command = '''
 skip="pp* cp36* cp37*"
 before-all = [
     "choco install 7zip wget",
-    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.5.0/libscip-windows.zip -O gcg.zip",
+    "wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-windows.zip -O gcg.zip",
     "\"C:\\Program Files\\7-Zip\\7z.exe\" x \"gcg.zip\" -o\"gcg-test\"",
     "mv .\\gcg-test\\scip_install .\\test",
     "mv .\\test .\\gcg"
