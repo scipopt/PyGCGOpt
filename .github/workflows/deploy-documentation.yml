@@ -7,42 +7,56 @@ on:
   workflow_dispatch:
 
 jobs:
-  Build-Package-Linux:
-    runs-on: ubuntu-20.04
+  Deploy-Documentation:
+    runs-on: ubuntu-24.04
+    env:
+      SCIPOPTDIR: ${{ github.workspace }}/scip_install
+    strategy:
+      matrix:
+        python-version: "3.12"
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
-      
-      - name: Setup pandoc
-        run: |
-          sudo apt-get install -y pandoc
+        uses: actions/checkout@v4
         
-      - name: Setup SCIPOptSuite
-        uses: ./.github/actions/setup-scipoptsuite-action
-
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-          cache: 'pip'
-          cache-dependency-path: |
-            requirements.txt
-            docs/requirements.txt
-      - name: Prepare Python Environment
+      - name: Update and install wget
         run: |
-          pip install -r requirements.txt
+          sudo apt-get update && sudo apt-get install --yes wget
+
+      - name: Download libscip-linux.zip
+        run: |
+          wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip
+
+      - name: Unzip the downloaded file
+        run: |
+          sudo apt-get install --yes unzip
+          unzip gcg.zip
+
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Prepare python environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install cython pytest
+          python -m pip install pyscipopt==5.2.1 --no-binary=:all:
           pip install -r docs/requirements.txt
-      
+
       - name: Build & Install PyGCGOpt
         run: |
           pip install .
-      
+          
+      - name: Run PyGCGOpt tests
+        run: |
+          pytest .
+
       - name: Build Documentation
         run: make html
         working-directory: ./docs
       
       - name: Checkout Documentation Branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: gh-pages
@@ -58,7 +72,7 @@ jobs:
           git commit --allow-empty -m "Deploy docs to GitHub Pages, GitHub Actions build: ${GITHUB_RUN_ID}" -m "Commit: ${GITHUB_SHA}"
           git push
       - name: Archive Documentation
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: sphinx-documentation
           path: docs/_build/html
