@@ -7,10 +7,6 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       SCIPOPTDIR: ${{ github.workspace }}/scip_install
-      LD_LIBRARY_PATH: ${{ github.workspace }}/scip_install/lib:${{ env.LD_LIBRARY_PATH }}
-      DYLD_LIBRARY_PATH: ${{ github.workspace }}/scip_install/lib:${{ env.DYLD_LIBRARY_PATH }}
-      PATH: ${{ github.workspace }}/scip_install/bin:${{ env.PATH }}
-      PKG_CONFIG_PATH: ${{ github.workspace }}/scip_install/lib/pkgconfig:${{ env.PKG_CONFIG_PATH }}
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
