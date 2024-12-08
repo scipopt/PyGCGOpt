@@ -24,11 +24,6 @@ jobs:
         run: |
           sudo apt-get install --yes unzip
           unzip gcg.zip
-          export SCIPOPTDIR="$(pwd)/scip_install"
-          export LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH"
-          export DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH" 
-          export PATH="$(pwd)/scip_install/bin:$PATH"
-          export PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
       - name: Setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -37,6 +32,11 @@ jobs:
 
       - name: Prepare python environment
         run: |
+          export SCIPOPTDIR="$(pwd)/scip_install"
+          export LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH"
+          export DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH" 
+          export PATH="$(pwd)/scip_install/bin:$PATH"
+          export PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH"
           python -m pip install --upgrade pip
           python -m pip install cython pytest
           python -m pip install pyscipopt==5.2.1 --no-binary=:all:
