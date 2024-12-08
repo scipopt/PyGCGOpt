@@ -5,6 +5,12 @@ on: [push]
 jobs:
   Build-Package-Linux:
     runs-on: ubuntu-20.04
+    env:
+      SCIPOPTDIR: ${{ github.workspace }}/scip_install
+      LD_LIBRARY_PATH: ${{ github.workspace }}/scip_install/lib:${{ env.LD_LIBRARY_PATH }}
+      DYLD_LIBRARY_PATH: ${{ github.workspace }}/scip_install/lib:${{ env.DYLD_LIBRARY_PATH }}
+      PATH: ${{ github.workspace }}/scip_install/bin:${{ env.PATH }}
+      PKG_CONFIG_PATH: ${{ github.workspace }}/scip_install/lib/pkgconfig:${{ env.PKG_CONFIG_PATH }}
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
@@ -32,11 +38,6 @@ jobs:
 
       - name: Prepare python environment
         run: |
-          export SCIPOPTDIR="$(pwd)/scip_install"
-          export LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH"
-          export DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH" 
-          export PATH="$(pwd)/scip_install/bin:$PATH"
-          export PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH"
           python -m pip install --upgrade pip
           python -m pip install cython pytest
           python -m pip install pyscipopt==5.2.1 --no-binary=:all:
