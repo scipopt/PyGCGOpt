@@ -5,6 +5,9 @@ on: [push]
 jobs:
   Build-Package-Linux:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -25,10 +28,17 @@ jobs:
           export SCIPOPTDIR="$(pwd)/scip_install"
           echo $SCIPOPTDIR
 
-      - name: Prepare Python Environment
+      - name: Setup python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Prepare python environment
         run: |
-          pip install -r dev/requirements.txt
-      
+          python -m pip install --upgrade pip
+          python -m pip install cython pytest
+          python -m pip install pyscipopt==5.2.1 --no-binary=:all:
+
       - name: Build & Install PyGCGOpt
         run: |
           pip install .
