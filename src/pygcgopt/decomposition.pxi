@@ -651,7 +651,7 @@ cdef class PartialDecomposition:
 
     @property
     def max_for_white_agg_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion"max foreseeing white with aggregation info")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("max foreseeing white with aggregation info")))
 
     @property
     def set_part_for_white_agg_score(self):
