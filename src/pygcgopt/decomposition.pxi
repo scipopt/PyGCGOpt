@@ -633,6 +633,38 @@ cdef class PartialDecomposition:
         """
         return self.thisptr.getMaxWhiteScore()
 
+    @property
+    def classic_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("classic")))
+
+    @property
+    def border_area_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("border area")))
+
+    @property
+    def max_for_white_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("max foreseeing white")))
+
+    @property
+    def set_part_for_white_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("ppc-max-white with aggregation info")))
+
+    @property
+    def max_for_white_agg_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion"max foreseeing white with aggregation info")))
+
+    @property
+    def set_part_for_white_agg_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("ppc-max-white")))
+
+    @property
+    def benders_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("experimental benders score")))
+
+    @property
+    def strong_decomp_score(self):
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("strong decomposition score")))
+
     def addClockTime(self, double clocktime):
         """adds detection time of one detector
 
