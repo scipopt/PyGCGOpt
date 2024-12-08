@@ -20,7 +20,7 @@ jobs:
         
       - name: Update and install wget
         run: |
-          sudo apt-get update && sudo apt-get install --yes wget
+          sudo apt-get update && sudo apt-get install --yes wget pandoc
 
       - name: Download libscip-linux.zip
         run: |
