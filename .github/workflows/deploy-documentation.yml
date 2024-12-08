@@ -18,7 +18,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
         
-      - name: Update and install wget
+      - name: Update and install wget, pandoc
         run: |
           sudo apt-get update && sudo apt-get install --yes wget pandoc
 
@@ -71,6 +71,7 @@ jobs:
           git add .
           git commit --allow-empty -m "Deploy docs to GitHub Pages, GitHub Actions build: ${GITHUB_RUN_ID}" -m "Commit: ${GITHUB_SHA}"
           git push
+
       - name: Archive Documentation
         uses: actions/upload-artifact@v4
         with:
