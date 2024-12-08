@@ -14,8 +14,7 @@ jobs:
         
       - name: Update and install wget
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes wget
+          sudo apt-get update && sudo apt-get install --yes wget
 
       - name: Download libscip-linux.zip
         run: |
@@ -26,7 +25,10 @@ jobs:
           sudo apt-get install --yes unzip
           unzip gcg.zip
           export SCIPOPTDIR="$(pwd)/scip_install"
-          echo $SCIPOPTDIR
+          export LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH"
+          export DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH" 
+          export PATH="$(pwd)/scip_install/bin:$PATH"
+          export PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
       - name: Setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
