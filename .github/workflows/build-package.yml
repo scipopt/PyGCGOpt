@@ -7,10 +7,22 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         
-      - name: Setup SCIPOptSuite
-        uses: ./.github/actions/setup-scipoptsuite-action
+      - name: Update and install wget
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes wget
+
+      - name: Download libscip-linux.zip
+        run: |
+          wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip
+
+      - name: Unzip the downloaded file
+        run: |
+          sudo apt-get install --yes unzip
+          unzip gcg.zip
+          ls -la
 
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
@@ -23,9 +35,6 @@ jobs:
       - name: Prepare Python Environment
         run: |
           pip install -r requirements.txt
-
-      - name: Setup PySCIPOpt
-        uses: ./.github/actions/setup-pyscipopt-action
       
       - name: Build & Install PyGCGOpt
         run: |

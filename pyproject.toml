@@ -47,9 +47,7 @@ before-all = [
     "wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.5.0/libscip-linux.zip -O gcg.zip",
     "unzip gcg.zip",
     ]
-#before-build = "pip install pyscipopt --no-binary=:all:"
 environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
-
 
 [tool.cibuildwheel.macos]
 skip="pp* cp36* cp37*"
@@ -65,7 +63,6 @@ else
 fi
 unzip gcg.zip
 '''
-#before-build = ["pip install setuptools wheel", "pip install pyscipopt --no-binary=:all: --no-cache-dir"]
 environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 repair-wheel-command = '''
     bash -c '
@@ -80,7 +77,6 @@ repair-wheel-command = '''
     fi
     '
 '''
-
 
 [tool.cibuildwheel.windows]
 skip="pp* cp36* cp37*"
