@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Examples" href="examples/index.html" /><link rel="prev" title="PyGCGOpt" href="index.html" />
 
     <link rel="shortcut icon" href="_static/favicon.ico"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>Installation - PyGCGOpt 0.4.0b0</title>
+        <title>Installation - PyGCGOpt 0.4.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">PyGCGOpt 0.4.0b0</div></a>
+      <a href="index.html"><div class="brand">PyGCGOpt 0.4.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +191,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">PyGCGOpt 0.4.0b0</span>
+  <span class="sidebar-brand-text">PyGCGOpt 0.4.0</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -275,69 +275,6 @@
 <a class="reference external" href="https://anaconda.org/conda-forge/pygcgopt"><img alt="Conda platforms" src="https://img.shields.io/conda/pn/conda-forge/pygcgopt?logo=conda-forge" /></a></p>
 <p>Conda will install <code class="docutils literal notranslate"><span class="pre">GCG</span></code>, <code class="docutils literal notranslate"><span class="pre">SCIP</span></code> and <code class="docutils literal notranslate"><span class="pre">PySCIPOpt</span></code> automatically, hence everything can be installed in a single command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>--channel<span class="w"> </span>conda-forge<span class="w"> </span>pygcgopt
-</pre></div>
-</div>
-</section>
-<section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
-<p>PyGCGOpt requires a working installation of the <a class="reference external" href="https://scipopt.org">SCIPOptSuite</a> and the <a class="reference external" href="https://gcg.or.rwth-aachen.de/">GCG Solver</a> which is usually included in the release. In addition, the Python interface for SCIP, <a class="reference external" href="https://github.com/scipopt/PySCIPOpt">PySCIPOpt</a>, has to be installed. Currently, GCG only runs on Linux and macOS, therefore you can use PyGCGOpt only on these operating systems.</p>
-<p>Note that the latest PyGCGOpt version is usually only compatible with the latest major release of the SCIP Optimization Suite. PyGCGOpt requires at least SCIP 8.0 and GCG 3.5. The following table summarizes which versions of PyGCGOpt, GCG, PySCIPOpt, and SCIP are compatible:</p>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>SCIP</p></th>
-<th class="head"><p>PySCIPOpt</p></th>
-<th class="head"><p>GCG</p></th>
-<th class="head"><p>PyGCGOpt</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>9.0</p></td>
-<td><p>5.0.0</p></td>
-<td><p>3.6.0</p></td>
-<td><p>0.4.0</p></td>
-</tr>
-<tr class="row-odd"><td><p>8.1</p></td>
-<td><p>4.4</p></td>
-<td><p>3.5.5</p></td>
-<td><p>0.3.0</p></td>
-</tr>
-<tr class="row-even"><td><p>8.0</p></td>
-<td><p>4.0</p></td>
-<td><p>3.5.0</p></td>
-<td><p>0.1.0</p></td>
-</tr>
-<tr class="row-odd"><td><p>7.0</p></td>
-<td><p>3.x</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-</tr>
-<tr class="row-even"><td><p>6.0</p></td>
-<td><p>2.x</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-</tr>
-<tr class="row-odd"><td><p>5.0</p></td>
-<td><p>1.4, 1.3</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-</tr>
-<tr class="row-even"><td><p>4.0</p></td>
-<td><p>1.2, 1.1</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-</tr>
-<tr class="row-odd"><td><p>3.2</p></td>
-<td><p>1.0</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>We recommend installing PyGCGOpt and its Python dependencies in a <a class="reference external" href="https://docs.python.org/3/tutorial/venv.html">Python virtual environment</a>. In short, you can create a virtual environment and activate it with the following commands on Linux, macOS and Windows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span><span class="mf">.9</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="n">venv</span>
-<span class="n">source</span> <span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
 </pre></div>
 </div>
 </section>
@@ -442,7 +379,6 @@ removed harmlessly.</p>
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
 <li><a class="reference internal" href="#using-conda">Using Conda</a></li>
-<li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#installing-pygcgopt-from-pypi">Installing PyGCGOpt from PyPI</a></li>
 <li><a class="reference internal" href="#testing-new-installation">Testing new installation</a></li>
 </ul>
