@@ -14,5 +14,5 @@ jobs:
       with:
         target-url: ${{ secrets.OR_GITLAB_URL }}
         target-username: ${{ secrets.OR_GITLAB_USERNAME }}
-        target-token: ${{ secrets.OR_GITLAB_ACCESS_TOKEN }
+        target-token: ${{ secrets.OR_GITLAB_ACCESS_TOKEN }}
         
