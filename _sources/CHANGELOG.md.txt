@@ -6,6 +6,10 @@
 ### Changed
 ### Removed
 
+## v0.4.1
+### Update
+* support PySCIPOpt 5.3.0, SCIP 9.2.1 and GCG 3.7.0
+
 ## v0.4.0
 ### Added
 * added support for Windows

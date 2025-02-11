@@ -24,6 +24,7 @@ The following table summarizes which versions of PyGCGOpt and PySCIPOpt are comp
 | PySCIPOpt | PyGCGOpt |
 |----|----|
 | 5.2.1 | 0.4.0 |
+| 5.3.0 | 0.4.1 |
 
 
 ## Testing new installation
