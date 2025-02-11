@@ -20,7 +20,7 @@ jobs:
 
       - name: Download libscip-linux.zip
         run: |
-          wget https://github.com/jurgen-lentz/scipoptsuite-deploy/releases/download/v0.7.0/libscip-linux.zip -O gcg.zip
+          wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-linux.zip -O gcg.zip
 
       - name: Unzip the downloaded file
         run: |
