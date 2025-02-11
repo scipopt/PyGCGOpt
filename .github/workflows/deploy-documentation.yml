@@ -24,12 +24,12 @@ jobs:
 
       - name: Download libscip-linux.zip
         run: |
-          wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-linux.zip -O gcg.zip
+          wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-linux.zip -O scip.zip
 
       - name: Unzip the downloaded file
         run: |
           sudo apt-get install --yes unzip
-          unzip gcg.zip
+          unzip scip.zip
 
       - name: Setup python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
