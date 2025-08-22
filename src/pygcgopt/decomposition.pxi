@@ -1430,7 +1430,7 @@ cdef class PartialDecomposition:
         return self._visualizations[format]
 
     def __repr__(self):
-        return f"<PartialDecomposition: nBlocks={self.getNBlocks()}, nMasterConss={self.getNMasterconss()}, nMasterVars={self.getNMastervars()}, nLinkingVars={self.getNLinkingvars()}, maxForWhiteScore={self.maxForWhiteScore}>"
+        return f"<PartialDecomposition: nBlocks={self.getNBlocks()}, nMasterConss={self.getNMasterconss()}, nMasterVars={self.getNMastervars()}, nLinkingVars={self.getNLinkingvars()}, max_for_white_score={self.max_for_white_score()}>"
 
 
 
