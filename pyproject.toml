@@ -1,5 +1,5 @@
 [build-system]
-requires = ['setuptools', 'pyscipopt==5.3.0', 'cython >=3.0.0']
+requires = ['setuptools', 'pyscipopt==6.0.0', 'cython >=3.0.0']
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -44,7 +44,7 @@ manylinux-x86_64-image = "manylinux_2_28"
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
     "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
-    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-linux.zip -O scip.zip",
+    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip",
     "unzip scip.zip",
     ]
 environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
@@ -55,10 +55,10 @@ before-all = '''
 #!/bin/bash
 brew install wget zlib gcc
 if [[ $CIBW_ARCHS == *"arm"* ]]; then
-    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-macos-arm.zip -O scip.zip
+    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-macos-arm.zip -O scip.zip
     export MACOSX_DEPLOYMENT_TARGET=14.0
 else
-    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-macos-intel.zip -O scip.zip
+    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-macos-intel.zip -O scip.zip
     export MACOSX_DEPLOYMENT_TARGET=13.0
 fi
 unzip scip.zip
@@ -82,7 +82,7 @@ repair-wheel-command = '''
 skip="pp* cp36* cp37*"
 before-all = [
     "choco install 7zip wget",
-    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-windows.zip -O scip.zip",
+    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-windows.zip -O scip.zip",
     "\"C:\\Program Files\\7-Zip\\7z.exe\" x \"scip.zip\" -o\"gcg-test\"",
     "mv .\\gcg-test\\scip_install .\\test",
     "mv .\\test .\\gcg"

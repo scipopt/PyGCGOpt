@@ -20,7 +20,7 @@ jobs:
 
       - name: Download libscip-linux.zip
         run: |
-          wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.7.0/libscip-linux.zip -O scip.zip
+          wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip
 
       - name: Unzip the downloaded file
         run: |
@@ -36,7 +36,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install cython pytest
-          python -m pip install pyscipopt==5.3.0 --no-binary=:all:
+          python -m pip install pyscipopt==6.0.0 --no-binary=:all:
 
       - name: Build & Install PyGCGOpt
         run: |
