@@ -114,6 +114,7 @@ cdef class Model(SCIPModel):
             self._bestSol = None
             #if defaultPlugins:
             #    self.includeDefaultPlugins()
+            self._scip = GCGgetOrigprob(self._gcg)
             self.createProbBasic(problemName)
         else:
             PY_SCIP_CALL(GCGcreate(&self._gcg))
