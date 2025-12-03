@@ -35,39 +35,39 @@ cdef PricingSolver get_py_pricing_solver(GCG_SOLVER* pricingSolver) noexcept wit
     py_pricing_solver = <PricingSolver>solverdata
     return py_pricing_solver
 
-cdef SCIP_RETCODE PyPricingSolverFree (SCIP* scip, GCG_SOLVER* solver) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverFree (GCG* gcg, GCG_SOLVER* solver) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.freeSolver()
     Py_DECREF(py_pricing_solver)
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverInit (SCIP* scip, GCG_SOLVER* solver) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverInit (GCG* gcg, GCG_SOLVER* solver) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.initSolver()
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverExit (SCIP* scip, GCG_SOLVER* solver) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverExit (GCG* gcg, GCG_SOLVER* solver) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.exitSolver()
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverInitSol (SCIP* scip, GCG_SOLVER* solver) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverInitSol (GCG* gcg, GCG_SOLVER* solver) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.initSolution()
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverExitSol (SCIP* scip, GCG_SOLVER* solver) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverExitSol (GCG* gcg, GCG_SOLVER* solver) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricing_solver.exitSolution()
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverUpdate (SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverUpdate (GCG* gcg, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Bool varobjschanged, SCIP_Bool varbndschanged, SCIP_Bool consschanged) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricingprob = GCGPricingModel.create(pricingprob)
     py_pricing_solver.updateSolver(py_pricingprob, probnr, varobjschanged, varbndschanged, consschanged)
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverSolve (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverSolve (GCG* gcg, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricingprob = GCGPricingModel.create(pricingprob)
     result_dict = py_pricing_solver.solve(py_pricingprob, probnr, dualsolconv)
@@ -75,7 +75,7 @@ cdef SCIP_RETCODE PyPricingSolverSolve (SCIP* scip, SCIP* pricingprob, GCG_SOLVE
     status[0] = result_dict.get("status", <GCG_PRICINGSTATUS>status[0])
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyPricingSolverSolveHeur (SCIP* scip, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) noexcept with gil:
+cdef SCIP_RETCODE PyPricingSolverSolveHeur (GCG* gcg, SCIP* pricingprob, GCG_SOLVER* solver, int probnr, SCIP_Real dualsolconv, SCIP_Real* lowerbound, GCG_PRICINGSTATUS* status) noexcept with gil:
     py_pricing_solver = get_py_pricing_solver(solver)
     py_pricingprob = GCGPricingModel.create(pricingprob)
     result_dict = py_pricing_solver.solveHeuristic(py_pricingprob, probnr, dualsolconv)

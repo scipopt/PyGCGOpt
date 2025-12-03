@@ -10,7 +10,7 @@ cdef class VarClassifier:
     def classify(self, vars, partition):
         return {}
 
-cdef SCIP_RETCODE PyVarClassifierFree(SCIP* scip, GCG_VARCLASSIFIER* varclassifier) noexcept with gil:
+cdef SCIP_RETCODE PyVarClassifierFree(GCG* gcg, GCG_VARCLASSIFIER* varclassifier) noexcept with gil:
     cdef GCG_CLASSIFIERDATA* varclassifierdata
     varclassifierdata = GCGvarClassifierGetData(varclassifier)
     py_varclassifier = <VarClassifier>varclassifierdata
@@ -18,7 +18,7 @@ cdef SCIP_RETCODE PyVarClassifierFree(SCIP* scip, GCG_VARCLASSIFIER* varclassifi
     Py_DECREF(py_varclassifier)
     return SCIP_OKAY
 
-cdef SCIP_RETCODE PyVarClassifierClassify(SCIP* scip, GCG_VARCLASSIFIER* varclassifier, SCIP_Bool transformed) noexcept with gil:
+cdef SCIP_RETCODE PyVarClassifierClassify(GCG* gcg, GCG_VARCLASSIFIER* varclassifier, SCIP_Bool transformed) noexcept with gil:
     cdef GCG_CLASSIFIERDATA* varclassifierdata
     varclassifierdata = GCGvarClassifierGetData(varclassifier)
     py_varclassifier = <VarClassifier>varclassifierdata

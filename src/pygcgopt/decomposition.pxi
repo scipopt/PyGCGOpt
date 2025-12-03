@@ -285,7 +285,7 @@ cdef class PartialDecomposition:
 
         :return: list of constraints
         """
-        cdef vector[int] result = self.thisptr.getOpenconssVec()
+        cdef vector[int] result = self.thisptr.getOpenconss()
         cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
         return [Constraint.create(det_prob_data.getCons(consIndex)) for consIndex in result]
 
@@ -353,7 +353,7 @@ cdef class PartialDecomposition:
 
         :return: list of variables
         """
-        cdef vector[int] result = self.thisptr.getOpenvarsVec()
+        cdef vector[int] result = self.thisptr.getOpenvars()
         cdef DETPROBDATA* det_prob_data = self.thisptr.getDetprobdata()
         return [Variable.create(det_prob_data.getVar(varIndex)) for varIndex in result]
 
@@ -635,35 +635,35 @@ cdef class PartialDecomposition:
 
     @property
     def classic_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("classic")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("classic")))
 
     @property
     def border_area_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("border area")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("border area")))
 
     @property
     def max_for_white_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("max foreseeing white")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("max foreseeing white")))
 
     @property
     def set_part_for_white_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("ppc-max-white with aggregation info")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("ppc-max-white with aggregation info")))
 
     @property
     def max_for_white_agg_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("max foreseeing white with aggregation info")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("max foreseeing white with aggregation info")))
 
     @property
     def set_part_for_white_agg_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("ppc-max-white")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("ppc-max-white")))
 
     @property
     def benders_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("experimental benders score")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("experimental benders score")))
 
     @property
     def strong_decomp_score(self):
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion("strong decomposition score")))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion("strong decomposition score")))
 
     def addClockTime(self, double clocktime):
         """adds detection time of one detector
@@ -829,17 +829,17 @@ cdef class PartialDecomposition:
         :param score: score for which the value should be returned
         :return: value of score
         """
-        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getScip(), str_conversion(score.scorename)))
+        return self.thisptr.getScore(GCGfindScore(self.thisptr.getDetprobdata().getGcg(), str_conversion(score.scorename)))
 
-    def calcStairlinkingVars(self):
-        """reassigns linking variables to stairlinkingvars if possible
-
-        potentially reorders blocks for making a maximum number of linking vars stairlinking
-        if all vars that connect exactly two blocks have a staircase structure, all of them become stairlinkingvars
-        otherwise, the stairlinking assignment is done greedily
-        .. note:: precondition: partialdec does not have any stairlinking vars.
-        """
-        self.thisptr.calcStairlinkingVars()
+#    def calcStairlinkingVars(self):
+#        """reassigns linking variables to stairlinkingvars if possible
+#
+#        potentially reorders blocks for making a maximum number of linking vars stairlinking
+#        if all vars that connect exactly two blocks have a staircase structure, all of them become stairlinkingvars
+#        otherwise, the stairlinking assignment is done greedily
+#        .. note:: precondition: partialdec does not have any stairlinking vars.
+#        """
+#        self.thisptr.calcStairlinkingVars()
 
     def checkAllConssAssigned(self):
         """checks if all constraints are assigned and deletes the open constraint vector if so
@@ -927,12 +927,11 @@ cdef class PartialDecomposition:
         cdef int result = self.thisptr.getNDetectors()
         return result
 
-    def getNReps(self):
+    def getNEquivalenceClasses(self):
         """gets the number of blockrepresentatives
-
         :return: the number of blockrepresentatives
         """
-        cdef int result = self.thisptr.getNReps()
+        cdef int result = self.thisptr.getNEquivalenceClasses()
         return result
 
     def getNCoeffsForMaster(self):
@@ -1188,14 +1187,14 @@ cdef class PartialDecomposition:
         cdef int cpp_ancestor_id = ancestor_id
         self.thisptr.addAncestorID(cpp_ancestor_id)
 
-    def getBlocksForRep(PartialDecomposition self, int rep_id):
+    def getBlocksForEqClass(PartialDecomposition self, int rep_id):
         """get a vector of block ids that are identical to block with id rep_id
 
         :param rep_id: id of the representative block
         :return: vector of block ids that are identical to block with id rep_id
         """
         cdef int cpp_rep_id = rep_id
-        cdef vector[int] result = self.thisptr.getBlocksForRep(cpp_rep_id)
+        cdef vector[int] result = self.thisptr.getBlocksForEqClass(cpp_rep_id)
         return result
 
     def getNNewBlocksVector(self):
@@ -1284,14 +1283,13 @@ cdef class PartialDecomposition:
         cdef GCG_DETECTOR* dec = <GCG_DETECTOR*>detector
         self.thisptr.setDetectorFinished(dec)
 
-    def setDetectorFinishedOrig(self, Detector detector):
+    def setDetectorFinishedOrig(self):
         """sets detector that finished the partialdec in the original problem
 
         :param detector: detector that has finished this partialdecs
         :note: does not add the detector to the detectorchain and does not modify partition statistics
         """
-        cdef GCG_DETECTOR* dec = <GCG_DETECTOR*>detector
-        self.thisptr.setDetectorFinishedOrig(dec)
+        self.thisptr.setDetectorFinishedOrig()
 
     def setPctConssToBlockVector(self, object newvector):
         """set statistical vector of fractions of constraints set to blocks per involved detector
@@ -1374,14 +1372,14 @@ cdef class PartialDecomposition:
         cdef double result = self.thisptr.getDetectorClockTime(cpp_detectorchain_id)
         return result
 
-    def getRepForBlock(self, int block_id):
+    def getEqClassForBlock(self, int block_id):
         """gets index of the representative block for a block, this might be block_id itself
 
         :param block_id: id of the block the representative is asked for
         :return: index of the representative block for a block, this might be block_id itself
         """
         cdef int cpp_block_id = block_id
-        cdef int result = self.thisptr.getRepForBlock(cpp_block_id)
+        cdef int result = self.thisptr.getEqClassForBlock(cpp_block_id)
         return result
 
     def showVisualization(self):

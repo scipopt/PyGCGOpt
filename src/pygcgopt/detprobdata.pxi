@@ -21,9 +21,9 @@ cdef class DetProbData:
         :return: constraint partition object
         :rtype: :class:`ConsPart`
         """
-        cdef SCIP* scip = self.thisptr.getScip()
+        cdef GCG* gcg = self.thisptr.getGcg()
         c_name = str_conversion(name)
-        cdef ConsPartition* conspatitionptr = new ConsPartition(scip, c_name, nclasses, ncons)
+        cdef ConsPartition* conspatitionptr = new ConsPartition(gcg, c_name, nclasses, ncons)
         return ConsPart.create(conspatitionptr, self)
 
     def createVarPart(self, name, nclasses, nvars):
@@ -38,9 +38,9 @@ cdef class DetProbData:
         :return: variable partition object
         :rtype: :class:`VarPart`
         """
-        cdef SCIP* scip = self.thisptr.getScip()
+        cdef GCG* gcg = self.thisptr.getGcg()
         c_name = str_conversion(name)
-        cdef VarPartition* varpatitionptr = new VarPartition(scip, c_name, nclasses, nvars)
+        cdef VarPartition* varpatitionptr = new VarPartition(gcg, c_name, nclasses, nvars)
         return VarPart.create(varpatitionptr, self)
         
     def candidatesNBlocks(self):
@@ -471,14 +471,14 @@ cdef class DetProbData:
         cdef vector[SCIP_VAR *] result = self.thisptr.getRelevantVars()
         return [Variable.create(v) for v in result]
 
-    def getModel(self):
-        """returns the corresponding Model instance wrapping the scip data structure
-
-        :return: the corresponding Model instance wrapping scip data structure
-        :rtype: :class:`pyscipopt.Model`
-        """
-        cdef SCIP* scip = self.thisptr.getScip()
-        return SCIPModel.create(scip)
+#    def getModel(self):
+#        """returns the corresponding Model instance wrapping the scip data structure
+#
+#        :return: the corresponding Model instance wrapping scip data structure
+#        :rtype: :class:`pyscipopt.Model`
+#        """
+#        cdef GCG* gcg = self.thisptr.getGcg()
+#        return SCIPModel.create(gcg)
 
     def getSortedCandidatesNBlocks(self, object candidates):
         """gets the candidates for number of blocks added by the user followed by the found ones sorted in descending order by how often a candidate was proposed
@@ -634,7 +634,7 @@ cdef class DetProbData:
         """
         self.thisptr.sortFinishedForScore()
 
-    def translatePartialdecs(self, DetProbData otherdata, object otherpartialdecs):
+    def translatePartialdecs(self, DetProbData otherdata, object otherpartialdecs, translateSymmetry=True):
         """translates partialdecs if the index structure of the problem has changed, e.g. due to presolving
 
         :param otherdata: old detprobdata
@@ -651,5 +651,5 @@ cdef class DetProbData:
         for otherpartialdecs_element in otherpartialdecs:
             otherpartialdecs_ptr = <PARTIALDECOMP*> otherpartialdecs_element.thisptr
             cpp_otherpartialdecs.push_back(otherpartialdecs_ptr)
-        cdef vector[PARTIALDECOMP*] result = self.thisptr.translatePartialdecs(cpp_otherdata, cpp_otherpartialdecs)
+        cdef vector[PARTIALDECOMP*] result = self.thisptr.translatePartialdecs(cpp_otherdata, cpp_otherpartialdecs, translateSymmetry)
         return [PartialDecomposition.create(r) for r in result]
