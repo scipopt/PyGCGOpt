@@ -43,12 +43,21 @@ manylinux-x86_64-image = "manylinux_2_28"
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
-    "(apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget",
+    # install wget and try to install libgomp/libgfortran from common package managers
+    "bash -lc '(apt-get update && apt-get install --yes wget libgomp1 libgfortran5) || (yum install -y wget libgomp libgfortran) || (apk add --no-cache wget libgomp libgfortran) || true'",
+    # ensure we have a modern auditwheel and patchelf for repair operations
+    "bash -lc 'python -m pip install --upgrade pip auditwheel patchelf || true'",
+    # download and unpack SCIP/GCG libs
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip",
     "unzip scip.zip",
-    ]
+    # copy the real system libgomp into scip_install/lib so auditwheel will bundle it (if present)
+    "bash -lc 'lib=$(ldconfig -p | awk \"/libgomp.so.1/ {print \\$4; exit}\"); if [ -n \"$lib\" ] && [ -f \"$lib\" ]; then cp -v \"$lib\" scip_install/lib/ || true; fi'",
+]
 environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
-repair-wheel-command = "auditwheel repair --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}"
+repair-wheel-command = [
+    "bash -lc 'auditwheel repair --add-path $(pwd)/scip_install/lib --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}'"
+]
+
 
 [tool.cibuildwheel.macos]
 skip="pp* cp36* cp37*"
