@@ -112,8 +112,8 @@ cdef class Model(SCIPModel):
         elif sourceModel is None:
             PY_SCIP_CALL(GCGcreate(&self._gcg))
             self._bestSol = None
-            if defaultPlugins:
-                self.includeDefaultPlugins()
+            #if defaultPlugins:
+            #    self.includeDefaultPlugins()
             self.createProbBasic(problemName)
         else:
             PY_SCIP_CALL(GCGcreate(&self._gcg))
