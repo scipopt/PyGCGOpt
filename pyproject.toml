@@ -48,6 +48,7 @@ before-all = [
     "unzip scip.zip",
     ]
 environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+repair-wheel-command = "auditwheel repair --add-path $(pwd)/scip_install/lib --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.macos]
 skip="pp* cp36* cp37*"
