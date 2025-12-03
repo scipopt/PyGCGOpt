@@ -43,7 +43,7 @@ manylinux-x86_64-image = "manylinux_2_28"
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
-    "(apt-get update && apt-get install --yes wget) || yum install -y wget zlib libgfortran || brew install wget",
+    "(apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget",
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip",
     "unzip scip.zip",
     ]
