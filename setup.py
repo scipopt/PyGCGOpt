@@ -59,7 +59,8 @@ if platform.system() in ['Linux', 'Darwin']:
     for libdir in set([sciplibdir, gcglibdir]):
         extra_link_args.append('-Wl,-rpath,'+libdir)
 
-extra_link_args.append('-fopenmp')
+if platform.system() == 'Linux':
+    extra_link_args.append('-fopenmp')
 
 # enable debug mode if requested
 if "--debug" in sys.argv:
