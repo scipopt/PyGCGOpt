@@ -1,24 +1,24 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="DetProbData" href="detprobdata.html" /><link rel="prev" title="Classifier" href="classifier.html" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="DetProbData" href="detprobdata.html"><link rel="prev" title="Classifier" href="classifier.html">
 
-    <link rel="shortcut icon" href="../_static/favicon.ico"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>Decomposition - PyGCGOpt 0.4.1</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>Decomposition - PyGCGOpt 1.0.0b0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   
   }
   @media not print {
@@ -145,14 +145,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -162,17 +158,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">PyGCGOpt 0.4.1</div></a>
+      <a href="../index.html"><div class="brand">PyGCGOpt 1.0.0b0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -180,8 +174,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -190,8 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  
-  <span class="sidebar-brand-text">PyGCGOpt 0.4.1</span>
+  <span class="sidebar-brand-text">PyGCGOpt 1.0.0b0</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -203,12 +195,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">PyGCGOpt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../INSTALL.html">Installation</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/cpmp/cpmp.html">Decomposing the Capacitated p-Median Problem</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/alldecomps/alldecomps.html">Exploring DW Dual Bounds</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="model.html">Model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="classifier.html">Classifier</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Decomposition</a></li>
@@ -253,8 +245,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -262,8 +253,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -271,7 +261,7 @@
 <h1>Decomposition<a class="headerlink" href="#decomposition" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcgopt.gcg.</span></span><span class="sig-name descname"><span class="pre">PartialDecomposition</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygcgopt.gcg.</span></span><span class="sig-name descname"><span class="pre">PartialDecomposition</span></span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition" title="Link to this definition">¶</a></dt>
 <dd><p>class to manage partial decompositions</p>
 <p>each partialdec corresponds to one <a class="reference internal" href="detprobdata.html#pygcgopt.gcg.DetProbData" title="pygcgopt.gcg.DetProbData"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetProbData</span></code></a> which contains the problem information,
 there is one detprobdata for the original and the transformed problem.</p>
@@ -440,16 +430,6 @@ two constraints are adjacent if there is a common variable</p>
 </dd>
 </dl>
 <p>This parameter is ignored if the patched bliss version is not present.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.calcStairlinkingVars">
-<span class="sig-name descname"><span class="pre">calcStairlinkingVars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.calcStairlinkingVars" title="Link to this definition">¶</a></dt>
-<dd><p>reassigns linking variables to stairlinkingvars if possible</p>
-<p>potentially reorders blocks for making a maximum number of linking vars stairlinking
-if all vars that connect exactly two blocks have a staircase structure, all of them become stairlinkingvars
-otherwise, the stairlinking assignment is done greedily
-.. note:: precondition: partialdec does not have any stairlinking vars.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -805,8 +785,8 @@ fixConsToBlock().</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getBlocksForRep">
-<span class="sig-name descname"><span class="pre">getBlocksForRep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">rep_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getBlocksForRep" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getBlocksForEqClass">
+<span class="sig-name descname"><span class="pre">getBlocksForEqClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">rep_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getBlocksForEqClass" title="Link to this definition">¶</a></dt>
 <dd><p>get a vector of block ids that are identical to block with id rep_id</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -877,6 +857,20 @@ fixConsToBlock().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>corresponding detprobdata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getEqClassForBlock">
+<span class="sig-name descname"><span class="pre">getEqClassForBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">block_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getEqClassForBlock" title="Link to this definition">¶</a></dt>
+<dd><p>gets index of the representative block for a block, this might be block_id itself</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>block_id</strong> – id of the block the representative is asked for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>index of the representative block for a block, this might be block_id itself</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1031,6 +1025,13 @@ fixConsToBlock().</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getNEquivalenceClasses">
+<span class="sig-name descname"><span class="pre">getNEquivalenceClasses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getNEquivalenceClasses" title="Link to this definition">¶</a></dt>
+<dd><p>gets the number of blockrepresentatives
+:return: the number of blockrepresentatives</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getNLinkingvars">
 <span class="sig-name descname"><span class="pre">getNLinkingvars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getNLinkingvars" title="Link to this definition">¶</a></dt>
 <dd><p>gets number of linking variables</p>
@@ -1103,17 +1104,6 @@ fixConsToBlock().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of open variables</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getNReps">
-<span class="sig-name descname"><span class="pre">getNReps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getNReps" title="Link to this definition">¶</a></dt>
-<dd><p>gets the number of blockrepresentatives</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>the number of blockrepresentatives</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1333,20 +1323,6 @@ fixConsToBlock().</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>vector of fractions of variables assigned to the border for detectors in detectorchain.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.getRepForBlock">
-<span class="sig-name descname"><span class="pre">getRepForBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span> <span class="pre">block_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.getRepForBlock" title="Link to this definition">¶</a></dt>
-<dd><p>gets index of the representative block for a block, this might be block_id itself</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>block_id</strong> – id of the block the representative is asked for</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>index of the representative block for a block, this might be block_id itself</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1735,7 +1711,7 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pygcgopt.gcg.PartialDecomposition.setDetectorFinishedOrig">
-<span class="sig-name descname"><span class="pre">setDetectorFinishedOrig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Detector</span> <span class="pre">detector</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.setDetectorFinishedOrig" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">setDetectorFinishedOrig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pygcgopt.gcg.PartialDecomposition.setDetectorFinishedOrig" title="Link to this definition">¶</a></dt>
 <dd><p>sets detector that finished the partialdec in the original problem</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2049,7 +2025,6 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.assignSmallestComponentsButOneConssAdjacency"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.assignSmallestComponentsButOneConssAdjacency()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.buildDecChainString"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.buildDecChainString()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.calcAggregationInformation"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.calcAggregationInformation()</span></code></a></li>
-<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.calcStairlinkingVars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.calcStairlinkingVars()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.checkAllConssAssigned"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.checkAllConssAssigned()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.checkConsistency"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.checkConsistency()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.complete"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.complete()</span></code></a></li>
@@ -2076,13 +2051,14 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.fixVarToStairlinking"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.fixVarToStairlinking()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getAncestorID"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getAncestorID()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getAncestorList"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getAncestorList()</span></code></a></li>
-<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getBlocksForRep"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getBlocksForRep()</span></code></a></li>
+<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getBlocksForEqClass"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getBlocksForEqClass()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getConssForBlock"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getConssForBlock()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getConssForBlocks"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getConssForBlocks()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getDetectorClockTime"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getDetectorClockTime()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getDetectorClockTimes"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getDetectorClockTimes()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getDetectorchainInfo"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getDetectorchainInfo()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getDetprobdata"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getDetprobdata()</span></code></a></li>
+<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getEqClassForBlock"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getEqClassForBlock()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getFinishedByFinisher"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getFinishedByFinisher()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getHashValue"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getHashValue()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getID"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getID()</span></code></a></li>
@@ -2096,6 +2072,7 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNConss"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNConss()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNConssForBlock"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNConssForBlock()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNDetectors"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNDetectors()</span></code></a></li>
+<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNEquivalenceClasses"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNEquivalenceClasses()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNLinkingvars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNLinkingvars()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNMasterconss"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNMasterconss()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNMastervars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNMastervars()</span></code></a></li>
@@ -2103,7 +2080,6 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNNewBlocksVector"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNNewBlocksVector()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNOpenconss"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNOpenconss()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNOpenvars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNOpenvars()</span></code></a></li>
-<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNReps"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNReps()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNStairlinkingvars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNStairlinkingvars()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNTotalStairlinkingvars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNTotalStairlinkingvars()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getNVars"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getNVars()</span></code></a></li>
@@ -2123,7 +2099,6 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getPctVarsToBlockVector"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getPctVarsToBlockVector()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getPctVarsToBorder"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getPctVarsToBorder()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getPctVarsToBorderVector"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getPctVarsToBorderVector()</span></code></a></li>
-<li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getRepForBlock"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getRepForBlock()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getRepVarmap"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getRepVarmap()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getScore"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getScore()</span></code></a></li>
 <li><a class="reference internal" href="#pygcgopt.gcg.PartialDecomposition.getTranslatedpartialdecid"><code class="docutils literal notranslate"><span class="pre">PartialDecomposition.getTranslatedpartialdecid()</span></code></a></li>
@@ -2194,7 +2169,7 @@ assign other conss and vars to master if possible (see assignOpenPartialHittingT
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
