@@ -39,18 +39,13 @@ version = {attr = "pygcgopt.__version__"}
 [tool.cibuildwheel]
 skip="pp*" # currently doesn't work with PyPy
 manylinux-x86_64-image = "manylinux_2_28"
-manylinux-aarch64-image = "manylinux_2_28"
 
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
 before-all = '''
 #!/bin/bash
 (apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget
-if [[ $AARCH == "aarch64" ]]; then
-    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux-arm.zip -O scip.zip
-else
-    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip
-fi    
+wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip
 unzip scip.zip
 mv scip_install gcg
 '''
