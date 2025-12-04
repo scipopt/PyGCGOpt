@@ -43,46 +43,15 @@ manylinux-x86_64-image = "manylinux_2_28"
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
 before-all = [
-    # ensure we have wget and the system libgomp available if possible
-    "bash -lc '(apt-get update && apt-get install --yes wget libgomp1 libgfortran5) || (yum install -y wget libgomp libgfortran) || true'",
-
-    # download and unpack SCIP/GCG
+    "(apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget",
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip",
     "unzip scip.zip",
-
-    # ensure output folders exist
-    "bash -lc 'mkdir -p scip_install/lib || true'",
-
-    # --- PRE-STAGE: copy concrete shared libs into the package's .libs/ BEFORE building ---
-    # create package .libs dir (adjust package path if not 'pygcgopt')
-    "bash -lc 'mkdir -p /project/pygcgopt/.libs || true'",
-
-    # try to copy the real system libgomp (resolve symlink to actual file)
-    "bash -lc 'g=$(ldconfig -p 2>/dev/null | awk \"/libgomp.so.1/ {print \\$4; exit}\"); if [ -n \"$g\" ] && [ -f \"$g\" ]; then cp -v \"$(readlink -f $g)\" /project/pygcgopt/.libs/ || true; fi'",
-
-    # copy any scip_install libs that are needed (libscip, gcg libs) into package .libs
-    "bash -lc 'for f in scip_install/lib/*.so*; do [ -f \"$f\" ] && cp -v \"$f\" /project/pygcgopt/.libs/ || true; done'",
-    # list what we staged (debug)
-    "bash -lc 'echo \"STAGED .libs CONTENTS:\"; ls -l /project/pygcgopt/.libs || true'",
-]
-environment = {
-    PIP_NO_BINARY="pyscipopt",
-    SCIPOPTDIR="$(pwd)/scip_install",
-    GCGOPTDIR="$(pwd)/scip_install",
-    LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH",
-    DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH",
-    PATH="$(pwd)/scip_install/bin:$PATH",
-    PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH",
-    RELEASE="true"
-}
-
-# repair: show deps, repair, and list repaired wheel contents for debugging
+    ]
+environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 repair-wheel-command = [
-    "bash -lc 'echo \"-- auditwheel (show) --\"; auditwheel show {wheel} || true'",
-    "bash -lc 'auditwheel repair --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}'",
-    "bash -lc 'echo \"-- repaired wheel contents --\"; unzip -l {dest_dir}/*.whl | sed -n \"1,200p\" || true'",
+    "auditwheel show {wheel}",
+    "auditwheel repair --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}"
 ]
-
 
 [tool.cibuildwheel.macos]
 skip="pp* cp36* cp37*"
