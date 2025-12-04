@@ -46,8 +46,9 @@ before-all = [
     "(apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget",
     "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip",
     "unzip scip.zip",
+    "mv scip_install gcg"
     ]
-environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/scip_install", GCGOPTDIR="$(pwd)/scip_install", LD_LIBRARY_PATH="$(pwd)/scip_install/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/scip_install/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/scip_install/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/scip_install/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 repair-wheel-command = [
     "auditwheel show {wheel}",
     "auditwheel repair --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}"
