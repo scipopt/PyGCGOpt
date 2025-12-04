@@ -48,7 +48,7 @@ before-all = [
     "unzip scip.zip",
     "mv scip_install gcg"
     ]
-environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
+environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
 repair-wheel-command = [
     "auditwheel show {wheel}",
     "auditwheel repair --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}"
