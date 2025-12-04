@@ -39,20 +39,22 @@ version = {attr = "pygcgopt.__version__"}
 [tool.cibuildwheel]
 skip="pp*" # currently doesn't work with PyPy
 manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
 
 [tool.cibuildwheel.linux]
 skip="pp* cp36* cp37* *musllinux*"
-before-all = [
-    "(apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget",
-    "wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip",
-    "unzip scip.zip",
-    "mv scip_install gcg"
-    ]
+before-all = '''
+#!/bin/bash
+(apt-get update && apt-get install --yes wget libgomp1) || yum install -y wget libgomp zlib libgfortran || brew install wget
+if [[ $AARCH == "aarch64" ]]; then
+    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux-arm.zip -O scip.zip
+else
+    wget https://github.com/scipopt/scipoptsuite-deploy/releases/download/v0.10.0/libscip-linux.zip -O scip.zip
+fi    
+unzip scip.zip
+mv scip_install gcg
+'''
 environment = {PIP_NO_BINARY="pyscipopt", SCIPOPTDIR="$(pwd)/gcg", GCGOPTDIR="$(pwd)/gcg", LD_LIBRARY_PATH="$(pwd)/gcg/lib:/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH", DYLD_LIBRARY_PATH="$(pwd)/gcg/lib:$DYLD_LIBRARY_PATH", PATH="$(pwd)/gcg/bin:$PATH", PKG_CONFIG_PATH="$(pwd)/gcg/lib/pkgconfig:$PKG_CONFIG_PATH", RELEASE="true"}
-repair-wheel-command = [
-    "auditwheel show {wheel}",
-    "auditwheel repair --plat $AUDITWHEEL_PLAT -w {dest_dir} {wheel}"
-]
 
 [tool.cibuildwheel.macos]
 skip="pp* cp36* cp37*"
